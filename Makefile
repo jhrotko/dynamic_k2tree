@@ -3,6 +3,6 @@ all:
 tests:
 	make all
 	cd test && make && ./edgeHashTableTests
-test_build:
+tests_build:
 	make all
 	cd test && cmake CMakeLists.txt && make && ./edgeHashTableTests
