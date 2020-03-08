@@ -57,7 +57,7 @@ public:
         if (number_of_elements > ht->size() / 2)
             resize_table();
 
-        uint32 key = convert_edge_to_uint64(elements[value]);
+        uint32 key = edge_to_uint64(elements[value]);
         uint32 i = hash_function(key);
         while ((*ht)[i] != EMPTY)
             i = (i + 1) % table.size();
@@ -66,8 +66,33 @@ public:
         number_of_elements++;
     }
 
-    size_t find() {}
-    void erase() {}
+    int find(edge e) 
+    {
+        uint32 i = edge_to_uint64(e);
+        while(table[i] != EMPTY) {
+            if(e.x == elements[table[i]].x && e.y == elements[table[i]].y)
+                return table[i];
+            else
+                i = (i + 1) % table.size();
+        }   
+
+        return -1;
+    }
+
+    void add_element(edge e) 
+    {
+        elements.push_back(e);
+        insert(number_of_elements);
+    }
+
+    int get_key(int key) // maybe delete me later
+    {
+        std::vector<int>::iterator it = std::find(table.begin(), table.end(), key);
+        if (it != table.end())
+            return *it;
+        else
+            return -1;
+    }
 
     vector<int> get_table()
     {
@@ -79,30 +104,25 @@ public:
         return elements;
     }
 
-    int get_key(int key)
-    {
-        std::vector<int>::iterator it = std::find(table.begin(), table.end(), key);
-        if (it != table.end())
-            return *it;
-        else
-            return -1;
-    }
-
 private:
+
+    /* Resizes the current table with the double size of the previous one*/
     void resize_table()
     {
         vector<int> new_table;
 
         new_table.resize(table.size() * 2);
         new_table.assign(new_table.size(), EMPTY);
+        number_of_elements = 0;
 
-        for (size_t i = 0; i < table.size() / 2; i++)
+        for (size_t i = 0; i < table.size(); i++)
             if (table[i] != EMPTY)
                 insert(table[i], &new_table);
         this->table = new_table;
     }
 
-    uint64 convert_edge_to_uint64(edge e)
+    /* concatenates the values of x and y into a 64 bit (32*2)*/
+    uint64 edge_to_uint64(edge e)
     {
         uint64 concat_edge = e.x;
         concat_edge <<= 32;
@@ -111,7 +131,7 @@ private:
         return concat_edge;
     }
 
-    /*Converts edge x,y (key) into a uint 32 */
+    /* Converts edge x,y (key) into a uint 32 */
     uint32 hash_function(uint64 key)
     {
         key = (~key) + (key << 18);
