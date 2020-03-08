@@ -4,6 +4,9 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
+
+using namespace std;
 
 typedef unsigned int uint32;
 typedef unsigned long uint64;
@@ -20,19 +23,21 @@ public:
 class edge_hash_table
 {
 public:
-    edge_hash_table(std::vector<edge> new_elements)
+    edge_hash_table(vector<edge> new_elements)
     {
         table.resize(new_elements.size() * 2);
         table.assign(table.size(), EMPTY);
 
         this->elements.assign(new_elements.begin(), new_elements.end());
-        number_of_elements = new_elements.size();
+        number_of_elements = 0;
 
-        for (size_t i = 0; i < number_of_elements; i++)
+        for (size_t i = 0; i < new_elements.size(); i++)
+        {
             insert(i);
+        }
     }
 
-    edge_hash_table(size_t size, std::vector<edge> new_elements)
+    edge_hash_table(size_t size, vector<edge> new_elements)
     {
         table.resize(size);
         table.assign(table.size(), EMPTY);
@@ -44,47 +49,56 @@ public:
             insert(i);
     }
 
-    std::vector<int> get_table()
+    void insert(uint32 value, vector<int> *ht = NULL)
     {
-        return table;
-    }
+        if (ht == NULL)
+            ht = &table;
 
-    std::vector<edge> get_elements()
-    {
-        return elements;
-    }
-
-    void insert(uint32 value, std::vector<int> ht = {})
-    {
-        if (ht.size() == 0)
-            ht = table;
-
-        if (number_of_elements > ht.size() / 2)
+        if (number_of_elements > ht->size() / 2)
             resize_table();
 
         uint32 key = convert_edge_to_uint64(elements[value]);
         uint32 i = hash_function(key);
-        while (ht[i] != EMPTY)
+        while ((*ht)[i] != EMPTY)
             i = (i + 1) % table.size();
 
-        ht[i] = value;
+        (*ht)[i] = value;
         number_of_elements++;
     }
 
     size_t find() {}
     void erase() {}
 
+    vector<int> get_table()
+    {
+        return table;
+    }
+
+    vector<edge> get_elements()
+    {
+        return elements;
+    }
+
+    int get_key(int key)
+    {
+        std::vector<int>::iterator it = std::find(table.begin(), table.end(), key);
+        if (it != table.end())
+            return *it;
+        else
+            return -1;
+    }
+
 private:
     void resize_table()
     {
-        std::vector<int> new_table;
+        vector<int> new_table;
 
         new_table.resize(table.size() * 2);
         new_table.assign(new_table.size(), EMPTY);
 
         for (size_t i = 0; i < table.size() / 2; i++)
             if (table[i] != EMPTY)
-                insert(table[i], new_table);
+                insert(table[i], &new_table);
         this->table = new_table;
     }
 
@@ -110,8 +124,8 @@ private:
         return (uint32)key % table.size();
     }
 
-    std::vector<int> table;
-    std::vector<edge> elements;
+    vector<int> table;
+    vector<edge> elements;
     size_t number_of_elements;
 };
 
