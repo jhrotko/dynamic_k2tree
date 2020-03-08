@@ -32,9 +32,7 @@ public:
         number_of_elements = 0;
 
         for (size_t i = 0; i < new_elements.size(); i++)
-        {
             insert(i);
-        }
     }
 
     edge_hash_table(size_t size, vector<edge> new_elements)
@@ -49,7 +47,7 @@ public:
             insert(i);
     }
 
-    void insert(uint32 value, vector<int> *ht = NULL)
+    void insert(uint32 index, vector<int> *ht = NULL)
     {
         if (ht == NULL)
             ht = &table;
@@ -57,12 +55,12 @@ public:
         if (number_of_elements > ht->size() / 2)
             resize_table();
 
-        uint32 key = edge_to_uint64(elements[value]);
+        uint32 key = edge_to_uint64(elements[index]);
         uint32 i = hash_function(key);
         while ((*ht)[i] != EMPTY)
             i = (i + 1) % table.size();
 
-        (*ht)[i] = value;
+        (*ht)[i] = index;
         number_of_elements++;
     }
 
@@ -83,6 +81,32 @@ public:
     {
         elements.push_back(e);
         insert(number_of_elements);
+    }
+
+    void erase(uint32 index)
+    {
+        if(index >= elements.size())
+            throw logic_error("The index must be within elements range");
+
+        elements.erase(elements.begin()+index);
+        
+        uint32 key = edge_to_uint64(elements[index]);
+        uint32 i = hash_function(key);
+        
+        while(index != table[i])
+            i = (i + 1) % table.size();
+        
+        table[i] = EMPTY;
+        i = (i + 1) % table.size();
+
+        while(table[i] != EMPTY) {
+            index = table[i];
+            table[i] = EMPTY;
+            insert(index);
+            i = (i + 1) % table.size();
+        }
+
+        number_of_elements--;
     }
 
     int get_key(int key) // maybe delete me later

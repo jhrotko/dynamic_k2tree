@@ -65,6 +65,38 @@ TEST(edgeHashTableInsert, findNot)
     ASSERT_EQ(ht.find(edge(1,1)), -1);
 }
 
+TEST(edgeHashTableInsert, deleteEdge)
+{
+    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    edge_hash_table ht(elements);
+
+    int nonempty = count_nonempty_entrances(ht);
+    
+    ASSERT_EQ(nonempty, 3);
+    ASSERT_NE(ht.get_key(0), EMPTY);
+    ASSERT_NE(ht.get_key(1), EMPTY);
+    ASSERT_NE(ht.get_key(2), EMPTY);
+
+    ht.erase(2);
+
+    ASSERT_EQ(ht.get_key(2), EMPTY);
+}
+
+TEST(edgeHashTableInsert, deleteEdgeNotExist)
+{
+    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    edge_hash_table ht(elements);
+
+    int nonempty = count_nonempty_entrances(ht);
+    
+    ASSERT_EQ(nonempty, 3);
+    ASSERT_NE(ht.get_key(0), EMPTY);
+    ASSERT_NE(ht.get_key(1), EMPTY);
+    ASSERT_NE(ht.get_key(2), EMPTY);
+
+    ASSERT_THROW(ht.erase(4), logic_error);
+}
+
 int main(int argc, char **argv)
 {
     testing::InitGoogleTest(&argc, argv);
