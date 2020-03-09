@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <stdexcept>
-#include <iostream>
 #include <algorithm>
 
 using namespace std;
@@ -64,20 +63,21 @@ public:
         number_of_elements++;
     }
 
-    int find(edge e) 
+    int find(edge e)
     {
         uint32 i = edge_to_uint64(e);
-        while(table[i] != EMPTY) {
-            if(e.x == elements[table[i]].x && e.y == elements[table[i]].y)
+        while (table[i] != EMPTY)
+        {
+            if (e.x == elements[table[i]].x && e.y == elements[table[i]].y)
                 return table[i];
             else
                 i = (i + 1) % table.size();
-        }   
+        }
 
         return -1;
     }
 
-    void add_element(edge e) 
+    void add_element(edge e)
     {
         elements.push_back(e);
         insert(number_of_elements);
@@ -85,21 +85,22 @@ public:
 
     void erase(uint32 index)
     {
-        if(index >= elements.size())
+        if (index >= elements.size())
             throw logic_error("The index must be within elements range");
 
-        elements.erase(elements.begin()+index);
-        
+        elements.erase(elements.begin() + index);
+
         uint32 key = edge_to_uint64(elements[index]);
         uint32 i = hash_function(key);
-        
-        while(index != table[i])
+
+        while (index != table[i])
             i = (i + 1) % table.size();
-        
+
         table[i] = EMPTY;
         i = (i + 1) % table.size();
 
-        while(table[i] != EMPTY) {
+        while (table[i] != EMPTY)
+        {
             index = table[i];
             table[i] = EMPTY;
             insert(index);
@@ -129,7 +130,6 @@ public:
     }
 
 private:
-
     /* Resizes the current table with the double size of the previous one*/
     void resize_table()
     {
