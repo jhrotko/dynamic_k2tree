@@ -36,8 +36,8 @@ TEST(edgeHashTableInsert, insertResize)
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
 
-    ht.add_element(edge(5, 8));
-    ht.add_element(edge(0, 5));
+    ht.insert(edge(5, 8));
+    ht.insert(edge(0, 5));
 
     int nonempty = count_nonempty_entrances(ht);
 
@@ -49,7 +49,7 @@ TEST(edgeHashTableInsert, insertResize)
     ASSERT_NE(ht.get_key(4), EMPTY);
 }
 
-TEST(edgeHashTableInsert, find)
+TEST(edgeHashTableFind, find)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
@@ -57,7 +57,7 @@ TEST(edgeHashTableInsert, find)
     ASSERT_NE(ht.find(edge(1,2)), -1);
 }
 
-TEST(edgeHashTableInsert, findNot)
+TEST(edgeHashTableFind, findNot)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
@@ -65,7 +65,7 @@ TEST(edgeHashTableInsert, findNot)
     ASSERT_EQ(ht.find(edge(1,1)), -1);
 }
 
-TEST(edgeHashTableInsert, deleteEdge)
+TEST(edgeHashTableErase, eraseEdge)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
@@ -82,7 +82,7 @@ TEST(edgeHashTableInsert, deleteEdge)
     ASSERT_EQ(ht.get_key(2), EMPTY);
 }
 
-TEST(edgeHashTableInsert, deleteEdgeNotExist)
+TEST(edgeHashTableErase, eraseEdgeNotExist)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);

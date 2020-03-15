@@ -22,27 +22,36 @@ public:
 class edge_hash_table
 {
 public:
+    edge_hash_table() = default;
+    
+    edge_hash_table(const size_t size) {
+        table.resize(size);
+        table.assign(table.size(), EMPTY);
+        n_elements = 0;
+        elements = vector<edge> ();
+    }
+
     edge_hash_table(vector<edge> new_elements)
     {
         table.resize(new_elements.size() * 2);
         table.assign(table.size(), EMPTY);
 
         this->elements.assign(new_elements.begin(), new_elements.end());
-        number_of_elements = 0;
+        n_elements = 0;
 
         for (size_t i = 0; i < new_elements.size(); i++)
             insert(i);
     }
 
-    edge_hash_table(size_t size, vector<edge> new_elements)
+    edge_hash_table(const size_t size, vector<edge> new_elements)
     {
         table.resize(size);
         table.assign(table.size(), EMPTY);
 
         this->elements.assign(new_elements.begin(), new_elements.end());
-        number_of_elements = new_elements.size();
+        n_elements = new_elements.size();
 
-        for (size_t i = 0; i < number_of_elements; i++)
+        for (size_t i = 0; i < n_elements; i++)
             insert(i);
     }
 
@@ -51,7 +60,7 @@ public:
         if (ht == NULL)
             ht = &table;
 
-        if (number_of_elements > ht->size() / 2)
+        if (n_elements > ht->size() / 2)
             resize_table();
 
         uint32 key = edge_to_uint64(elements[index]);
@@ -60,7 +69,7 @@ public:
             i = (i + 1) % table.size();
 
         (*ht)[i] = index;
-        number_of_elements++;
+        n_elements++;
     }
 
     int find(edge e)
@@ -77,10 +86,10 @@ public:
         return -1;
     }
 
-    void add_element(edge e)
+    void insert(edge e)
     {
         elements.push_back(e);
-        insert(number_of_elements);
+        insert(n_elements);
     }
 
     void erase(uint32 index)
@@ -107,7 +116,7 @@ public:
             i = (i + 1) % table.size();
         }
 
-        number_of_elements--;
+        n_elements--;
     }
 
     int get_key(int key) // maybe delete me later
@@ -129,6 +138,32 @@ public:
         return elements;
     }
 
+    size_t size_table()
+    {
+        return table.size();
+    }
+
+    size_t n_edges() {
+        return n_elements;
+    }
+
+    size_t size() 
+    {
+        return n_elements;
+    }
+
+    edge& operator[](size_t idx) //TODO: TEST ME
+    {
+        return elements[idx];
+    }
+
+    void clear() {
+        table.clear();
+        elements.clear();
+        n_elements = 0;
+        
+    }
+
 private:
     /* Resizes the current table with the double size of the previous one*/
     void resize_table()
@@ -137,7 +172,7 @@ private:
 
         new_table.resize(table.size() * 2);
         new_table.assign(new_table.size(), EMPTY);
-        number_of_elements = 0;
+        n_elements = 0;
 
         for (size_t i = 0; i < table.size(); i++)
             if (table[i] != EMPTY)
@@ -170,7 +205,7 @@ private:
 
     vector<int> table;
     vector<edge> elements;
-    size_t number_of_elements;
+    size_t n_elements;
 };
 
 #endif

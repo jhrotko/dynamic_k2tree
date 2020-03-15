@@ -21,4 +21,9 @@ uint exp_pow(uint base, uint pow)
     return result;
 }
 
+uint max(uint a, uint b)
+{
+    return a >= b? a : b;
+}
+
 #endif

@@ -3,4 +3,5 @@
 
 test/*
 !test/edge_hash_table_test.cpp
+!test/dk2tree_test.cpp
 !test/CMakeLists.txt
