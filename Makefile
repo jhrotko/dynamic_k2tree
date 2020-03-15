@@ -1,8 +1,15 @@
 all:
 	cd include && g++ *.hpp
-tests:
+	
+tests_edge:
 	make all
-	cd test && make && ./edgeHashTableTests
-tests_build:
+	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
+
+tests_dk2tree:
 	make all
-	cd test && cmake CMakeLists.txt && make && ./edgeHashTableTests
+	cd test && cmake CMakeLists.txt && make dk2treeTest && ./dk2treeTest
+
+tests_all:
+	make all
+	cd test && cmake CMakeLists.txt && make
+	cd test && ./edgeHashTableTests && ./dk2treeTest
