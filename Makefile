@@ -1,8 +1,12 @@
 all:
 	cd include && g++ *.hpp
-	
+
+tests_adj:
+	cd include && g++ adjacency_list.hpp utils.hpp
+	cd test && cmake CMakeLists.txt && make adjacencyListTest && ./adjacencyListTest
+
 tests_edge:
-	make all
+	cd include && g++ edge_hash_table.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
 
 tests_dk2tree:
@@ -12,4 +16,4 @@ tests_dk2tree:
 tests_all:
 	make all
 	cd test && cmake CMakeLists.txt && make
-	cd test && ./edgeHashTableTests && ./dk2treeTest
+	cd test && ./edgeHashTableTests && ./dk2treeTest && ./adjacencyListTest
