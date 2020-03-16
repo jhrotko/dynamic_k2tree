@@ -14,6 +14,7 @@ TEST(dktreeAddLink, addLink)
     tree.insert(1,2);
 
     ASSERT_EQ(tree.size(), 1);
+    ASSERT_EQ(tree.n_edges(), 1);
 }
 
 int main(int argc, char **argv)

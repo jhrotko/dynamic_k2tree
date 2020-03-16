@@ -86,10 +86,11 @@ public:
         return -1;
     }
 
-    void insert(edge e)
-    {
-        elements.push_back(e);
-        insert(n_elements);
+    void insert_element(const std::vector<uint>& edges_free, uint x, uint y)
+    {   
+        edge e(x,y);
+        uint i = edges_free[n_elements++];
+        elements.insert(elements.begin()+i, e);
     }
 
     void erase(uint32 index)
@@ -140,11 +141,11 @@ public:
 
     size_t size_table()
     {
-        return table.size();
+        return table.size(); 
     }
 
     size_t n_edges() {
-        return n_elements;
+        return n_elements; //FIXME: rename correctly
     }
 
     size_t size() 
@@ -162,6 +163,11 @@ public:
         elements.clear();
         n_elements = 0;
         
+    }
+
+    void resize(uint new_size)
+    {
+        table.resize(new_size);
     }
 
 private:

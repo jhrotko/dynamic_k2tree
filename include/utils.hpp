@@ -26,4 +26,17 @@ uint max(uint a, uint b)
     return a >= b? a : b;
 }
 
+//holy shit remove me
+uint hash32shift(uint key) {
+
+  key = ~key + (key << 15);
+  key = key ^ (key >> 12);
+  key = key + (key << 2);
+  key = key ^ (key >> 4);
+  key = (key + (key << 3)) + (key << 11);
+  key = key ^ (key >> 16);
+
+  return key;
+}
+
 #endif
