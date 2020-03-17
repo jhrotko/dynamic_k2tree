@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <algorithm>
 
+#include <iostream>
+
 using namespace std;
 
 typedef unsigned int uint32;
@@ -15,7 +17,8 @@ typedef unsigned long uint64;
 class edge
 {
 public:
-    uint32 x, y;
+    uint32 x, y, next, prev;
+    edge() {}
     edge(uint32 x, uint32 y) : x(x), y(y) {}
 };
 
@@ -23,12 +26,15 @@ class edge_hash_table
 {
 public:
     edge_hash_table() = default;
-    
-    edge_hash_table(const size_t size) {
+
+    edge_hash_table(const size_t size)
+    {
         table.resize(size);
         table.assign(table.size(), EMPTY);
         n_elements = 0;
-        elements = vector<edge> ();
+        elements = vector<edge>(size);
+        elements.assign(elements.size(), edge());
+
     }
 
     edge_hash_table(vector<edge> new_elements)
@@ -36,7 +42,7 @@ public:
         table.resize(new_elements.size() * 2);
         table.assign(table.size(), EMPTY);
 
-        this->elements.assign(new_elements.begin(), new_elements.end());
+        elements.assign(new_elements.begin(), new_elements.end());
         n_elements = 0;
 
         for (size_t i = 0; i < new_elements.size(); i++)
@@ -48,7 +54,7 @@ public:
         table.resize(size);
         table.assign(table.size(), EMPTY);
 
-        this->elements.assign(new_elements.begin(), new_elements.end());
+        elements.assign(new_elements.begin(), new_elements.end());
         n_elements = new_elements.size();
 
         for (size_t i = 0; i < n_elements; i++)
@@ -77,6 +83,17 @@ public:
         uint32 i = edge_to_uint64(e);
         while (table[i] != EMPTY)
         {
+            std::cout << "what" << std::endl;
+            std::cout << "i " << i << std::endl;
+
+            std::cout << "table[i] " << table[i] << std::endl;
+            std::cout << "elements" << std::endl;
+            for (size_t d = 0; d < elements.size(); d++)
+            {
+                std::cout << elements[d].x << "  " << elements[d].y << std::endl;
+            }
+
+            std::cout << elements[table[i]].x << "  " << elements[table[i]].y << std::endl;
             if (e.x == elements[table[i]].x && e.y == elements[table[i]].y)
                 return table[i];
             else
@@ -86,11 +103,11 @@ public:
         return -1;
     }
 
-    void insert_element(const std::vector<uint>& edges_free, uint x, uint y)
-    {   
-        edge e(x,y);
+    void insert_element(const std::vector<uint> &edges_free, uint x, uint y)
+    {
+        edge e(x, y);
         uint i = edges_free[n_elements++];
-        elements.insert(elements.begin()+i, e);
+        elements.insert(elements.begin() + i, e);
     }
 
     void erase(uint32 index)
@@ -141,28 +158,29 @@ public:
 
     size_t size_table()
     {
-        return table.size(); 
+        return table.size();
     }
 
-    size_t n_edges() {
-        return n_elements; //FIXME: rename correctly
+    size_t n_edges()
+    {
+        return n_elements; //TODO: rename correctly
     }
 
-    size_t size() 
+    size_t size()
     {
         return n_elements;
     }
 
-    edge& operator[](size_t idx) //TODO: TEST ME
+    edge &operator[](size_t idx)
     {
         return elements[idx];
     }
 
-    void clear() {
-        table.clear();
+    void clear()
+    {
+        table.assign(table.size(), EMPTY);
         elements.clear();
         n_elements = 0;
-        
     }
 
     void resize(uint new_size)
