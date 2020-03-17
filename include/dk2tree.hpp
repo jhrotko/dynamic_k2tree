@@ -4,6 +4,7 @@
 #include <sdsl/k2_tree.hpp>
 #include "./utils.hpp"
 #include "./edge_hash_table.hpp"
+#include "./adjacency_list.hpp"
 #include <list>
 #include <map>
 #include <array>
@@ -26,7 +27,8 @@ public:
         edge_free.resize(max_edges);
 
         //Initialize adjacency list
-        adj_lst = std::vector<uint>(max_edges << 1);
+        adj_lst = adjacency_list(max_edges << 1);
+
         // Initialize K2 tree Collections
         uint aux = log(n_vertices) / log(k);
         max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
@@ -55,58 +57,60 @@ public:
 
     void insert(uint x, uint y)
     {
-        uint n = MAXSZ(max(n_vertices, edge_lst.n_edges()), 0);
-        size_t i = 0;
-        for (; i < r; i++)
-        {
-            n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
+        //TODO: Missing case where the edge already exists
+        if(edge_lst.size() < MAXSZ(max(n_vertices, edge_lst.n_edges()), 0)) {
+            insert_0(x,y);
+            return;
+        } 
+        // uint n = MAXSZ(max(n_vertices, edge_lst.n_edges()), 0);
+        // size_t i = 0;
+        // for (; i < r; i++)
+        // {
+        //     n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
 
-            if (MAXSZ(max(n_vertices, edge_lst.n_edges()), i + 1) > n + 1)
-                break;
-        }
+        //     if (MAXSZ(max(n_vertices, edge_lst.n_edges()), i + 1) > n + 1)
+        //         break;
+        // }
 
-        if (i >= r)
-            throw new std::logic_error("Error: collection too big...");
+        // if (i >= r)
+        //     throw new std::logic_error("Error: collection too big...");
 
-        max_r = max(i, max_r);
+        // max_r = max(i, max_r);
 
-        vector<edge> free_edges;
-        for (size_t j = 0; j < edge_lst.size(); j++)
-            free_edges.push_back(edge_lst[edge_free[j]]);
-        free_edges.push_back(edge(x, y));
+        // vector<edge> free_edges;
+        // for (size_t j = 0; j < edge_lst.size(); j++)
+        //     free_edges.push_back(edge_lst[edge_free[j]]);
+        // free_edges.push_back(edge(x, y));
 
-        uint k = edge_lst.size() + 1;
-        clean_C0(x, y);
+        // uint k = edge_lst.size() + 1;
+        // clean_C0(x, y);
 
-        cout << "here we go again" << endl;
-        uint max_level = floor(log(n_vertices) / log(k));
-        if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
-            max_level = max_level - 1;
+        // cout << "here we go again" << endl;
+        // uint max_level = floor(log(n_vertices) / log(k));
+        // if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
+        //     max_level = max_level - 1;
 
-        //FIXME: delete this translation later, ew
-        vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> convert_edges;
-        for (size_t j = 0; j < free_edges.size(); j++)
-        {
-            const tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type> e(
-                (k2_tree_ns::idx_type)free_edges[j].x, (k2_tree_ns::idx_type)free_edges[j].y);
-            convert_edges.push_back(e);
-        }
+        // //TODO: delete this translation later, ew
+        // vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> convert_edges;
+        // for (size_t j = 0; j < free_edges.size(); j++)
+        // {
+        //     const tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type> e(
+        //         (k2_tree_ns::idx_type)free_edges[j].x, (k2_tree_ns::idx_type)free_edges[j].y);
+        //     convert_edges.push_back(e);
+        // }
 
-        k2tree *tmp = new k2tree(convert_edges, free_edges.size());
-        for (size_t j = 0; j <= i; j++) //TODO: rename i
-        {
-            if (k_collection[j] != NULL)
-            {
-                tmp = tmp->unionOp(*k_collection[j]);
-                // tmp->div_level_table = div_level_table;
-                delete k_collection[j];
-            }
-            k_collection[j] = NULL;
-        }
-        k_collection[i] = tmp;
-        edge_lst.insert(x, y);
-        // delete &convert_edges;
-        // delete &free_edges;
+        // k2tree *tmp = new k2tree(convert_edges, free_edges.size());
+        // for (size_t j = 0; j <= i; j++) //TODO: rename i
+        // {
+        //     if (k_collection[j] != NULL)
+        //     {
+        //         tmp = tmp->unionOp(*k_collection[j]);
+        //         // tmp->div_level_table = div_level_table;
+        //         delete k_collection[j];
+        //     }
+        //     k_collection[j] = NULL;
+        // }
+        // k_collection[i] = tmp;
     }
 
 private:
@@ -114,7 +118,8 @@ private:
     {
         if (!edge_lst.find(edge(x, y)))
         {
-            //FIXME: should go inside edge_hash_table
+                std::cout << "wowow" << std::endl;
+            //TODO: should go inside edge_hash_table
             if (edge_lst.n_edges() >= edge_lst.size_table())
             {
                 uint32_t new_size = MAXSZ(max(n_vertices, edge_lst.n_edges()), 0);
@@ -126,9 +131,16 @@ private:
             uint n_elements = edge_lst.size();
             uint i = edge_free[n_elements++];
             edge_lst.insert_element(edge_free, x, y);
-            uint k = adjfind(x);
-            if(k != EMPTY) 
-                
+            uint k = adj_lst.find(x);
+            if (k != -1)
+                adj_lst.insert(x, i);
+            else
+            {
+                edge_lst[i].next = adj_lst[k].next;
+                edge_lst[adj_lst[k].next].prev = i;
+                adj_lst[k].next = i;
+            }
+            edge_lst.insert(i);
         }
     }
 
@@ -157,25 +169,11 @@ private:
     edge_hash_table edge_lst;
     std::vector<uint> edge_free; //should go inside hash_table
 
-    std::vector<edge> adj_lst;
+    adjacency_list adj_lst;
     std::vector<k2tree *> k_collection;
 
-    //FIXME: REMOVE ME OMG-- generalize edge_lst
-    uint adjfind(uint x)
-    {
-        uint32_t i = hash32shift(x) % (adj_lst.size());
-
-        while (adj_lst[i].x != EMPTY)
-            if (x == adj_lst[i].x)
-                return i;
-            else
-                i = (i + 1) % (adj_lst.size());
-
-        return EMPTY;
-    }
-
 public:
-    std::vector<uint> div_level_table; //FIXME: I think this is not being really used
+    std::vector<uint> div_level_table; //TODO: I think this is not being really used
 };
 
 #endif
