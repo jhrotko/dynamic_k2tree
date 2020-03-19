@@ -19,7 +19,7 @@ class edge
 public:
     uint32 x, y, next, prev;
     edge() {}
-    edge(uint32 x, uint32 y) : x(x), y(y) {}
+    edge(uint32 x, uint32 y) : x(x), y(y), next(-1), prev(-1) {}
 };
 
 class edge_hash_table
@@ -78,22 +78,13 @@ public:
         n_elements++;
     }
 
+    // Returns the index of the index where the edge is. 
+    // Returns -1 in case it cannot find
     int find(edge e)
     {
         uint32 i = edge_to_uint64(e);
         while (table[i] != EMPTY)
         {
-            std::cout << "what" << std::endl;
-            std::cout << "i " << i << std::endl;
-
-            std::cout << "table[i] " << table[i] << std::endl;
-            std::cout << "elements" << std::endl;
-            for (size_t d = 0; d < elements.size(); d++)
-            {
-                std::cout << elements[d].x << "  " << elements[d].y << std::endl;
-            }
-
-            std::cout << elements[table[i]].x << "  " << elements[table[i]].y << std::endl;
             if (e.x == elements[table[i]].x && e.y == elements[table[i]].y)
                 return table[i];
             else
@@ -103,11 +94,10 @@ public:
         return -1;
     }
 
-    void insert_element(const std::vector<uint> &edges_free, uint x, uint y)
+    void insert_element(uint index, uint x, uint y)
     {
-        edge e(x, y);
-        uint i = edges_free[n_elements++];
-        elements.insert(elements.begin() + i, e);
+        elements.insert(elements.begin() + index, edge(x, y));
+        n_elements++;
     }
 
     void erase(uint32 index)
