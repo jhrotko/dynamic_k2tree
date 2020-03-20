@@ -41,7 +41,7 @@ public:
         clean_free_lst();
         k_collection.resize(r);
         for (size_t i = 0; i < r; i++)
-            k_collection[i] = NULL;
+            k_collection[i] = new k2tree();
     }
 
     size_t size()
@@ -71,8 +71,11 @@ public:
         size_t i = 0;
         for (; i < r; i++)
         {
-            if(k_collection[i] != NULL)
+            if(k_collection[i] != NULL) {
+
                 n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
+                std::cout << "n:" << n << std::endl;
+            }
             if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > n + 1)
                 break;
         }
@@ -82,10 +85,9 @@ public:
 
         vector<edge> free_edges;
         for (uint k = 0; k < edge_lst.n_edges(); k++){
-            std::cout << "edge_free.size" << edge_free.size() << std::endl;
-            std::cout << edge_lst[edge_free[k]].y << std::endl;
+            // std::cout << "edge_free.size" << edge_free.size() << std::endl;
+            // std::cout << "edge_lst size:" << edge_lst.size() << std::endl;
             free_edges.push_back(edge_lst[edge_free[k]]);
-            std::cout << "hahah" << std::endl;
         }
         free_edges.push_back(edge(x, y));
 
@@ -108,8 +110,11 @@ public:
         k2tree *tmp = new k2tree(convert_edges, free_edges.size());
         for (size_t j = 0; j <= i; j++) //TODO: rename i
         {
-            if (k_collection[j] != NULL)
+            if (k_collection[j] != NULL || k_collection[j]->get_number_edges() == 0)
             {
+                std::cout << "j:" << j << std::endl;
+                std::cout << "k_collection[j]:" << k_collection[j]->get_height() << std::endl;
+
                 tmp = tmp->unionOp(*k_collection[j]);
                 // tmp->div_level_table = div_level_table;
                 delete k_collection[j];
