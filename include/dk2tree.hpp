@@ -8,6 +8,7 @@
 #include <list>
 #include <map>
 #include <array>
+#include <memory>
 
 #include <iostream>
 
@@ -40,18 +41,22 @@ public:
 
         clean_free_lst();
         k_collection.resize(r);
-        for (size_t i = 0; i < r; i++)
-            k_collection[i] = new k2tree();
+        k_collection.assign(r, NULL);
+        for (size_t i = 0; i < r; i++) {
+            std::shared_ptr<k2tree> p(new k2tree);
+            k_collection[i] = p;
+        }
+    }
+
+    void print()
+    {
+        for (size_t i = 0; i < k_collection.size(); i++)
+            std::cout << "i: " << i << "    value: " << k_collection[i] << std::endl;
     }
 
     size_t size()
     {
-        return edge_lst.size();
-    }
-
-    size_t n_edges()
-    {
-        return edge_lst.n_edges();
+        return n_total_edges;
     }
 
     uint get_max_level()
@@ -62,7 +67,7 @@ public:
     void insert(uint x, uint y)
     {
         //TODO: Missing case where the edge already exists
-        if (edge_lst.size() < MAXSZ(max(n_vertices, n_total_edges), 0))
+        if (edge_lst.n_edges() < MAXSZ(max(n_vertices, n_total_edges), 0))
         {
             insert_0(x, y);
             return;
@@ -71,11 +76,9 @@ public:
         size_t i = 0;
         for (; i < r; i++)
         {
-            if(k_collection[i] != NULL) {
-
+            if (k_collection[i] != NULL)
                 n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
-                std::cout << "n:" << n << std::endl;
-            }
+                
             if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > n + 1)
                 break;
         }
@@ -84,14 +87,11 @@ public:
             throw new std::logic_error("Error: collection too big...");
 
         vector<edge> free_edges;
-        for (uint k = 0; k < edge_lst.n_edges(); k++){
-            // std::cout << "edge_free.size" << edge_free.size() << std::endl;
-            // std::cout << "edge_lst size:" << edge_lst.size() << std::endl;
+        for (uint k = 0; k < edge_lst.n_edges(); k++)
             free_edges.push_back(edge_lst[edge_free[k]]);
-        }
+        
         free_edges.push_back(edge(x, y));
-
-        assert(free_edges.size() == edge_lst.n_edges()+1);
+        assert(free_edges.size() == edge_lst.n_edges() + 1);
         clean_C0(x, y);
 
         uint max_level = floor(log(n_vertices) / log(k));
@@ -106,19 +106,14 @@ public:
                 (k2_tree_ns::idx_type)free_edges[j].x, (k2_tree_ns::idx_type)free_edges[j].y);
             convert_edges.push_back(e);
         }
-
-        k2tree *tmp = new k2tree(convert_edges, free_edges.size());
-        for (size_t j = 0; j <= i; j++) //TODO: rename i
+        std::shared_ptr<k2tree> tmp(new k2tree(convert_edges, free_edges.size()));
+        for (size_t j = 0; j <= i; j++)
         {
-            if (k_collection[j] != NULL || k_collection[j]->get_number_edges() == 0)
-            {
-                std::cout << "j:" << j << std::endl;
-                std::cout << "k_collection[j]:" << k_collection[j]->get_height() << std::endl;
-
-                tmp = tmp->unionOp(*k_collection[j]);
-                // tmp->div_level_table = div_level_table;
-                delete k_collection[j];
+            if (k_collection[j] != NULL || (k_collection[j] != 0 && k_collection[j]->get_number_edges() == 0)) {
+                k2tree aux = tmp->unionOp(*k_collection[j]);
+                tmp = std::shared_ptr<k2tree>(&aux);
             }
+            
             k_collection[j] = NULL;
         }
         k_collection[i] = tmp;
@@ -127,26 +122,26 @@ public:
 
 private:
     void insert_0(uint x, uint y)
-    {
+    {   
         if (edge_lst.find(edge(x, y)) < 0)
         {
             //TODO: should go inside edge_hash_table
             if (edge_lst.n_edges() >= edge_lst.size_table())
             {
-                uint32_t new_size = MAXSZ(max(n_vertices, edge_lst.n_edges()), 0);
+                uint32_t new_size = MAXSZ(max(n_vertices, n_total_edges), 0);
                 edge_lst.resize(new_size);
                 edge_free.resize(new_size);
                 for (size_t i = 0; i < new_size; i++)
                     edge_free[i] = i;
             }
-            uint n_elements = edge_lst.size();
+            uint n_elements = edge_lst.n_edges();
             uint i = edge_free[n_elements++];
-            edge_lst.insert_element(i, x, y);
+            edge_lst.change_element(i, x, y);
             int k = adj_lst.find(x);
             if (k == -1)
                 adj_lst.insert(x, i);
             else
-            {   
+            {
                 edge_lst[i].next = adj_lst[k].next;
                 edge_lst[adj_lst[k].next].prev = i;
                 adj_lst[k].next = i;
@@ -183,7 +178,7 @@ private:
     std::vector<uint> edge_free; //should go inside hash_table
 
     adjacency_list adj_lst;
-    std::vector<k2tree*> k_collection;
+    std::vector<std::shared_ptr<k2tree>> k_collection;
 
 public:
     std::vector<uint> div_level_table; //TODO: I think this is not being really used

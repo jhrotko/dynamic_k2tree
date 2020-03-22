@@ -13,6 +13,13 @@ tests_dk2tree:
 	make all
 	cd test && cmake CMakeLists.txt && make dk2treeTest && ./dk2treeTest
 
+valgrind_a:
+	cd include && g++ -I/usr/local/include -L/usr/local/lib *.hpp *.cpp -lsdsl  && valgrind -v --leak-check=yes ./a.out && rm a.out
+
+valgrind_dk2tree:
+	make all
+	cd test && make dk2treeTest && valgrind --leak-check=yes ./dk2treeTest
+
 tests_all:
 	make all
 	cd test && cmake CMakeLists.txt && make

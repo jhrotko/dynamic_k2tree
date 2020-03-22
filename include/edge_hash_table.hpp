@@ -34,7 +34,6 @@ public:
         n_elements = 0;
         elements = vector<edge>(size);
         elements.assign(elements.size(), edge());
-
     }
 
     edge_hash_table(vector<edge> new_elements)
@@ -53,9 +52,9 @@ public:
     {
         table.resize(size);
         table.assign(table.size(), EMPTY);
+        n_elements = 0;
 
         elements.assign(new_elements.begin(), new_elements.end());
-        n_elements = new_elements.size();
 
         for (size_t i = 0; i < n_elements; i++)
             insert(i);
@@ -63,6 +62,7 @@ public:
 
     void insert(uint32 index, vector<int> *ht = NULL)
     {
+        
         if (ht == NULL)
             ht = &table;
 
@@ -94,10 +94,9 @@ public:
         return -1;
     }
 
-    void insert_element(uint index, uint x, uint y)
+    void change_element(uint index, uint x, uint y)
     {
         elements.insert(elements.begin() + index, edge(x, y));
-        n_elements++;
     }
 
     void erase(uint32 index)
@@ -153,12 +152,12 @@ public:
 
     size_t n_edges()
     {
-        return n_elements; //TODO: rename correctly
+        return n_elements;
     }
 
     size_t size()
     {
-        return n_elements;
+        return elements.size();
     }
 
     edge &operator[](size_t idx)
@@ -176,6 +175,10 @@ public:
     void resize(uint new_size)
     {
         table.resize(new_size);
+    }
+
+    ~edge_hash_table() {
+        
     }
 
 private:

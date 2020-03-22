@@ -1,6 +1,8 @@
 *.gch
 .vscode
 
+include/*.cpp
+
 test/*
 !test/adjacency_list_test.cpp
 !test/edge_hash_table_test.cpp
