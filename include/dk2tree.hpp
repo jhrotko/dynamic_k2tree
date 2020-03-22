@@ -42,8 +42,9 @@ public:
         clean_free_lst();
         k_collection.resize(r);
         k_collection.assign(r, NULL);
-        for (size_t i = 0; i < r; i++) {
-            std::shared_ptr<k2tree> p(new k2tree);
+        for (size_t i = 0; i < r; i++)
+        {
+            std::shared_ptr<k2tree> p(new k2tree());
             k_collection[i] = p;
         }
     }
@@ -78,7 +79,7 @@ public:
         {
             if (k_collection[i] != NULL)
                 n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
-                
+
             if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > n + 1)
                 break;
         }
@@ -89,7 +90,7 @@ public:
         vector<edge> free_edges;
         for (uint k = 0; k < edge_lst.n_edges(); k++)
             free_edges.push_back(edge_lst[edge_free[k]]);
-        
+
         free_edges.push_back(edge(x, y));
         assert(free_edges.size() == edge_lst.n_edges() + 1);
         clean_C0(x, y);
@@ -109,11 +110,11 @@ public:
         std::shared_ptr<k2tree> tmp(new k2tree(convert_edges, free_edges.size()));
         for (size_t j = 0; j <= i; j++)
         {
-            if (k_collection[j] != NULL || (k_collection[j] != 0 && k_collection[j]->get_number_edges() == 0)) {
+            if (k_collection[j] != NULL || (k_collection[j] != 0 && k_collection[j]->get_number_edges() == 0))
+            {
                 k2tree aux = tmp->unionOp(*k_collection[j]);
-                tmp = std::shared_ptr<k2tree>(&aux);
+                tmp = std::make_shared<k2tree>(std::move(aux));
             }
-            
             k_collection[j] = NULL;
         }
         k_collection[i] = tmp;
@@ -122,7 +123,7 @@ public:
 
 private:
     void insert_0(uint x, uint y)
-    {   
+    {
         if (edge_lst.find(edge(x, y)) < 0)
         {
             //TODO: should go inside edge_hash_table
