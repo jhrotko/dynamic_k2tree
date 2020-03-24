@@ -17,7 +17,7 @@ using namespace sdsl;
 //TODO: add generics
 class dk2tree
 {
-    typedef k2_tree<2, bit_vector> k2tree;
+    typedef k2_tree<2> k2tree;
 
 public:
     dk2tree(uint n_vertices) : n_vertices(n_vertices)
@@ -40,8 +40,7 @@ public:
             div_level_table[i] = exp_pow(k, max_level - i);
 
         clean_free_lst();
-        k_collection.resize(r);
-        k_collection.assign(r, NULL);
+        max_r = 0;
         for (size_t i = 0; i < r; i++)
         {
             std::shared_ptr<k2tree> p(new k2tree());
@@ -67,6 +66,10 @@ public:
 
     void insert(uint x, uint y)
     {
+        if(contains(x,y))
+        {
+            return;
+        }
         //TODO: Missing case where the edge already exists
         if (edge_lst.n_edges() < MAXSZ(max(n_vertices, n_total_edges), 0))
         {
@@ -98,7 +101,8 @@ public:
         uint max_level = floor(log(n_vertices) / log(k));
         if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
             max_level = max_level - 1;
-
+        
+        max_r = max(i, max_r);
         //TODO: delete this translation later, ew
         vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> convert_edges;
         for (size_t j = 0; j < free_edges.size(); j++)
@@ -107,7 +111,8 @@ public:
                 (k2_tree_ns::idx_type)free_edges[j].x, (k2_tree_ns::idx_type)free_edges[j].y);
             convert_edges.push_back(e);
         }
-        std::shared_ptr<k2tree> tmp(new k2tree(convert_edges, free_edges.size()));
+
+        std::shared_ptr<k2tree> tmp(new k2tree(convert_edges, n_vertices));
         for (size_t j = 0; j <= i; j++)
         {
             if (k_collection[j] != NULL || (k_collection[j] != 0 && k_collection[j]->get_number_edges() == 0))
@@ -117,11 +122,31 @@ public:
             }
             k_collection[j] = NULL;
         }
+
         k_collection[i] = tmp;
         n_total_edges++;
     }
 
+    bool contains(int x, int y)
+    {
+        //check in CO
+        if (edge_lst.find(edge(x, y)) != -1)
+            return true;
+
+        // check in other conainers
+        for (size_t i = 0; i <= max_r; i++)
+            if (k_collection_is_empty(i) && k_collection[i]->adj(x, y))
+                return true;
+
+        return false;
+    }
+
 private:
+    bool k_collection_is_empty(size_t i)
+    {
+        return k_collection[i] != NULL && k_collection[i] != 0;
+    }
+
     void insert_0(uint x, uint y)
     {
         if (edge_lst.find(edge(x, y)) < 0)
@@ -179,7 +204,7 @@ private:
     std::vector<uint> edge_free; //should go inside hash_table
 
     adjacency_list adj_lst;
-    std::vector<std::shared_ptr<k2tree>> k_collection;
+    std::array<std::shared_ptr<k2tree>, 8> k_collection;
 
 public:
     std::vector<uint> div_level_table; //TODO: I think this is not being really used

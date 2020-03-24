@@ -26,6 +26,44 @@ TEST(dktreeAddLink, addLink)
     ASSERT_EQ(tree.size(), 4);
 }
 
+TEST(dktreeAddLink, addSameLink)
+{
+    dk2tree tree(6);
+    tree.insert(1,2);
+    tree.insert(1,2);
+
+    ASSERT_EQ(tree.size(), 1);
+}
+
+TEST(dktreeContains, containsInC0)
+{
+    dk2tree tree(6);
+    tree.insert(1,2);
+
+    ASSERT_TRUE(tree.contains(1,2));
+    ASSERT_FALSE(tree.contains(3,4));
+}
+
+TEST(dktreeContain, containsInCs)
+{
+    dk2tree tree(5);
+    tree.insert(1,2);
+    tree.insert(1,4);
+    tree.insert(3,0);
+    tree.insert(1,3);
+
+    ASSERT_EQ(tree.size(), 4);
+
+    ASSERT_TRUE(tree.contains(1,2));
+    ASSERT_TRUE(tree.contains(1,4));
+    ASSERT_TRUE(tree.contains(3,0));
+    ASSERT_TRUE(tree.contains(1,3));
+    ASSERT_FALSE(tree.contains(0,0));
+}
+
+
+
+
 int main(int argc, char **argv)
 {
     testing::InitGoogleTest(&argc, argv);

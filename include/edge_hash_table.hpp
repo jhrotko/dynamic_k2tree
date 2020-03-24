@@ -82,7 +82,15 @@ public:
     // Returns -1 in case it cannot find
     int find(edge e)
     {
-        uint32 i = edge_to_uint64(e);
+        if(table.size() == 1) {
+            if (e.x == elements[table[0]].x && e.y == elements[table[0]].y)
+                return table[0];
+            return -1;
+        }
+
+        uint64 tmp = edge_to_uint64(e);
+        uint32 i = hash_function(tmp) % table.size();
+
         while (table[i] != EMPTY)
         {
             if (e.x == elements[table[i]].x && e.y == elements[table[i]].y)
