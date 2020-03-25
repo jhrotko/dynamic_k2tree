@@ -52,8 +52,6 @@ TEST(dktreeContain, containsInCs)
     tree.insert(3,0);
     tree.insert(1,3);
 
-    ASSERT_EQ(tree.size(), 4);
-
     ASSERT_TRUE(tree.contains(1,2));
     ASSERT_TRUE(tree.contains(1,4));
     ASSERT_TRUE(tree.contains(3,0));
@@ -61,8 +59,42 @@ TEST(dktreeContain, containsInCs)
     ASSERT_FALSE(tree.contains(0,0));
 }
 
+TEST(dktreeDelete, deleteItemC0)
+{
+    dk2tree tree(5);
+    tree.insert(1,2);
+    ASSERT_EQ(tree.size(), 1);
+    
+    tree.erase(1,2);
+    ASSERT_EQ(tree.size(), 0);
+}
 
+// TEST(dktreeDelete, deleteItem)
+// {
+//     dk2tree tree(5);
+//     tree.insert(1,2);
+//     tree.insert(1,4);
+//     tree.insert(3,0);
+//     tree.insert(1,3);
 
+//     ASSERT_EQ(tree.size(), 4);    
+//     tree.erase(1,3);
+//     ASSERT_EQ(tree.size(), 3);
+// }
+
+TEST(dktreeDelete, listNeighbours)
+{
+    dk2tree tree(5);
+    tree.insert(1,2);
+    tree.insert(1,4);
+    tree.insert(3,0);
+    // tree.insert(3,3);
+    
+    std::vector<int> neighbours = tree.list_neighbour(1);
+    ASSERT_EQ(neighbours.size(), 2);
+    ASSERT_EQ(neighbours[0], 2);
+    ASSERT_EQ(neighbours[1], 4);
+}
 
 int main(int argc, char **argv)
 {

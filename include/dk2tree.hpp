@@ -66,11 +66,11 @@ public:
 
     void insert(uint x, uint y)
     {
-        if(contains(x,y))
+        if (contains(x, y))
         {
             return;
         }
-        //TODO: Missing case where the edge already exists
+
         if (edge_lst.n_edges() < MAXSZ(max(n_vertices, n_total_edges), 0))
         {
             insert_0(x, y);
@@ -101,7 +101,7 @@ public:
         uint max_level = floor(log(n_vertices) / log(k));
         if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
             max_level = max_level - 1;
-        
+
         max_r = max(i, max_r);
         //TODO: delete this translation later, ew
         vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> convert_edges;
@@ -133,12 +133,99 @@ public:
         if (edge_lst.find(edge(x, y)) != -1)
             return true;
 
-        // check in other conainers
+        // check in other containers
         for (size_t i = 0; i <= max_r; i++)
             if (k_collection_is_empty(i) && k_collection[i]->adj(x, y))
                 return true;
 
         return false;
+    }
+
+    void erase(uint32 x, uint32 y)
+    {
+        int index = edge_lst.find(edge(x, y));
+        if (index != -1)
+        {
+            edge_lst.erase(index);
+            if (edge_lst[index].next != 0)
+                edge_lst[edge_lst[index].next].prev = edge_lst[index].prev;
+            if (edge_lst[index].prev != 0)
+                edge_lst[edge_lst[index].prev].next = edge_lst[index].next;
+            else
+            {
+                int l = adj_lst.find(x);
+                adj_lst[l].next = edge_lst[index].next;
+            }
+
+            edge_free[edge_lst.n_edges()] = index;
+            n_total_edges--;
+        }
+        // else
+        // {
+        //     uint32 ned = 0;
+        //     for (size_t l = 0; l <= max_r; l++)
+        //         if (k_collection_is_empty(l) && compact2MarkLinkDeleted(k_collection[l], x, y))
+        //         {
+        //             n_total_edges--;
+
+        //             ned += k_collection[l]->numberOfMarkedEdges;
+
+        //             if (k_collection[l]->numberOfMarkedEdges == k_collection[l]->numberOfEdges)
+        //             {
+        //                 ned -= k_collection[l]->numberOfMarkedEdges;
+        //                 destroyBitRankW32Int(k_collection[l]->btl);
+        //                 free(k_collection[l]);
+        //                 k_collection[l] = NULL;
+        //             }
+        //         }
+
+        //     if (ned > n_total_edges / TAU(p->ne))
+        //     {
+        //         /* Rebuild data structure... */
+        //         MREP **old = k_collection;
+        //         uint32_t old_maxr = p->maxr;
+        //         p->maxr = 0;
+        //         k_collection = malloc(sizeof(MREP *) * p->r);
+        //         memset(k_collection, 0x0, sizeof(MREP *) * p->r);
+
+        //         p->ne = p->eln;
+        //         p4readde = p;
+
+        //         for (l = 0; l <= old_maxr; l++)
+        //         {
+        //             if (old[l] != NULL)
+        //             {
+
+        //                 edgeIterator(old[l], readde);
+
+        //                 destroyBitRankW32Int(old[l]->btl);
+        //                 free(old[l]);
+        //                 old[l] = NULL;
+        //             }
+        //         }
+
+        //         p4readde = NULL;
+        //         free(old);
+        //     }
+        // }
+    }
+
+    std::vector<int> list_neighbour(int x)
+    {
+        std::vector<int> n;
+        int index = adj_lst.find(x);
+        if (index != -1)
+            for (index = adj_lst[index].next; index != EMPTY; index = edge_lst[index].next)
+                n.push_back(edge_lst[index].y);
+
+        for (size_t l = 0; l <= max_r; l++)
+            if (k_collection_is_empty(l))
+            {
+                std::vector<k2_tree_ns::idx_type> lst = k_collection[l]->neigh(x);    
+                n.insert(n.end(), lst.begin(), lst.end()); //append
+            }
+
+        return n;
     }
 
 private:
