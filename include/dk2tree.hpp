@@ -9,15 +9,195 @@
 #include <map>
 #include <array>
 #include <memory>
+#include <functional>
 
 #include <iostream>
 
+#define R 8
+
 using namespace sdsl;
+
+class k2_tree_extended : public k2_tree<2>
+{
+public:
+    k2_tree_extended(uint n_vertices) : k2_tree()
+    {
+        initialization(n_vertices);
+    }
+
+    k2_tree_extended(std::vector<std::tuple<idx_type, idx_type>> &edges,
+                     const size_type size) : k2_tree(edges, size)
+    {
+        uint max_v = 0;
+
+        for (size_t i = 0; i < edges.size(); i++)
+        {
+            max_v = max(max_v, std::get<0>(edges[i]));
+            max_v = max(max_v, std::get<1>(edges[i]));
+        }
+        if (max_v > size)
+            throw std::logic_error("Incorrect size. It must be higher than the highest node");
+
+        initialization(size);
+    }
+
+    k2_tree_extended(k2_tree<2> tree, uint n_vertices) : k2_tree(tree)
+    {
+        initialization(n_vertices);
+    }
+
+    uint get_level(uint i)
+    {
+        if (i < div_level_table.size())
+            return div_level_table[i];
+        return 0;
+    }
+
+    bool mark_link_deleted(uint x, uint y)
+    {
+        return recursive_mark_deleted(x, y, 0, 0);
+    }
+
+    void edge_iterator(std::function<int (uint, uint)> callback)
+    {
+        std::vector<ulong> pointerL;
+        pointerL.resize(max_level);
+        pointerL.push_back(0);
+        pointerL.push_back(get_k() * get_k());
+
+        for (size_t i = 2; i <= max_level; i++)
+        {
+            ulong a = (get_rank_l(pointerL[i - 1] - 1) + 1) * get_k() * get_k();
+            pointerL.push_back(a);
+        }
+
+        recursive_edge_iterator(pointerL, 0, 0, -1, -1, callback);
+    }
+
+    bool check_link(uint x, uint y)
+    {
+        if (x >= n_vertices || y >= n_vertices)
+            return false;
+
+        return recursive_check_link_query(x, y, 0, 0);
+    }
+
+    k2_tree_extended unionOp(k2_tree<2> &k_tree, uint n_vertices)
+    {
+        k2_tree<2> res = k_tree.unionOp(*this);
+        return k2_tree_extended(res, n_vertices);
+    }
+
+    uint get_marked_edges()
+    {
+        return n_marked_edges;
+    }
+
+private:
+    void initialization(uint size)
+    {
+        n_vertices = size;
+        uint aux = log(n_vertices) / log(get_k());
+        max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
+
+        for (size_t i = 0; i < R; i++)
+        {
+            std::vector<uint> div_table;
+            div_level_table.resize(max_level);
+
+            for (size_t j = 0; j < max_level; j++)
+                div_level_table[j] = pow(get_k(), max_level - j);
+        }
+        n_marked_edges = 0;
+    }
+
+    uint recursive_mark_deleted(uint x, uint y, uint node, uint level)
+    {
+        int div_level = div_level_table[level];
+
+        uint K = get_k();
+        int newnode = x / div_level * K + y / div_level;
+        newnode += node;
+
+        bit_vector l = get_l();
+        if (l[newnode])
+        {
+            if (level < max_level - 1)
+                return recursive_check_link_query(x % div_level, y % div_level, get_rank_l(newnode) * K * K, level + 1);
+
+            else
+            {
+                uint posInf;
+                posInf = (get_rank_l(newnode)) * K * K;
+                if (l[posInf + (y % K + (x % K) * K)])
+                {
+                    clean_l_bit(posInf + (y % K + (x % K) * K));
+                    n_marked_edges++;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool recursive_check_link_query(uint p, uint q, uint node, uint level)
+    {
+        int div_level = div_level_table[level];
+        uint K = get_k();
+        int newnode = p / div_level * K + q / div_level;
+        newnode += node;
+        if (get_l()[newnode])
+        {
+            if (level < max_level - 1)
+                return recursive_check_link_query(p % div_level, q % div_level, get_rank_l(newnode) * K * K, level + 1);
+            else
+            {
+                uint posInf;
+                posInf = (get_rank_l(newnode)) * K * K;
+                if (get_l()[posInf + (q % K + (p % K) * K)])
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    void recursive_edge_iterator(std::vector<ulong> pointerL, uint dp, uint dq, uint x, int l, std::function<int (uint, uint)> proc)
+    {
+        uint y;
+        if (l == max_level)
+            if (get_l()[x])
+                proc(dp, dq);
+
+        if ((l == max_level - 1) && (get_l()[x]))
+        {
+            y = pointerL[l + 1];
+            pointerL[l + 1] += get_k() * get_k();
+            for (size_t i = 0; i < get_k(); i++)
+                for (size_t j = 0; j < get_k(); j++)
+                    recursive_edge_iterator(pointerL, dp + i, dq + j, y + get_k() * i + j, l + 1, proc);
+        }
+        if ((x == -1) || ((l < max_level - 1) && (get_l()[x])))
+        {
+            y = pointerL[l + 1];
+            pointerL[l + 1] += get_k() * get_k();
+
+            uint div_level = div_level_table[l + 1];
+            for (size_t i = 0; i < get_k(); i++)
+                for (size_t j = 0; j < get_k(); j++)
+                    recursive_edge_iterator(pointerL, dp + div_level * i, dq + div_level * j, y + get_k() * i + j, l + 1, proc);
+        }
+    }
+
+    std::vector<uint> div_level_table;
+    uint n_marked_edges = 0;
+    uint max_level;
+    uint n_vertices;
+};
 
 //TODO: add generics
 class dk2tree
 {
-    typedef k2_tree<2> k2tree;
+    typedef k2_tree_extended k2tree;
 
 public:
     dk2tree(uint n_vertices) : n_vertices(n_vertices)
@@ -32,20 +212,16 @@ public:
         //Initialize adjacency list
         adj_lst = adjacency_list(max_edges << 1);
 
+        clean_free_lst();
+        max_r = 0;
+        for (size_t i = 0; i < R; i++)
+        {
+            std::shared_ptr<k2tree> p(new k2tree(n_vertices));
+            k_collection[i] = p;
+        }
         // Initialize K2 tree Collections
         uint aux = log(n_vertices) / log(k);
         max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
-        div_level_table.resize(max_level);
-        for (size_t i = 0; i < max_level; i++)
-            div_level_table[i] = exp_pow(k, max_level - i);
-
-        clean_free_lst();
-        max_r = 0;
-        for (size_t i = 0; i < r; i++)
-        {
-            std::shared_ptr<k2tree> p(new k2tree());
-            k_collection[i] = p;
-        }
     }
 
     void print()
@@ -78,7 +254,7 @@ public:
         }
         uint n = MAXSZ(max(n_vertices, n_total_edges), 0);
         size_t i = 0;
-        for (; i < r; i++)
+        for (; i < R; i++)
         {
             if (k_collection[i] != NULL)
                 n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
@@ -87,8 +263,8 @@ public:
                 break;
         }
 
-        if (i >= r)
-            throw new std::logic_error("Error: collection too big...");
+        if (i >= R)
+            throw std::logic_error("Error: collection too big...");
 
         vector<edge> free_edges;
         for (uint k = 0; k < edge_lst.n_edges(); k++)
@@ -98,7 +274,6 @@ public:
         assert(free_edges.size() == edge_lst.n_edges() + 1);
         clean_C0(x, y);
 
-        uint max_level = floor(log(n_vertices) / log(k));
         if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
             max_level = max_level - 1;
 
@@ -117,7 +292,7 @@ public:
         {
             if (k_collection[j] != NULL || (k_collection[j] != 0 && k_collection[j]->get_number_edges() == 0))
             {
-                k2tree aux = tmp->unionOp(*k_collection[j]);
+                k2tree aux = tmp->unionOp(*k_collection[j], n_vertices);
                 tmp = std::make_shared<k2tree>(std::move(aux));
             }
             k_collection[j] = NULL;
@@ -135,7 +310,7 @@ public:
 
         // check in other containers
         for (size_t i = 0; i <= max_r; i++)
-            if (k_collection_is_empty(i) && k_collection[i]->adj(x, y))
+            if (k_collection_is_not_empty(i) && k_collection[i]->adj(x, y))
                 return true;
 
         return false;
@@ -160,54 +335,56 @@ public:
             edge_free[edge_lst.n_edges()] = index;
             n_total_edges--;
         }
-        // else
-        // {
-        //     uint32 ned = 0;
-        //     for (size_t l = 0; l <= max_r; l++)
-        //         if (k_collection_is_empty(l) && compact2MarkLinkDeleted(k_collection[l], x, y))
-        //         {
-        //             n_total_edges--;
+        else
+        {
+            uint n_total_marked = 0;
+            for (size_t l = 0; l <= max_r; l++) {
+                if (k_collection_is_not_empty(l) && k_collection[l]->mark_link_deleted(x, y))
+                {
+                    std::cout << "como assim  " << k_collection_is_not_empty(l) << std::endl;
+                    n_total_edges--;
+                    uint k_marked_edges = k_collection[l]->get_marked_edges();
+                    n_total_marked += k_marked_edges;
 
-        //             ned += k_collection[l]->numberOfMarkedEdges;
+                    uint n_edges = k_collection[l]->get_number_edges();
+                    if (k_marked_edges == n_edges)
+                    {
+                        n_total_marked -= k_marked_edges;
+                        delete &k_collection[l];
+                        k_collection[l] = NULL;
+                    }
+                }
+            }
 
-        //             if (k_collection[l]->numberOfMarkedEdges == k_collection[l]->numberOfEdges)
-        //             {
-        //                 ned -= k_collection[l]->numberOfMarkedEdges;
-        //                 destroyBitRankW32Int(k_collection[l]->btl);
-        //                 free(k_collection[l]);
-        //                 k_collection[l] = NULL;
-        //             }
-        //         }
+            if (n_total_marked > n_total_edges / TAU(n_total_edges))
+            {
+                /* Rebuild data structure... */
+                std::array<std::shared_ptr<k2tree>, R> old_k_collection = k_collection;
+                uint old_max_r = max_r;
+                max_r = 0;
 
-        //     if (ned > n_total_edges / TAU(p->ne))
-        //     {
-        //         /* Rebuild data structure... */
-        //         MREP **old = k_collection;
-        //         uint32_t old_maxr = p->maxr;
-        //         p->maxr = 0;
-        //         k_collection = malloc(sizeof(MREP *) * p->r);
-        //         memset(k_collection, 0x0, sizeof(MREP *) * p->r);
+                for (size_t i = 0; i < R; i++)
+                {
+                    std::shared_ptr<k2tree> p(new k2tree(n_vertices));
+                    k_collection[i] = p;
+                }
 
-        //         p->ne = p->eln;
-        //         p4readde = p;
-
-        //         for (l = 0; l <= old_maxr; l++)
-        //         {
-        //             if (old[l] != NULL)
-        //             {
-
-        //                 edgeIterator(old[l], readde);
-
-        //                 destroyBitRankW32Int(old[l]->btl);
-        //                 free(old[l]);
-        //                 old[l] = NULL;
-        //             }
-        //         }
-
-        //         p4readde = NULL;
-        //         free(old);
-        //     }
-        // }
+                n_total_edges = edge_lst.n_edges();
+                for (size_t l = 0; l <= old_max_r; l++)
+                {
+                    if (old_k_collection[l] != NULL && old_k_collection[l] != 0)
+                    {
+                        std::function<int (uint, uint)> func = [this](uint x, uint y) {
+                            this->insert(x, y);
+                            return 0;
+                        };
+                        old_k_collection[l]->edge_iterator(func);
+                        delete &old_k_collection[l];
+                        old_k_collection[l] = NULL;
+                    }
+                }
+            }
+        }
     }
 
     std::vector<int> list_neighbour(int x)
@@ -219,9 +396,9 @@ public:
                 n.push_back(edge_lst[index].y);
 
         for (size_t l = 0; l <= max_r; l++)
-            if (k_collection_is_empty(l))
+            if (k_collection_is_not_empty(l))
             {
-                std::vector<k2_tree_ns::idx_type> lst = k_collection[l]->neigh(x);    
+                std::vector<k2_tree_ns::idx_type> lst = k_collection[l]->neigh(x);
                 n.insert(n.end(), lst.begin(), lst.end()); //append
             }
 
@@ -229,7 +406,7 @@ public:
     }
 
 private:
-    bool k_collection_is_empty(size_t i)
+    bool k_collection_is_not_empty(size_t i)
     {
         return k_collection[i] != NULL && k_collection[i] != 0;
     }
@@ -283,7 +460,6 @@ private:
     uint n_total_edges = 0;
 
     const uint k = 2;
-    const uint r = 8;
     // edge_lst replaces htable and elst;
     // where htable is the hash table with the dges and
     // the elst is the elements inside the edge hash table
@@ -291,10 +467,7 @@ private:
     std::vector<uint> edge_free; //should go inside hash_table
 
     adjacency_list adj_lst;
-    std::array<std::shared_ptr<k2tree>, 8> k_collection;
-
-public:
-    std::vector<uint> div_level_table; //TODO: I think this is not being really used
+    std::array<std::shared_ptr<k2tree>, R> k_collection;
 };
 
 #endif
