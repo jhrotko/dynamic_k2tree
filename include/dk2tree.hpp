@@ -54,11 +54,13 @@ public:
     }
 
     bool mark_link_deleted(uint x, uint y)
-    {
-        return recursive_mark_deleted(x, y, 0, 0);
+    {   
+        bool res = recursive_mark_deleted(x, y, 0, 0);
+        std::cout << "RESULT FROM MARKED: " << res << std::endl;
+        return res;
     }
 
-    void edge_iterator(std::function<int (uint, uint)> callback)
+    void edge_iterator(std::function<int(uint, uint)> callback)
     {
         std::vector<ulong> pointerL;
         pointerL.resize(max_level);
@@ -115,21 +117,33 @@ private:
     {
         int div_level = div_level_table[level];
 
-        uint K = get_k();
+        int K = get_k();
         int newnode = x / div_level * K + y / div_level;
-        newnode += node;
+        newnode += node+1; // <- se nao for +1, a funçao retorna false para o input do teste. este valor esta correcto?
 
-        bit_vector l = get_l();
-        if (l[newnode])
+        std::cout << "x: " << x<< "  y: " << y << std::endl;
+        std::cout << "div_level:  " << div_level << std::endl;
+        std::cout << "newnode: " << newnode << std::endl;
+        std::cout << "l: ";
+        for(int i = 0; i < get_l().size() ; i++) {
+            std::cout <<  get_l()[i];
+        }
+        std::cout << std::endl;
+
+        if (get_l()[newnode])
         {
-            if (level < max_level - 1)
-                return recursive_check_link_query(x % div_level, y % div_level, get_rank_l(newnode) * K * K, level + 1);
+
+            std::cout << "level:  " << level << std::endl;
+            std::cout << "max_level:  " << max_level << std::endl;
+            if (level < max_level -1)
+                return recursive_mark_deleted(x % div_level, y % div_level, get_rank_l(newnode) * K * K, level + 1);
 
             else
             {
                 uint posInf;
                 posInf = (get_rank_l(newnode)) * K * K;
-                if (l[posInf + (y % K + (x % K) * K)])
+                std::cout << "posInf: " << posInf << std::endl;
+                if (get_l()[posInf + (y % K + (x % K) * K)])
                 {
                     clean_l_bit(posInf + (y % K + (x % K) * K));
                     n_marked_edges++;
@@ -161,7 +175,7 @@ private:
         return false;
     }
 
-    void recursive_edge_iterator(std::vector<ulong> pointerL, uint dp, uint dq, uint x, int l, std::function<int (uint, uint)> proc)
+    void recursive_edge_iterator(std::vector<ulong> pointerL, uint dp, uint dq, uint x, int l, std::function<int(uint, uint)> proc)
     {
         uint y;
         if (l == max_level)
@@ -186,6 +200,11 @@ private:
                 for (size_t j = 0; j < get_k(); j++)
                     recursive_edge_iterator(pointerL, dp + div_level * i, dq + div_level * j, y + get_k() * i + j, l + 1, proc);
         }
+    }
+
+    bool is_(uint node)
+    {
+        return get_l()[node] == 1;
     }
 
     std::vector<uint> div_level_table;
@@ -286,7 +305,7 @@ public:
                 (k2_tree_ns::idx_type)free_edges[j].x, (k2_tree_ns::idx_type)free_edges[j].y);
             convert_edges.push_back(e);
         }
-
+        
         std::shared_ptr<k2tree> tmp(new k2tree(convert_edges, n_vertices));
         for (size_t j = 0; j <= i; j++)
         {
@@ -338,16 +357,17 @@ public:
         else
         {
             uint n_total_marked = 0;
-            for (size_t l = 0; l <= max_r; l++) {
+            for (size_t l = 0; l <= max_r; l++)
+            {
                 if (k_collection_is_not_empty(l) && k_collection[l]->mark_link_deleted(x, y))
                 {
-                    std::cout << "como assim  " << k_collection_is_not_empty(l) << std::endl;
                     n_total_edges--;
+                    std::cout << "n_total_edges " << n_total_edges << std::endl;
+                    
                     uint k_marked_edges = k_collection[l]->get_marked_edges();
                     n_total_marked += k_marked_edges;
 
-                    uint n_edges = k_collection[l]->get_number_edges();
-                    if (k_marked_edges == n_edges)
+                    if (k_marked_edges == k_collection[l]->get_number_edges())
                     {
                         n_total_marked -= k_marked_edges;
                         delete &k_collection[l];
@@ -356,6 +376,8 @@ public:
                 }
             }
 
+            std::cout << "RATIO " << ( n_total_edges / TAU(n_total_edges ))<< std::endl;
+            std::cout << "n_marked " << n_total_marked << std::endl;
             if (n_total_marked > n_total_edges / TAU(n_total_edges))
             {
                 /* Rebuild data structure... */
@@ -374,7 +396,7 @@ public:
                 {
                     if (old_k_collection[l] != NULL && old_k_collection[l] != 0)
                     {
-                        std::function<int (uint, uint)> func = [this](uint x, uint y) {
+                        std::function<int(uint, uint)> func = [this](uint x, uint y) {
                             this->insert(x, y);
                             return 0;
                         };
