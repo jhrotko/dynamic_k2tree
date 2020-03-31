@@ -140,7 +140,7 @@ TEST(dktreeDelete, deleteItem)
     tree.insert(1,3);
 
     ASSERT_EQ(tree.size(), 4);
-    tree.erase(1,3);
+    tree.erase(1,3);    
     ASSERT_EQ(tree.size(), 3);
 }
 
