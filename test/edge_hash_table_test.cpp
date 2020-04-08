@@ -4,84 +4,49 @@
 
 using namespace std;
 
-/////////////////////// AUX FUNCTIONS ///////////////////////
-int count_nonempty_entrances(edge_hash_table ht)
-{
-    int nonempty = 0;
-    std::vector<int> tbl = ht.get_table();
-    for (size_t i = 0; i < tbl.size(); i++){
-        // cout << "tbl[" << i << "]: " << tbl[i] << endl;
-        tbl[i] != EMPTY ? nonempty++ : nonempty;
-    }
-
-    return nonempty;
-}
-////////////////////////////////////////////////////////////
-
 TEST(edgeHashTableInsert, createHashTable)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
-
-    int nonempty = count_nonempty_entrances(ht);
     
-    ASSERT_EQ(nonempty, 3);
-    ASSERT_NE(ht.get_key(0), EMPTY);
-    ASSERT_NE(ht.get_key(1), EMPTY);
-    ASSERT_NE(ht.get_key(2), EMPTY);
+    ASSERT_EQ(ht.size(), 3);
 }
 
-TEST(edgeHashTableInsert, insertResize)
-{
-    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
-    edge_hash_table ht(elements);
-
-    ht.insert(edge(5, 8));
-    ht.insert(edge(0, 5));
-
-    int nonempty = count_nonempty_entrances(ht);
-
-    ASSERT_EQ(nonempty, 5);
-    ASSERT_NE(ht.get_key(0), EMPTY);
-    ASSERT_NE(ht.get_key(1), EMPTY);
-    ASSERT_NE(ht.get_key(2), EMPTY);
-    ASSERT_NE(ht.get_key(3), EMPTY);
-    ASSERT_NE(ht.get_key(4), EMPTY);
-}
 
 TEST(edgeHashTableFind, find)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
 
-    ASSERT_NE(ht.find(edge(1,2)), -1);
+    ASSERT_EQ(ht.find(1,1), -1);
+    ASSERT_EQ(ht.find(1,2), 0);
+    ASSERT_EQ(ht.find(3,4), 1);
+    ASSERT_EQ(ht.find(0,1), 2);
 }
 
-TEST(edgeHashTableFind, findNot)
+TEST(edgeHashTableInsert, insert)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
 
-    ASSERT_EQ(ht.find(edge(1,1)), -1);
+    ht.insert(5,6, 3);
+
+
+    ASSERT_EQ(ht.size(), 4);
+    ASSERT_EQ(ht.find(5,6), 3);
 }
 
-TEST(edgeHashTableErase, eraseEdge)
+TEST(edgeHashTableErase, eraseEdgeExist)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
 
-    int nonempty = count_nonempty_entrances(ht);
-    
-    ASSERT_EQ(nonempty, 3);
-    ASSERT_NE(ht.get_key(0), EMPTY);
-    ASSERT_NE(ht.get_key(1), EMPTY);
-    ASSERT_NE(ht.get_key(2), EMPTY);
 
+    ASSERT_EQ(ht.size(), 3);
     ht.erase(2);
 
-    ASSERT_EQ(ht.get_key(2), EMPTY);
 }
-
+/*
 TEST(edgeHashTableErase, eraseEdgeNotExist)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
@@ -95,7 +60,7 @@ TEST(edgeHashTableErase, eraseEdgeNotExist)
     ASSERT_NE(ht.get_key(2), EMPTY);
 
     ASSERT_THROW(ht.erase(4), logic_error);
-}
+}*/
 
 int main(int argc, char **argv)
 {

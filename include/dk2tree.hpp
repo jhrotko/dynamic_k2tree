@@ -10,6 +10,7 @@
 #include <array>
 #include <memory>
 #include <functional>
+#include <unordered_map>
 
 #include <iostream>
 
@@ -54,7 +55,7 @@ public:
     }
 
     bool mark_link_deleted(uint x, uint y)
-    {   
+    {
         bool res = recursive_mark_deleted(x, y, 0, 0);
         std::cout << "RESULT FROM MARKED: " << res << std::endl;
         return res;
@@ -65,11 +66,12 @@ public:
         std::vector<ulong> pointerL;
         pointerL.resize(max_level);
         pointerL.push_back(0);
-        pointerL.push_back(get_k() * get_k());
+        pointerL.push_back(k_k * k_k);
 
         for (size_t i = 2; i <= max_level; i++)
         {
-            ulong a = (get_rank_l(pointerL[i - 1] - 1) + 1) * get_k() * get_k();
+            //FIXME: REMOVE THESE get_* from k2_tree
+            ulong a = (get_rank_l(pointerL[i - 1] - 1) + 1) * k_k * k_k;
             pointerL.push_back(a);
         }
 
@@ -84,7 +86,7 @@ public:
         return recursive_check_link_query(x, y, 0, 0);
     }
 
-    k2_tree_extended unionOp(k2_tree<2> &k_tree, uint n_vertices)
+    k2_tree_extended unionOp(k2_tree &k_tree, uint n_vertices)
     {
         k2_tree<2> res = k_tree.unionOp(*this);
         return k2_tree_extended(res, n_vertices);
@@ -95,57 +97,42 @@ public:
         return n_marked_edges;
     }
 
+    void set_level(std::vector<int> div_level_table)
+    {
+        this->div_level_table = div_level_table;
+    }
+
 private:
     void initialization(uint size)
     {
         n_vertices = size;
-        uint aux = log(n_vertices) / log(get_k());
+        uint aux = log(n_vertices) / log(k_k);
         max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
 
-        for (size_t i = 0; i < R; i++)
-        {
-            std::vector<uint> div_table;
-            div_level_table.resize(max_level);
+        for (size_t i = 0; i <= max_level; i++)
+            div_level_table.push_back(pow(k_k, max_level - i));
 
-            for (size_t j = 0; j < max_level; j++)
-                div_level_table[j] = pow(get_k(), max_level - j);
-        }
         n_marked_edges = 0;
     }
 
     uint recursive_mark_deleted(uint x, uint y, uint node, uint level)
     {
         int div_level = div_level_table[level];
+        int newnode = x / div_level * k_k + y / div_level;
+        newnode += node;
 
-        int K = get_k();
-        int newnode = x / div_level * K + y / div_level;
-        newnode += node+1; // <- se nao for +1, a funçao retorna false para o input do teste. este valor esta correcto?
-
-        std::cout << "x: " << x<< "  y: " << y << std::endl;
-        std::cout << "div_level:  " << div_level << std::endl;
-        std::cout << "newnode: " << newnode << std::endl;
-        std::cout << "l: ";
-        for(int i = 0; i < get_l().size() ; i++) {
-            std::cout <<  get_l()[i];
-        }
-        std::cout << std::endl;
-
-        if (get_l()[newnode])
+        if (k_l[newnode])
         {
-
-            std::cout << "level:  " << level << std::endl;
-            std::cout << "max_level:  " << max_level << std::endl;
-            if (level < max_level -1)
-                return recursive_mark_deleted(x % div_level, y % div_level, get_rank_l(newnode) * K * K, level + 1);
+            if (level < max_level - 1)
+                return recursive_mark_deleted(x % div_level, y % div_level, k_l_rank(newnode) * k_k * k_k, level + 1);
 
             else
             {
                 uint posInf;
-                posInf = (get_rank_l(newnode)) * K * K;
-                std::cout << "posInf: " << posInf << std::endl;
-                if (get_l()[posInf + (y % K + (x % K) * K)])
+                posInf = (k_l_rank(newnode)) * k_k * k_k;
+                if (k_l[posInf + (y % k_k + (x % k_k) * k_k)])
                 {
-                    clean_l_bit(posInf + (y % K + (x % K) * K));
+                    k_l[posInf + (y % k_k + (x % k_k) * k_k)] = 0;
                     n_marked_edges++;
                     return true;
                 }
@@ -157,18 +144,18 @@ private:
     bool recursive_check_link_query(uint p, uint q, uint node, uint level)
     {
         int div_level = div_level_table[level];
-        uint K = get_k();
-        int newnode = p / div_level * K + q / div_level;
+
+        int newnode = p / div_level * k_k + q / div_level;
         newnode += node;
-        if (get_l()[newnode])
+        if (k_l[newnode])
         {
             if (level < max_level - 1)
-                return recursive_check_link_query(p % div_level, q % div_level, get_rank_l(newnode) * K * K, level + 1);
+                return recursive_check_link_query(p % div_level, q % div_level, k_l_rank(newnode) * k_k * k_k, level + 1);
             else
             {
                 uint posInf;
-                posInf = (get_rank_l(newnode)) * K * K;
-                if (get_l()[posInf + (q % K + (p % K) * K)])
+                posInf = (k_l_rank(newnode)) * k_k * k_k;
+                if (k_l[posInf + (q % k_k + (p % k_k) * k_k)])
                     return true;
             }
         }
@@ -179,35 +166,30 @@ private:
     {
         uint y;
         if (l == max_level)
-            if (get_l()[x])
+            if (k_l[x])
                 proc(dp, dq);
 
-        if ((l == max_level - 1) && (get_l()[x]))
+        if ((l == max_level - 1) && (k_l[x]))
         {
             y = pointerL[l + 1];
-            pointerL[l + 1] += get_k() * get_k();
-            for (size_t i = 0; i < get_k(); i++)
-                for (size_t j = 0; j < get_k(); j++)
-                    recursive_edge_iterator(pointerL, dp + i, dq + j, y + get_k() * i + j, l + 1, proc);
+            pointerL[l + 1] += k_k * k_k;
+            for (size_t i = 0; i < k_k; i++)
+                for (size_t j = 0; j < k_k; j++)
+                    recursive_edge_iterator(pointerL, dp + i, dq + j, y + k_k * i + j, l + 1, proc);
         }
-        if ((x == -1) || ((l < max_level - 1) && (get_l()[x])))
+        if ((x == -1) || ((l < max_level - 1) && (k_l[x])))
         {
             y = pointerL[l + 1];
-            pointerL[l + 1] += get_k() * get_k();
+            pointerL[l + 1] += k_k * k_k;
 
             uint div_level = div_level_table[l + 1];
-            for (size_t i = 0; i < get_k(); i++)
-                for (size_t j = 0; j < get_k(); j++)
-                    recursive_edge_iterator(pointerL, dp + div_level * i, dq + div_level * j, y + get_k() * i + j, l + 1, proc);
+            for (size_t i = 0; i < k_k; i++)
+                for (size_t j = 0; j < k_k; j++)
+                    recursive_edge_iterator(pointerL, dp + div_level * i, dq + div_level * j, y + k_k * i + j, l + 1, proc);
         }
     }
 
-    bool is_(uint node)
-    {
-        return get_l()[node] == 1;
-    }
-
-    std::vector<uint> div_level_table;
+    std::vector<int> div_level_table;
     uint n_marked_edges = 0;
     uint max_level;
     uint n_vertices;
@@ -235,18 +217,33 @@ public:
         max_r = 0;
         for (size_t i = 0; i < R; i++)
         {
-            std::shared_ptr<k2tree> p(new k2tree(n_vertices));
-            k_collection[i] = p;
+            // std::shared_ptr<k2tree> p(new k2tree(n_vertices));
+            k_collection[i] = NULL;
         }
         // Initialize K2 tree Collections
         uint aux = log(n_vertices) / log(k);
         max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
+
+        for (size_t i = 0; i <= max_level; i++)
+            div_level_table.push_back(pow(k, max_level - i));
     }
 
     void print()
     {
+        std::cout << "------------------------" << std::endl;
+
+        std::cout << "C0" << std::endl;
+        edge_lst.print();
+
         for (size_t i = 0; i < k_collection.size(); i++)
-            std::cout << "i: " << i << "    value: " << k_collection[i] << std::endl;
+        {
+            std::cout << "C" << i+1 << std::endl;
+            if (k_collection_is_not_empty(i))
+                k_collection[i]->print();
+            else
+                std::cout << "empty" << std::endl;
+        }
+        std::cout << "------------------------" << std::endl;
     }
 
     size_t size()
@@ -262,20 +259,19 @@ public:
     void insert(uint x, uint y)
     {
         if (contains(x, y))
-        {
             return;
-        }
 
         if (edge_lst.n_edges() < MAXSZ(max(n_vertices, n_total_edges), 0))
         {
             insert_0(x, y);
             return;
         }
+
         uint n = MAXSZ(max(n_vertices, n_total_edges), 0);
         size_t i = 0;
         for (; i < R; i++)
         {
-            if (k_collection[i] != NULL)
+            if (k_collection_is_not_empty(i))
                 n += k_collection[i]->get_number_edges(); //TODO: rename me to n_edges
 
             if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > n + 1)
@@ -285,18 +281,21 @@ public:
         if (i >= R)
             throw std::logic_error("Error: collection too big...");
 
+        max_r = max(i, max_r);
+
+        //Load edges in C0...
         vector<edge> free_edges;
         for (uint k = 0; k < edge_lst.n_edges(); k++)
             free_edges.push_back(edge_lst[edge_free[k]]);
 
+        //Add new link...
         free_edges.push_back(edge(x, y));
         assert(free_edges.size() == edge_lst.n_edges() + 1);
-        clean_C0(x, y);
 
+        clean_C0();
         if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
-            max_level = max_level - 1;
+            max_level--;
 
-        max_r = max(i, max_r);
         //TODO: delete this translation later, ew
         vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> convert_edges;
         for (size_t j = 0; j < free_edges.size(); j++)
@@ -305,25 +304,27 @@ public:
                 (k2_tree_ns::idx_type)free_edges[j].x, (k2_tree_ns::idx_type)free_edges[j].y);
             convert_edges.push_back(e);
         }
-        
+
         std::shared_ptr<k2tree> tmp(new k2tree(convert_edges, n_vertices));
         for (size_t j = 0; j <= i; j++)
         {
-            if (k_collection[j] != NULL || (k_collection[j] != 0 && k_collection[j]->get_number_edges() == 0))
+            if (k_collection_is_not_empty(j))
             {
                 k2tree aux = tmp->unionOp(*k_collection[j], n_vertices);
                 tmp = std::make_shared<k2tree>(std::move(aux));
+                tmp->set_level(div_level_table);
             }
             k_collection[j] = NULL;
         }
 
+        assert(k_collection[i] == NULL);
         k_collection[i] = tmp;
         n_total_edges++;
     }
 
     bool contains(int x, int y)
     {
-        //check in CO
+        //check in C0
         if (edge_lst.find(edge(x, y)) != -1)
             return true;
 
@@ -359,11 +360,18 @@ public:
             uint n_total_marked = 0;
             for (size_t l = 0; l <= max_r; l++)
             {
+
+                std::cout << "l: ";
+                if (k_collection_is_not_empty(l))
+                    k_collection[l]->print();
+                else
+                    std::cout << "empty tree" << std::endl;
+
                 if (k_collection_is_not_empty(l) && k_collection[l]->mark_link_deleted(x, y))
                 {
                     n_total_edges--;
-                    std::cout << "n_total_edges " << n_total_edges << std::endl;
-                    
+                    // std::cout << "n_total_edges " << n_total_edges << std::endl;
+
                     uint k_marked_edges = k_collection[l]->get_marked_edges();
                     n_total_marked += k_marked_edges;
 
@@ -376,8 +384,8 @@ public:
                 }
             }
 
-            std::cout << "RATIO " << ( n_total_edges / TAU(n_total_edges ))<< std::endl;
-            std::cout << "n_marked " << n_total_marked << std::endl;
+            // std::cout << "RATIO " << ( n_total_edges / TAU(n_total_edges ))<< std::endl;
+            // std::cout << "n_marked " << n_total_marked << std::endl;
             if (n_total_marked > n_total_edges / TAU(n_total_edges))
             {
                 /* Rebuild data structure... */
@@ -463,7 +471,7 @@ private:
         }
     }
 
-    void clean_C0(uint x, uint y)
+    void clean_C0()
     {
         edge_lst.clear();
         clean_free_lst();
@@ -490,6 +498,7 @@ private:
 
     adjacency_list adj_lst;
     std::array<std::shared_ptr<k2tree>, R> k_collection;
+    std::vector<int> div_level_table;
 };
 
 #endif
