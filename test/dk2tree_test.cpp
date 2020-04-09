@@ -43,7 +43,7 @@ TEST(k2treeExtended, marked_edges)
     k2_tree_extended tree(edges, 4);
 
     ASSERT_EQ(tree.get_marked_edges(), 0);
-    ASSERT_TRUE(tree.mark_link_deleted(1, 2));
+    tree.mark_link_deleted(1, 2);
     ASSERT_EQ(tree.get_marked_edges(), 1);
 }
 
@@ -133,15 +133,26 @@ TEST(dktreeDelete, deleteItemC0)
 
 TEST(dktreeDelete, deleteItem)
 {
-    dk2tree tree(5);
+    dk2tree tree(4);
     tree.insert(1,2);
-    tree.insert(1,4);
+    tree.insert(1,3); //TODO: ADD TESTS ON INSERT AVOUT ADDING A VERTIX OUTSIDE THE RANGE OF NVERTICES
     tree.insert(3,0);
-    tree.insert(1,3);
+//    tree.insert(1,3);
+//    tree.insert(3,3);
 
+    ASSERT_EQ(tree.size(), 5);
+    tree.erase(3,3);
     ASSERT_EQ(tree.size(), 4);
-    tree.erase(1,3);    
+    tree.erase(1,3);
     ASSERT_EQ(tree.size(), 3);
+    tree.erase(3,0);
+    ASSERT_EQ(tree.size(), 2);
+    tree.erase(1,3);
+    ASSERT_EQ(tree.size(), 1);
+    tree.erase(1,2);
+    ASSERT_EQ(tree.size(), 0);
+    tree.erase(1,2);
+    ASSERT_EQ(tree.size(), 0);
 }
 
 TEST(dktreeDelete, listNeighbours)
