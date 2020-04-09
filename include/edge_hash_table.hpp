@@ -17,9 +17,9 @@ typedef unsigned long uint64;
 class edge
 {
 public:
-    uint32 x, y, next, prev;
-    edge() {}
-    edge(uint32 x, uint32 y) : x(x), y(y), next(-1), prev(-1) {}
+    int x, y, next, prev;
+    edge() : x(-1), y(-1), next(-1), prev(-1) {}
+    edge(int x, int y) : x(x), y(y), next(-1), prev(-1) {}
 };
 
 class edge_hash_table
@@ -93,6 +93,7 @@ public:
 
         while (table[i] != EMPTY)
         {
+            cout << elements[table[i]].x << "..." <<  elements[table[i]].y<< endl;
             if (e.x == elements[table[i]].x && e.y == elements[table[i]].y)
                 return table[i];
             else
