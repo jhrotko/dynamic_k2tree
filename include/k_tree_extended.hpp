@@ -8,7 +8,7 @@
 
 using namespace std;
 using namespace sdsl;
-using namespace k2_tree_ns;
+//using namespace k2_tree_ns;
 
 class k2_tree_extended : public k2_tree<2>
 {
@@ -18,7 +18,7 @@ public:
         initialization(n_vertices);
     }
 
-    k2_tree_extended(vector<tuple<idx_type, idx_type>> &edges,
+    k2_tree_extended(vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> edges,
                      const size_type size) : k2_tree(edges, size)
     {
         uint max_v = 0;
@@ -34,7 +34,7 @@ public:
         initialization(size);
     }
 
-    k2_tree_extended(k2_tree<2> tree, uint n_vertices) : k2_tree(tree)
+    k2_tree_extended(k2_tree<2> tree, const size_t n_vertices) : k2_tree(tree)
     {
         initialization(n_vertices);
     }

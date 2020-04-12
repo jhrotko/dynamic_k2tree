@@ -21,11 +21,8 @@ TEST(dktreeAddLink, addLink)
 {
     dk2tree tree(5);
     tree.insert(1, 2);
-    ASSERT_EQ(tree.size(), 1);
     tree.insert(1, 4);
-    ASSERT_EQ(tree.size(), 2);
     tree.insert(3, 0);
-    ASSERT_EQ(tree.size(), 3);
     tree.insert(1, 3);
     ASSERT_EQ(tree.size(), 4);
 }
