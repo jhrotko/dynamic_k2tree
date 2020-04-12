@@ -16,13 +16,15 @@ private:
     size_t n_vertices;
 
 public:
-    adjacency_list() {}
+    adjacency_list() {} //FIXME: fix the tests for adjacency list
 
     adjacency_list(size_t n_vertices) : n_vertices(n_vertices) {
         vertices.resize(n_vertices);
     }
 
-    int &operator[](size_t idx) {
+    int operator[](size_t idx) {
+        if (idx > n_vertices)
+            return -1;
         return vertices[idx].next;
     }
 
@@ -30,11 +32,6 @@ public:
         if(vertices[node].next == -1)
             n_elements++;
         vertices[node].next = next;
-    }
-
-    //might bring problems later because it returns the first index that it finds
-    int find(int node) {
-        return vertices[node].next == -1 ? -1 : vertices[node].next;
     }
 
     uint size() {

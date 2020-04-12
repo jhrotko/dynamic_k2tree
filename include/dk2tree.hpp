@@ -22,7 +22,6 @@ using namespace k2_tree_ns;
 
 //TODO: add generics
 class dk2tree {
-    typedef k2_tree_extended k2tree;
 
 public:
     dk2tree(uint n_vertices) : n_vertices(n_vertices) {
@@ -42,8 +41,8 @@ public:
         clean_free_lst();
         max_r = 0;
         for (size_t i = 0; i < R; i++) {
-            // shared_ptr<k2tree> p(new k2tree(n_vertices));
-            k_collection[i] = NULL;
+            // shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
+            k_collection[i] = nullptr;
         }
         // Initialize K2 tree Collections
         uint aux = log(n_vertices) / log(k);
@@ -61,7 +60,7 @@ public:
 
         for (size_t i = 0; i < k_collection.size(); i++) {
             cout << "C" << i + 1 << endl;
-            if (k_collection_is_not_empty(i))
+            if (k_collection[i] != nullptr)
                 k_collection[i]->print();
             else
                 cout << "empty" << endl;
@@ -76,7 +75,6 @@ public:
     void insert(uint x, uint y) {
         if (contains(x, y))
             return;
-
         size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
         if (n_elements < max_size) {
             insert_0(x, y);
@@ -85,7 +83,7 @@ public:
 
         size_t i = 0;
         for (; i < R; i++) {
-            if (k_collection_is_not_empty(i))
+            if (k_collection[i] != nullptr)
                 max_size += k_collection[i]->get_number_edges(); //TODO: rename me to size
             if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
                 break;
@@ -96,48 +94,43 @@ public:
         max_r = max(i, max_r);
 
         //Load edges in C0...
-        vector<tuple<idx_type, idx_type>> free_edges;
+        vector<tuple<idx_type , idx_type>> free_edges;
         for (uint j = 0; j < n_elements; j++) {
-            const tuple<idx_type, idx_type> e(
-                    (idx_type) elements[j].x, (idx_type) elements[j].y);
-            cout << elements[j].x << "  " << elements[j].y << endl;
+            const tuple<idx_type, idx_type> e(elements[j].x, elements[j].y);
             free_edges.push_back(e);
         }
         //Add new link...
-        const tuple<idx_type, idx_type> e((idx_type) x, (idx_type) y);
+        const tuple<idx_type, idx_type> e(x,y);
         free_edges.push_back(e);
+
         assert(free_edges.size() == n_elements + 1);
         clean_C0();
-
         if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
             max_level--;
 
-        cout << "hue" << endl;
-        shared_ptr<k2tree> tmp(new k2tree(free_edges, n_vertices));
+        shared_ptr<k2_tree_extended> tmp = make_shared<k2_tree_extended>(free_edges, n_vertices);
         for (size_t j = 0; j <= i; j++) {
-            if (k_collection_is_not_empty(j)) {
-                k2tree aux = tmp->unionOp(*k_collection[j], n_vertices);
-                tmp = make_shared<k2tree>(move(aux));
+            if (k_collection[j] != nullptr) {
+                k2_tree_extended aux = tmp->unionOp(*k_collection[j], n_vertices);
+                tmp = make_shared<k2_tree_extended>(move(aux));
                 tmp->set_level(div_level_table);
             }
-            k_collection[j] = NULL;
+            k_collection[j] = nullptr;
         }
-
-        assert(k_collection[i] == NULL);
+        assert(k_collection[i] == nullptr);
         k_collection[i] = tmp;
         n_total_edges++;
     }
 
     bool contains(int x, int y) {
+
         //check in C0
         if (edge_lst.find(x, y) != -1)
             return true;
-
         // check in other containers
         for (size_t i = 0; i <= max_r; i++)
-            if (k_collection_is_not_empty(i) && k_collection[i]->adj(x, y))
+            if (k_collection[i] != nullptr && k_collection[i]->adj(x, y))
                 return true;
-
         return false;
     }
 
@@ -158,12 +151,12 @@ public:
             for (size_t l = 0; l <= max_r; l++) {
 
                 cout << "l: ";
-                if (k_collection_is_not_empty(l))
+                if (k_collection[l] != nullptr)
                     k_collection[l]->print();
                 else
                     cout << "empty tree" << endl;
 
-                if (k_collection_is_not_empty(l) && k_collection[l]->mark_link_deleted(x, y)) {
+                if (k_collection[l] != nullptr && k_collection[l]->mark_link_deleted(x, y)) {
                     n_total_edges--;
                     // cout << "n_total_edges " << n_total_edges << endl;
 
@@ -173,7 +166,7 @@ public:
                     if (k_marked_edges == k_collection[l]->get_number_edges()) {
                         n_total_marked -= k_marked_edges;
                         delete &k_collection[l];
-                        k_collection[l] = NULL;
+                        k_collection[l] = nullptr;
                     }
                 }
             }
@@ -182,25 +175,25 @@ public:
             // cout << "n_marked " << n_total_marked << endl;
             if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                 /* Rebuild data structure... */
-                array<shared_ptr<k2tree>, R> old_k_collection = k_collection;
+                array<shared_ptr<k2_tree_extended>, R> old_k_collection = k_collection;
                 uint old_max_r = max_r;
                 max_r = 0;
 
                 for (size_t i = 0; i < R; i++) {
-                    shared_ptr<k2tree> p(new k2tree(n_vertices));
+                    shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
                     k_collection[i] = p;
                 }
 
                 n_total_edges = edge_lst.size();
                 for (size_t l = 0; l <= old_max_r; l++) {
-                    if (old_k_collection[l] != NULL && old_k_collection[l] != 0) {
+                    if (old_k_collection[l] != nullptr && old_k_collection[l] != 0) {
                         function<int(uint, uint)> func = [this](uint x, uint y) {
                             this->insert(x, y);
                             return 0;
                         };
                         old_k_collection[l]->edge_iterator(func);
                         delete &old_k_collection[l];
-                        old_k_collection[l] = NULL;
+                        old_k_collection[l] = nullptr;
                     }
                 }
             }
@@ -210,12 +203,14 @@ public:
     vector<int> list_neighbour(int x) {
         vector<int> neighbours;
 
-        for (int index = adj_lst[x]; index != -1; index = elements[index].next)
-            neighbours.push_back(elements[index].y);
+        int index = adj_lst[x];
+        if (index != -1)
+            for (; index != -1; index = elements[index].next)
+                neighbours.push_back(elements[index].y);
 
         for (size_t l = 0; l <= max_r; l++)
-            if (k_collection_is_not_empty(l)) {
-                vector<k2_tree_ns::idx_type> lst = k_collection[l]->neigh(x);
+            if (k_collection[l] != nullptr) {
+                vector<idx_type> lst = k_collection[l]->neigh(x);
                 neighbours.insert(neighbours.end(), lst.begin(), lst.end()); //append
             }
 
@@ -223,15 +218,11 @@ public:
     }
 
 private:
-    bool k_collection_is_not_empty(size_t i) {
-        return k_collection[i] != NULL && k_collection[i] != 0;
-    }
-
     void insert_0(uint x, uint y) {
         if (edge_lst.find(x, y)  == -1) {
 
             edgeNode newNode(x, y);
-            if (adj_lst.find(x) != -1)
+            if (adj_lst[x] != -1)
             {
                 newNode.next = adj_lst[x];
                 elements[adj_lst[x]].prev = n_elements;
@@ -274,7 +265,7 @@ private:
     vector<uint> edge_free; //should go inside hash_table
 
     adjacency_list adj_lst;
-    array<shared_ptr<k2tree>, R> k_collection;
+    array<shared_ptr<k2_tree_extended>, R> k_collection;
     vector<int> div_level_table;
 };
 
