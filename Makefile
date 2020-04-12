@@ -27,4 +27,4 @@ valgrind_dk2tree:
 tests_all:
 	make all
 	cd test && cmake CMakeLists.txt && make
-	cd test && ./edgeHashTableTests &&  && ./adjacencyListTest && ./dk2treeTest && ./kExtendedTest
+	cd test && ./edgeHashTableTests && ./adjacencyListTest && ./kExtendedTest &&./dk2treeTest

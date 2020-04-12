@@ -70,28 +70,31 @@ TEST(dktreeDelete, deleteItemC0)
     ASSERT_EQ(tree.size(), 0);
 }
 
-//TEST(dktreeDelete, deleteItem)
-//{
-//    dk2tree tree(5);
-//    tree.insert(1,2);
-//    tree.print();
-//    tree.insert(1,4);
-//        tree.print();
-//
-//    tree.insert(3,0);
-//        tree.print();
-//
+TEST(dktreeDelete, deleteItem)
+{
+    dk2tree tree(4);
+    tree.insert(1,2);
+    tree.insert(1,3); //TODO: ADD TESTS ON INSERT AVOUT ADDING A VERTIX OUTSIDE THE RANGE OF NVERTICES
+    tree.insert(3,0);
 //    tree.insert(1,3);
-//        tree.print();
-//
-//
-//    ASSERT_EQ(tree.size(), 4);
-//    tree.erase(1,3);
-//    ASSERT_EQ(tree.size(), 3);
-//    ASSERT_FALSE(tree.contains(1,3));
-//}
+//    tree.insert(3,3);
 
-TEST(dktreeListNeighbours, listNeighbours)
+    ASSERT_EQ(tree.size(), 5);
+    tree.erase(3,3);
+    ASSERT_EQ(tree.size(), 4);
+    tree.erase(1,3);
+    ASSERT_EQ(tree.size(), 3);
+    tree.erase(3,0);
+    ASSERT_EQ(tree.size(), 2);
+    tree.erase(1,3);
+    ASSERT_EQ(tree.size(), 1);
+    tree.erase(1,2);
+    ASSERT_EQ(tree.size(), 0);
+    tree.erase(1,2);
+    ASSERT_EQ(tree.size(), 0);
+}
+
+TEST(dktreeDelete, listNeighbours)
 {
     dk2tree tree(5);
     tree.insert(1, 2);
