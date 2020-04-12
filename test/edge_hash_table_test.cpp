@@ -31,7 +31,6 @@ TEST(edgeHashTableInsert, insert)
 
     ht.insert(5,6, 3);
 
-
     ASSERT_EQ(ht.size(), 4);
     ASSERT_EQ(ht.find(5,6), 3);
 }
@@ -41,26 +40,22 @@ TEST(edgeHashTableErase, eraseEdgeExist)
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);
 
-
     ASSERT_EQ(ht.size(), 3);
-    ht.erase(2);
-
+    ht.erase(1,2);
+    ASSERT_EQ(ht.size(), 2);
+    ht.erase(0,0);
+    ASSERT_EQ(ht.size(), 2);
 }
-/*
-TEST(edgeHashTableErase, eraseEdgeNotExist)
+
+TEST(edgeHashTableErase, clear)
 {
-    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    vector<edge> elements = {edge(1, 2), edge(3, 5), edge(0, 1)};
     edge_hash_table ht(elements);
 
-    int nonempty = count_nonempty_entrances(ht);
-    
-    ASSERT_EQ(nonempty, 3);
-    ASSERT_NE(ht.get_key(0), EMPTY);
-    ASSERT_NE(ht.get_key(1), EMPTY);
-    ASSERT_NE(ht.get_key(2), EMPTY);
-
-    ASSERT_THROW(ht.erase(4), logic_error);
-}*/
+    ASSERT_EQ(ht.size(), 3);
+    ht.clear();
+    ASSERT_EQ(ht.size(), 0);
+}
 
 int main(int argc, char **argv)
 {

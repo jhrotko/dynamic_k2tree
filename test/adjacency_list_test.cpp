@@ -4,27 +4,69 @@
 
 using namespace std;
 
-TEST(adjListInsert, createAdjList)
+TEST(adjList, create)
 {
-    vector<item> elements = {item(1, 2), item(3, 4), item(0, 1)};
-    adjacency_list adj_lst(elements);
+    adjacency_list adj_lst(5);
 
-    ASSERT_NE(adj_lst[0].x, -1);
-    ASSERT_NE(adj_lst[1].x, -1);
-    ASSERT_NE(adj_lst[4].x, -1);
-    ASSERT_NE(adj_lst[0].next, -1);
-    ASSERT_NE(adj_lst[1].next, -1);
-    ASSERT_NE(adj_lst[4].next, -1);
+    ASSERT_EQ(adj_lst.size(), 0);
+
 }
 
-
-TEST(adjListFind, findElement)
+TEST(adjList, insert)
 {
-    vector<item> elements = {item(1, 2), item(3, 4), item(0, 1)};
-    adjacency_list adj_lst(elements);
+    adjacency_list adj_lst(5);
 
-    ASSERT_EQ(adj_lst.find(1), 0);
-    ASSERT_EQ(adj_lst.find(10), -1);
+    adj_lst.insert(4,2);
+    ASSERT_EQ(adj_lst.size(), 1);
+}
+
+TEST(adjList, insertExists)
+{
+    adjacency_list adj_lst(5);
+
+    adj_lst.insert(4,2);
+    adj_lst.insert(4,2);
+    ASSERT_EQ(adj_lst.size(), 1);
+}
+
+TEST(adjList, insertOverflow)
+{
+    adjacency_list adj_lst(5);
+
+    adj_lst.insert(100,2);
+    ASSERT_EQ(adj_lst.size(), 0);
+}
+
+TEST(adjList, find)
+{
+    adjacency_list adj_lst(5);
+
+    adj_lst.insert(4,2);
+    ASSERT_EQ(adj_lst.find(2), 4);
+}
+
+TEST(adjList, adj)
+{
+    adjacency_list adj_lst(5);
+
+    adj_lst.insert(4,2);
+    ASSERT_TRUE(adj_lst.adj(4,2));
+}
+
+TEST(adjList, clear)
+{
+    adjacency_list adj_lst(5);
+
+    adj_lst.insert(4,2);
+    adj_lst.insert(3,1);
+    adj_lst.insert(3,0);
+    ASSERT_EQ(adj_lst.size(), 3);
+    adj_lst.clear();
+    ASSERT_EQ(adj_lst.size(), 0);
+    ASSERT_FALSE(adj_lst.adj(4,2));
+    ASSERT_FALSE(adj_lst.adj(3,1));
+    ASSERT_FALSE(adj_lst.adj(3,0));
+
 }
 
 int main(int argc, char **argv)
