@@ -9,6 +9,10 @@ tests_edge:
 	cd include && g++ -std=c++11 edge_hash_table.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
 
+tests_k_extended:
+	cd include && g++ -std=c++11 k_tree_extended.hpp utils.hpp
+	cd test && cmake CMakeLists.txt && make kExtendedTest && ./kExtendedTest
+
 tests_dk2tree:
 	make all
 	cd test && cmake CMakeLists.txt && make dk2treeTest && ./dk2treeTest
@@ -23,4 +27,4 @@ valgrind_dk2tree:
 tests_all:
 	make all
 	cd test && cmake CMakeLists.txt && make
-	cd test && ./edgeHashTableTests && ./dk2treeTest && ./adjacencyListTest
+	cd test && ./edgeHashTableTests &&  && ./adjacencyListTest && ./dk2treeTest && ./kExtendedTest
