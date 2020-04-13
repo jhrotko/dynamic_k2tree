@@ -7,4 +7,5 @@ test/*
 !test/adjacency_list_test.cpp
 !test/edge_hash_table_test.cpp
 !test/dk2tree_test.cpp
+!test/k_tree_extended_tests.cpp
 !test/CMakeLists.txt
