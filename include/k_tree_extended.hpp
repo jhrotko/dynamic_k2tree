@@ -40,22 +40,22 @@ public:
     }
 
 
-//    void edge_iterator(function<int(uint, uint)> callback)
-//    {
-//        vector<ulong> pointerL;
-//        pointerL.resize(max_level);
-//        pointerL.push_back(0);
-//        pointerL.push_back(k_k * k_k);
-//
-//        for (size_t i = 2; i <= max_level; i++)
-//        {
-//            //FIXME: REMOVE THESE get_* from k2_tree
-//            ulong a = (get_rank_l(pointerL[i - 1] - 1) + 1) * k_k * k_k;
-//            pointerL.push_back(a);
-//        }
-//
-//        recursive_edge_iterator(pointerL, 0, 0, -1, -1, callback);
-//    }
+    void edge_iterator(function<int(uint, uint)> callback)
+    {
+        vector<ulong> pointerL;
+        pointerL.resize(max_level);
+        pointerL.push_back(0);
+        pointerL.push_back(k_k * k_k);
+
+        for (size_t i = 2; i <= max_level; i++)
+        {
+            //FIXME: REMOVE THESE get_* from k2_tree
+            ulong a = (k_l_rank(pointerL[i - 1] - 1) + 1) * k_k * k_k;
+            pointerL.push_back(a);
+        }
+
+        recursive_edge_iterator(pointerL, 0, 0, -1, -1, callback);
+    }
 
     k2_tree_extended unionOp(k2_tree &k_tree, uint n_vertices)
     {
@@ -63,53 +63,9 @@ public:
         return k2_tree_extended(res, n_vertices);
     }
 
-    uint get_marked_edges()
-    {
-        return n_marked_edges;
-    }
-
     void set_level(vector<int> div_level_table)
     {
         this->div_level_table = div_level_table;
-    }
-
-    bool mark_link_deleted(idx_type i, idx_type j)
-    {
-        if (k_t.size() == 0 && k_l.size() == 0)
-            return false;
-        size_type n = std::pow(k_k, k_height - 1);
-        size_type k_2 = std::pow(k_k, 2);
-        idx_type col, row;
-
-        // This is duplicated to avoid an extra if at the loop. As idx_type
-        // is unsigned and rank has an offset of one, is not possible to run
-        // k_t_rank with zero as parameter at the first iteration.
-        row = std::floor(i / static_cast<double>(n));
-        col = std::floor(j / static_cast<double>(n));
-        i = i % n;
-        j = j % n;
-        idx_type level = k_k * row + col;
-        n = n / k_k;
-
-        while (level < k_t.size())
-        {
-            if (k_t[level] == 0)
-                return false;
-            row = std::floor(i / static_cast<double>(n));
-            col = std::floor(j / static_cast<double>(n));
-            i = i % n;
-            j = j % n;
-            level = k_t_rank(level + 1) * k_2 + k_k * row + col;
-            n = n / k_k;
-        }
-
-        if (k_l[level - k_t.size()] == 1)
-        {
-            k_l[level - k_t.size()] = 0;
-            n_marked_edges++;
-            return true;
-        }
-        return false;
     }
 private:
     void initialization(uint size)
@@ -120,12 +76,37 @@ private:
 
         for (size_t i = 0; i <= max_level; i++)
             div_level_table.push_back(pow(k_k, max_level - i));
+    }
 
-        n_marked_edges = 0;
+    void recursive_edge_iterator(vector<ulong> pointerL, uint dp, uint dq, uint x, int l, function<int(uint, uint)> proc)
+    {
+        uint y;
+        if (l == max_level)
+            if (k_l[x])
+                proc(dp, dq);
+
+        if ((l == max_level - 1) && (k_l[x]))
+        {
+            y = pointerL[l + 1];
+            pointerL[l + 1] += k_k * k_k;
+            for (size_t i = 0; i < k_k; i++)
+                for (size_t j = 0; j < k_k; j++)
+                    recursive_edge_iterator(pointerL, dp + i, dq + j, y + k_k * i + j, l + 1, proc);
+        }
+        if ((x == -1) || ((l < max_level - 1) && (k_l[x])))
+        {
+            y = pointerL[l + 1];
+            pointerL[l + 1] += k_k * k_k;
+
+            uint div_level = div_level_table[l + 1];
+            for (size_t i = 0; i < k_k; i++)
+                for (size_t j = 0; j < k_k; j++)
+                    recursive_edge_iterator(pointerL, dp + div_level * i, dq + div_level * j, y + k_k * i + j, l + 1, proc);
+        }
     }
 
     vector<int> div_level_table;
-    uint n_marked_edges = 0;
+
     uint max_level;
     uint n_vertices;
 };
