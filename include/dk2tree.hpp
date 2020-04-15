@@ -52,22 +52,6 @@ public:
             div_level_table.push_back(pow(k, max_level - i));
     }
 
-    void print() {
-        cout << "------------------------" << endl;
-
-        cout << "C0" << endl;
-        cout << edge_lst << endl;
-
-        for (size_t i = 0; i < k_collection.size(); i++) {
-            cout << "C" << i + 1 << endl;
-            if (k_collection[i] != nullptr)
-                k_collection[i]->print();
-            else
-                cout << "empty" << endl;
-        }
-        cout << "------------------------" << endl;
-    }
-
     size_t size() {
         return n_total_edges;
     }
@@ -149,14 +133,7 @@ public:
         } else {
             uint n_total_marked = 0;
             for (size_t l = 0; l <= max_r; l++) {
-
-                cout << "l: ";
-                if (k_collection[l] != nullptr)
-                    k_collection[l]->print();
-                else
-                    cout << "empty tree" << endl;
-
-                if (k_collection[l] != nullptr && k_collection[l]->mark_link_deleted(x, y)) {
+                if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                     n_total_edges--;
                     // cout << "n_total_edges " << n_total_edges << endl;
 
@@ -171,8 +148,6 @@ public:
                 }
             }
 
-            // cout << "RATIO " << ( n_total_edges / TAU(n_total_edges ))<< endl;
-            // cout << "n_marked " << n_total_marked << endl;
             if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                 /* Rebuild data structure... */
                 array<shared_ptr<k2_tree_extended>, R> old_k_collection = k_collection;
@@ -184,15 +159,14 @@ public:
                     k_collection[i] = p;
                 }
 
-                n_total_edges = edge_lst.size();
+                n_total_edges = adj_lst.size();
                 for (size_t l = 0; l <= old_max_r; l++) {
                     if (old_k_collection[l] != nullptr && old_k_collection[l] != 0) {
                         function<int(uint, uint)> func = [this](uint x, uint y) {
-                            this->insert(x, y);
+                            insert(x, y);
                             return 0;
                         };
                         old_k_collection[l]->edge_iterator(func);
-                        delete &old_k_collection[l];
                         old_k_collection[l] = nullptr;
                     }
                 }
