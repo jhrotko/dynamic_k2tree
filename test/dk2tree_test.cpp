@@ -1,17 +1,17 @@
 #include <gtest/gtest.h>
-#include "../include/dk2tree.hpp"
+#include "../include/dk_tree.hpp"
 
-/////////////////**** DYNAMIC TREE ****/////////////////
+typedef dk_tree<> dynamic_tree;
 
 TEST(dktreeCreate, createEmpty)
 {
-    dk2tree tree(2);
+    dynamic_tree tree(2);
     ASSERT_EQ(tree.size(), 0);
 }
 
 TEST(dktreeAddLink, addLink0)
 {
-    dk2tree tree(2);
+    dynamic_tree tree(2);
     tree.insert(0, 1);
 
     ASSERT_EQ(tree.size(), 1);
@@ -19,7 +19,7 @@ TEST(dktreeAddLink, addLink0)
 
 TEST(dktreeAddLink, addLink)
 {
-    dk2tree tree(5);
+    dynamic_tree tree(5);
     tree.insert(1, 2);
     tree.insert(1, 4);
     tree.insert(3, 0);
@@ -29,7 +29,7 @@ TEST(dktreeAddLink, addLink)
 
 TEST(dktreeAddLink, addSameLink)
 {
-    dk2tree tree(6);
+    dynamic_tree tree(6);
     tree.insert(1, 2);
     tree.insert(1, 2);
 
@@ -38,7 +38,7 @@ TEST(dktreeAddLink, addSameLink)
 
 TEST(dktreeContains, containsInC0)
 {
-    dk2tree tree(6);
+    dynamic_tree tree(6);
     tree.insert(1, 2);
 
     ASSERT_TRUE(tree.contains(1, 2));
@@ -47,7 +47,7 @@ TEST(dktreeContains, containsInC0)
 
 TEST(dktreeContain, containsInCs)
 {
-    dk2tree tree(5);
+    dynamic_tree tree(5);
     tree.insert(1, 2);
     tree.insert(1, 4);
     tree.insert(3, 0);
@@ -62,7 +62,7 @@ TEST(dktreeContain, containsInCs)
 
 TEST(dktreeDelete, deleteItemC0)
 {
-    dk2tree tree(5);
+    dynamic_tree tree(5);
     tree.insert(1, 2);
     ASSERT_EQ(tree.size(), 1);
 
@@ -72,7 +72,7 @@ TEST(dktreeDelete, deleteItemC0)
 
 TEST(dktreeDelete, deleteItem)
 {
-    dk2tree tree(4);
+    dynamic_tree tree(4);
     tree.insert(1,2);
     tree.insert(1,3);
     tree.insert(3,0);
@@ -101,7 +101,7 @@ TEST(dktreeDelete, deleteItem)
 
 TEST(dktreeDelete, listNeighbours)
 {
-    dk2tree tree(5);
+    dynamic_tree tree(5);
     tree.insert(1, 2);
     tree.insert(1, 4);
     tree.insert(3, 0);
