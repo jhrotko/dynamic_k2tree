@@ -20,11 +20,16 @@ using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
 
-//TODO: add generics
-class dk2tree {
+template<uint8_t k = 2,
+        typename t_bv = bit_vector,
+        typename t_rank = typename t_bv::rank_1_type,
+        typename l_rank = typename t_bv::rank_1_type>
+
+class dk_tree {
+    typedef k_tree_extended<k, t_bv, t_rank, l_rank> k_tree;
 
 public:
-    dk2tree(uint n_vertices) : n_vertices(n_vertices) {
+    dk_tree(uint n_vertices) : n_vertices(n_vertices) {
         // Initialize Edge List
         const size_t max_edges = MAXSZ(n_vertices, 0);
 
@@ -78,13 +83,13 @@ public:
         max_r = max(i, max_r);
 
         //Load edges in C0...
-        vector<tuple<idx_type , idx_type>> free_edges;
+        vector<tuple<idx_type, idx_type>> free_edges;
         for (uint j = 0; j < n_elements; j++) {
             const tuple<idx_type, idx_type> e(elements[j].x, elements[j].y);
             free_edges.push_back(e);
         }
         //Add new link...
-        const tuple<idx_type, idx_type> e(x,y);
+        const tuple<idx_type, idx_type> e(x, y);
         free_edges.push_back(e);
 
         assert(free_edges.size() == n_elements + 1);
@@ -92,11 +97,11 @@ public:
         if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
             max_level--;
 
-        shared_ptr<k2_tree_extended> tmp = make_shared<k2_tree_extended>(free_edges, n_vertices);
+        shared_ptr<k_tree> tmp = make_shared<k_tree>(free_edges, n_vertices);
         for (size_t j = 0; j <= i; j++) {
             if (k_collection[j] != nullptr) {
-                k2_tree_extended aux = tmp->unionOp(*k_collection[j], n_vertices);
-                tmp = make_shared<k2_tree_extended>(move(aux));
+                k_tree aux = tmp->unionOp(*k_collection[j], n_vertices);
+                tmp = make_shared<k_tree>(move(aux));
                 tmp->set_level(div_level_table);
             }
             k_collection[j] = nullptr;
@@ -150,12 +155,12 @@ public:
 
             if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                 /* Rebuild data structure... */
-                array<shared_ptr<k2_tree_extended>, R> old_k_collection = k_collection;
+                array<shared_ptr<k_tree>, R> old_k_collection = k_collection;
                 uint old_max_r = max_r;
                 max_r = 0;
 
                 for (size_t i = 0; i < R; i++) {
-                    shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
+                    shared_ptr<k_tree> p(new k_tree(n_vertices));
                     k_collection[i] = p;
                 }
 
@@ -193,11 +198,10 @@ public:
 
 private:
     void insert_0(uint x, uint y) {
-        if (edge_lst.find(x, y)  == -1) {
+        if (edge_lst.find(x, y) == -1) {
 
             edgeNode newNode(x, y);
-            if (adj_lst[x] != -1)
-            {
+            if (adj_lst[x] != -1) {
                 newNode.next = adj_lst[x];
                 elements[adj_lst[x]].prev = n_elements;
                 adj_lst.insert(x, n_elements);
@@ -229,7 +233,6 @@ private:
     uint n_vertices;
     uint n_total_edges = 0;
 
-    const uint k = 2;
     // edge_lst replaces htable and elst;
     // where htable is the hash table with the dges and
     // the elst is the elements inside the edge hash table
@@ -239,7 +242,7 @@ private:
     vector<uint> edge_free; //should go inside hash_table
 
     adjacency_list adj_lst;
-    array<shared_ptr<k2_tree_extended>, R> k_collection;
+    array<shared_ptr<k_tree>, R> k_collection;
     vector<int> div_level_table;
 };
 
