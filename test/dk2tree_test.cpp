@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../include/dk_tree.hpp"
 
-typedef dk_tree<> dynamic_tree;
+typedef dynamic_k_tree::dk_tree<> dynamic_tree;
 
 TEST(dktreeCreate, createEmpty)
 {
@@ -117,6 +117,17 @@ TEST(dktreeDelete, listNeighbours)
     ASSERT_EQ(neighbours[0], 0);
     ASSERT_EQ(neighbours[1], 3);
 }
+
+
+//TEST(dktreeIterate, iterate)
+//{
+//    dynamic_tree tree(5);
+//    tree.insert(1, 2);
+//    tree.insert(1, 4);
+//    tree.insert(3, 0);
+//    tree.insert(3, 3);
+
+//}
 
 int main(int argc, char **argv)
 {
