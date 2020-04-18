@@ -5,7 +5,7 @@
 
 using namespace std;
 
-typedef k_tree_extended<> k_tree;
+typedef k_tree_extended<2> k_tree;
 TEST(ktreeExtended, createEmpty)
 {
     k_tree tree(2);
@@ -62,33 +62,96 @@ int func_test(uint x, uint y)
     return x + y;
 }
 
-TEST(ktreeExtended, edgeIterator)
+TEST(ktreeExtended, iterate)
 {
-    //TODO: TEST ME
     typedef tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type> tuple;
     vector<tuple> edges = {tuple(1, 2), tuple(0, 3), tuple(2, 2)};
     k_tree tree(edges, 4);
 
-    tree.edge_iterator(func_test);
 }
 
 //class testClass {
-//private:
+//public:
 //    int some_tribute;
 //    char other_tribute;
-//public:
+//    testClass() {}
 //    testClass(int a, char b) : some_tribute(a), other_tribute(b) {}
-//};
+//    inline bool operator==(const testClass& other) const {
+//        return this->some_tribute == other.some_tribute && this->other_tribute == other.other_tribute;
+//    }
 //
-//TEST(ktreeExtended, item)
+//    inline bool operator<(const testClass &other) const {
+//        return this->some_tribute < other.some_tribute;
+//    }
+//
+//    friend ostream& operator<< (ostream & os, const testClass& c) {
+//        os << "some: " << c.some_tribute << " other: " << c.other_tribute << endl;
+//        return os;
+//    }
+//};
+
+
+//TEST(ktreeItem, create)
 //{
+//typedef tuple<testClass, testClass> tuple;
+//    testClass a(1, 'v');
+//    testClass b(2, 'y');
+//    testClass c(1000, 'x');
+//
+//    vector<tuple> edges = {tuple(a,a), tuple(a, b), tuple(a, c)};
+//    k_tree_item<testClass> tree(edges, 4);
+//
+//    //insert
+//    // erase
+//    // union
+//}
+//
+//TEST(ktreeItem, neigh) {
 //    typedef tuple<testClass, testClass> tuple;
 //    testClass a(1, 'v');
-//    testClass b(1, 'v');
-//    testClass c(1, 'v');
+//    testClass b(2, 'y');
+//    testClass c(1000, 'x');
 //
-//    vector<tuple> edges = {tuple(a,a), tuple(b,a), tuple(c,b)};
-//    k_tree_extended<testClass> tree(edges, 4);
+//    vector<tuple> edges = {tuple(a,a), tuple(a, b), tuple(a, c)};
+//    k_tree_item<testClass> tree(edges, 4);
+//
+//    //neigh
+//    vector<testClass> neigh = tree.neigh(a);
+//    ASSERT_EQ(neigh.size(), 3);
+//    ASSERT_EQ(neigh[0], a);
+//    ASSERT_EQ(neigh[1], b);
+//    ASSERT_EQ(neigh[2], c);
+//    ASSERT_THROW(tree.neigh(testClass(5, 'p')),  logic_error);
+//}
+//
+//TEST(ktreeItem, adj) {
+//    typedef tuple<testClass, testClass> tuple;
+//    testClass a(1, 'v');
+//    testClass b(2, 'y');
+//    testClass c(1000, 'x');
+//
+//    vector<tuple> edges = {tuple(a,a), tuple(a, b), tuple(a, c)};
+//    k_tree_item<testClass> tree(edges, 4);
+//
+//    //adj
+//    ASSERT_TRUE(    tree.adj(a, b));
+//    ASSERT_FALSE(    tree.adj(c,a));
+//    ASSERT_THROW(tree.adj(a, testClass(5, 'p')),  logic_error);
+//}
+//
+//TEST(ktreeItem, unionOp) {
+//    typedef tuple<testClass, testClass> tuple;
+//    testClass a(1, 'v');
+//    testClass b(2, 'y');
+//    testClass c(1000, 'x');
+//
+//    vector<tuple> edges = {tuple(a,a), tuple(a, b), tuple(a, c)};
+//    k_tree_item<testClass> tree(edges, 4);
+//
+//    //adj
+//    ASSERT_TRUE(    tree.adj(a, b));
+//    ASSERT_FALSE(    tree.adj(c,a));
+//    ASSERT_THROW(tree.insert(testClass(5, 'p')),  logic_error);
 //}
 
 int main(int argc, char **argv)
