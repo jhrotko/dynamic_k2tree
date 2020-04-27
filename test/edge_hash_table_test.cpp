@@ -1,4 +1,5 @@
 #include "../include/edge_hash_table.hpp"
+#include "../include/edge.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
 
@@ -35,7 +36,7 @@ TEST(edgeHashTableInsert, insert)
     ASSERT_EQ(ht.find(5,6), 3);
 }
 
-TEST(edgeHashTableErase, eraseEdgeExist)
+TEST(edgeHashTableErase, eraseedgeExist)
 {
     vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
     edge_hash_table ht(elements);

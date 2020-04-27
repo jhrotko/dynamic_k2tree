@@ -1,16 +1,20 @@
 all:
 	cd include && g++ -std=c++17 *.hpp
 
+clean:
+	cd include && rm *.hpp.gch
+	cd test && rm adjacencyListTest && rm dk2treeTest && rm edgeHashTableTests && rm kExtendedTest
+
 tests_adj:
-	cd include && g++ -std=c++17 adjacency_list.hpp utils.hpp
+	cd include && g++ -std=c++17 AdjacencyList.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make adjacencyListTest && ./adjacencyListTest
 
 tests_edge:
-	cd include && g++ -std=c++17 edge_hash_table.hpp utils.hpp
+	cd include && g++ -std=c++17 EdgeHashTable.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
 
 tests_k_extended:
-	cd include && g++ -std=c++17 k_tree_extended.hpp utils.hpp
+	cd include && g++ -std=c++17 KTreeExtended.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make kExtendedTest && ./kExtendedTest
 
 tests_dk2tree:

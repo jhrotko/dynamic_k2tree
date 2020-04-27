@@ -68,7 +68,6 @@ public:
     // Returns the index of the index where the edge is.
     // Returns -1 in case it cannot find
     int find(int x, int y) {
-    //TODO: FIXME: improve access, without iterator
         h_table::const_iterator iterator = ht.find(edge(x, y));
         if (iterator == ht.end())
             return -1;
@@ -77,7 +76,7 @@ public:
 
     void erase(int x, int y)
     {
-        ht.erase(edge(x,y));
+        ht.erase(edge(x, y));
     }
 
     size_t size() {
