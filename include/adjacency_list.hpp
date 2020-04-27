@@ -11,7 +11,7 @@ using namespace std;
 
 class adjacency_list {
 private:
-    vector<adjEdge> vertices;
+    vector<AdjEdge> vertices;
     size_t n_elements = 0;
     size_t n_vertices;
 

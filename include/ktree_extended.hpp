@@ -16,18 +16,18 @@ template<uint8_t k = 2,
         typename t_bv = bit_vector,
         typename t_rank = typename t_bv::rank_1_type,
         typename l_rank = typename t_bv::rank_1_type>
-class k_tree_extended : public k2_tree<k, t_bv, t_rank, l_rank> {
+class ktree_extended : public k2_tree<k, t_bv, t_rank, l_rank> {
     typedef k2_tree<k, t_bv, t_rank, l_rank> k_tree;
 
 public:
-    k_tree_extended() : k_tree() {}
+    ktree_extended() : k_tree() {}
 
-    k_tree_extended(size_t n_vertices) : k_tree() {
+    ktree_extended(size_t n_vertices) : k_tree() {
         initialize(n_vertices);
     }
 
-    k_tree_extended(vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> edges,
-                    const size_type size) : k_tree(edges, size) {
+    ktree_extended(vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> edges,
+                   const size_type size) : k_tree(edges, size) {
         uint max_v = 0;
 
 
@@ -41,7 +41,7 @@ public:
         initialize(size);
     }
 
-    k_tree_extended(k_tree tree, const size_t n_vertices) : k_tree(tree) {
+    ktree_extended(k_tree tree, const size_t n_vertices) : k_tree(tree) {
         initialize(n_vertices);
     }
 
@@ -60,9 +60,9 @@ public:
         recursive_edge_iterator(pointerL, 0, 0, -1, -1, callback);
     }
 
-    k_tree_extended unionOp(k_tree &k_tree, uint n_vertices) {
+    ktree_extended unionOp(k_tree &k_tree, uint n_vertices) {
         k2_tree<2> res = k_tree.unionOp(*this);
-        return k_tree_extended(res, n_vertices);
+        return ktree_extended(res, n_vertices);
     }
 
     void set_level(vector<int> div_level_table) {
@@ -114,8 +114,8 @@ protected:
 //        typename t_bv = bit_vector,
 //        typename t_rank = typename t_bv::rank_1_type,
 //        typename l_rank = typename t_bv::rank_1_type>
-//class k_tree_item : public k_tree_extended<k, t_bv, t_rank, l_rank> {
-//    typedef k_tree_extended<k, t_bv, t_rank, l_rank> k_tree;
+//class k_tree_item : public ktree_extended<k, t_bv, t_rank, l_rank> {
+//    typedef ktree_extended<k, t_bv, t_rank, l_rank> k_tree;
 //
 //public:
 //    k_tree_item(vector<tuple<Item, Item>> edges) : k_tree() {

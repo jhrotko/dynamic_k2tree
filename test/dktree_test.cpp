@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "../include/dk_tree.hpp"
+#include "../include/dktree.hpp"
 
-typedef dynamic_k_tree::dk_tree<> dynamic_tree;
+typedef dynamic_k_tree::dktree<> dynamic_tree;
 
 TEST(dktreeCreate, createEmpty)
 {
@@ -119,15 +119,24 @@ TEST(dktreeDelete, listNeighbours)
 }
 
 
-//TEST(dktreeIterate, iterate)
-//{
-//    dynamic_tree tree(5);
-//    tree.insert(1, 2);
-//    tree.insert(1, 4);
-//    tree.insert(3, 0);
-//    tree.insert(3, 3);
+TEST(dktreeIterate, iterate)
+{
+    dynamic_tree tree(5);
+    tree.insert(1, 2);
+    tree.insert(1, 4);
+    tree.insert(3, 0);
+    tree.insert(3, 1);
+    tree.insert(3, 3);
 
-//}
+    cout << tree.first_container().n_elements << endl;
+    for (auto a: tree.first_container()) {
+        cout << a << endl;
+    }
+
+    for (auto it = tree.first_container().begin(); it != tree.first_container().end(); ++it) {
+        cout << *it << endl;
+    }
+}
 
 int main(int argc, char **argv)
 {

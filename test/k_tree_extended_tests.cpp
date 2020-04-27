@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include <tuple>
 #include <vector>
-#include "../include/k_tree_extended.hpp"
+#include "../include/ktree_extended.hpp"
 
 using namespace std;
 
-typedef k_tree_extended<2> k_tree;
+typedef ktree_extended<2> k_tree;
 TEST(ktreeExtended, createEmpty)
 {
     k_tree tree(2);
