@@ -24,35 +24,35 @@ public:
     }
 };
 
-class EdgeNode : public edge {
+class edge_node : public edge {
 public:
     int x, y, next, prev;
 
-    EdgeNode() {
+    edge_node() {
         x = -1;
         y = -1;
         next = -1;
         prev = -1;
     }
 
-    EdgeNode(int x, int y) : x(x), y(y) {
+    edge_node(int x, int y) : x(x), y(y) {
         next = -1;
         prev = -1;
     }
 
-    friend ostream &operator<<(ostream &os, EdgeNode const &e) {
+    friend ostream &operator<<(ostream &os, edge_node const &e) {
         os << e.next << "<- (" << edge(e.x, e.y) << ") ->" << e.prev << endl;
         return os;
     }
 };
 
-class AdjEdge {
+class edge_adj {
 public:
     int next = -1;
 
-    AdjEdge() {}
+    edge_adj() {}
 
-    friend ostream &operator<<(ostream &os, AdjEdge const &i) {
+    friend ostream &operator<<(ostream &os, edge_adj const &i) {
         os << "(" << i.next << ")" << endl;
         return os;
     }

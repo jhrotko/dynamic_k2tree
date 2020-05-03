@@ -1,17 +1,19 @@
 #include <gtest/gtest.h>
 #include "../include/dktree.hpp"
+#include <iostream>
 
-typedef dynamic_k_tree::dktree<> dynamic_tree;
+using d_tree =  dynamic_ktree::dktree<2, bit_vector>;
+using d_tree_it = dynamic_ktree::dk_edge_iterator<2, bit_vector>;
 
 TEST(dktreeCreate, createEmpty)
 {
-    dynamic_tree tree(2);
+    d_tree tree(2);
     ASSERT_EQ(tree.size(), 0);
 }
 
 TEST(dktreeAddLink, addLink0)
 {
-    dynamic_tree tree(2);
+    d_tree tree(2);
     tree.insert(0, 1);
 
     ASSERT_EQ(tree.size(), 1);
@@ -19,7 +21,7 @@ TEST(dktreeAddLink, addLink0)
 
 TEST(dktreeAddLink, addLink)
 {
-    dynamic_tree tree(5);
+    d_tree tree(5);
     tree.insert(1, 2);
     tree.insert(1, 4);
     tree.insert(3, 0);
@@ -29,7 +31,7 @@ TEST(dktreeAddLink, addLink)
 
 TEST(dktreeAddLink, addSameLink)
 {
-    dynamic_tree tree(6);
+    d_tree tree(6);
     tree.insert(1, 2);
     tree.insert(1, 2);
 
@@ -38,7 +40,7 @@ TEST(dktreeAddLink, addSameLink)
 
 TEST(dktreeContains, containsInC0)
 {
-    dynamic_tree tree(6);
+    d_tree tree(6);
     tree.insert(1, 2);
 
     ASSERT_TRUE(tree.contains(1, 2));
@@ -47,7 +49,7 @@ TEST(dktreeContains, containsInC0)
 
 TEST(dktreeContain, containsInCs)
 {
-    dynamic_tree tree(5);
+    d_tree tree(5);
     tree.insert(1, 2);
     tree.insert(1, 4);
     tree.insert(3, 0);
@@ -62,7 +64,7 @@ TEST(dktreeContain, containsInCs)
 
 TEST(dktreeDelete, deleteItemC0)
 {
-    dynamic_tree tree(5);
+    d_tree tree(5);
     tree.insert(1, 2);
     ASSERT_EQ(tree.size(), 1);
 
@@ -72,7 +74,7 @@ TEST(dktreeDelete, deleteItemC0)
 
 TEST(dktreeDelete, deleteItem)
 {
-    dynamic_tree tree(4);
+    d_tree tree(4);
     tree.insert(1,2);
     tree.insert(1,3);
     tree.insert(3,0);
@@ -101,7 +103,7 @@ TEST(dktreeDelete, deleteItem)
 
 TEST(dktreeDelete, listNeighbours)
 {
-    dynamic_tree tree(5);
+    d_tree tree(5);
     tree.insert(1, 2);
     tree.insert(1, 4);
     tree.insert(3, 0);
@@ -121,19 +123,19 @@ TEST(dktreeDelete, listNeighbours)
 
 TEST(dktreeIterate, iterate)
 {
-    dynamic_tree tree(5);
+    d_tree tree(10);
     tree.insert(1, 2);
-    tree.insert(1, 4);
-    tree.insert(3, 0);
-    tree.insert(3, 1);
-    tree.insert(3, 3);
 
-    cout << tree.first_container().n_elements << endl;
     for (auto a: tree.first_container()) {
-        cout << a << endl;
+        ASSERT_EQ(a.x, 1);
+        ASSERT_EQ(a.y, 2);
     }
 
-    for (auto it = tree.first_container().begin(); it != tree.first_container().end(); ++it) {
+    tree.insert(1, 4);
+    tree.insert(3, 0);
+
+    cout << "iterating" << endl;
+    for (d_tree_it it = tree.edge_begin(); it != tree.edge_end(); it++) {
         cout << *it << endl;
     }
 }
