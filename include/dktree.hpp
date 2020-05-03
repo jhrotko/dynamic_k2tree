@@ -1,5 +1,6 @@
-#ifndef __D_K2TREE__
-#define __D_K2TREE__
+#ifndef __D_K_TREE__
+#define __D_K_TREE__
+#define R 8
 
 #include <array>
 #include <memory>
@@ -7,30 +8,43 @@
 #include <unordered_map>
 #include <iostream>
 
-#include <sdsl/k2_tree.hpp>
-#include "utils.hpp"
+#include "edge.hpp"
 #include "edge_hash_table.hpp"
 #include "adjacency_list.hpp"
-#include "edge.hpp"
+#include <sdsl/k2_tree.hpp>
 #include "ktree_extended.hpp"
-
-#define R 8
+#include "utils.hpp"
+#include "dk_edge_iterator.hpp"
 
 using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
 
-namespace dynamic_k_tree {
+
+namespace dynamic_ktree {
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-
     class dktree {
-        typedef ktree_extended<k, t_bv, t_rank, l_rank> k_tree;
+        using k_tree = ktree_extended<k, t_bv, t_rank, l_rank>;
+
+    public:
+        dktree() {}
+        dktree(uint n_vertices) : n_vertices(n_vertices) {
+            C0 = Container_0(n_vertices);
+            max_r = 0;
+            uint aux = log(n_vertices) / log(k);
+            max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
+            for (size_t i = 0; i <= max_level; i++)
+                div_level_table.push_back(pow(k, max_level - i));
+            for (size_t i = 0; i < R; i++) {
+                // shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
+                k_collection[i] = nullptr;
+            }
+        }
 
         class Container_0 {
-
         public:
             Container_0() {}
 
@@ -62,10 +76,9 @@ namespace dynamic_k_tree {
             }
 
             void insert(uint x, uint y) {
-                cout << "inserting " << x << "  " << y << endl;
                 if (edge_lst.find(x, y) == -1) {
 
-                    EdgeNode newNode(x, y);
+                    edge_node newNode(x, y);
                     if (adj_lst[x] != -1) {
                         newNode.next = adj_lst[x];
                         elements[adj_lst[x]].prev = n_elements;
@@ -101,40 +114,35 @@ namespace dynamic_k_tree {
                         neighbours.push_back(elements[index].y);
             }
 
-            vector<EdgeNode>::iterator begin() { return elements.begin(); }
-            vector<EdgeNode>::iterator end() { return elements.end(); }
+            vector<edge_node>::const_iterator begin() { return elements.begin(); }
+            vector<edge_node>::const_iterator end() { return elements.end(); }
 
-//        protected:
             edge_hash_table edge_lst;
-            vector<EdgeNode> elements;
+            vector<edge_node> elements;
             int n_elements;
             vector<uint> edge_free; //should go inside hash_table
             adjacency_list adj_lst;
         };
 
-    public:
-        dktree(uint n_vertices) : n_vertices(n_vertices) {
-            C0 = Container_0(n_vertices);
-            max_r = 0;
-            uint aux = log(n_vertices) / log(k);
-            max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
-            for (size_t i = 0; i <= max_level; i++)
-                div_level_table.push_back(pow(k, max_level - i));
-            for (size_t i = 0; i < R; i++) {
-                // shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
-                k_collection[i] = nullptr;
-            }
-        }
+    private:
+        uint max_level;
+        uint max_r;
+        uint n_vertices;
+        uint n_total_edges = 0;
 
+        Container_0 C0;
+        array<shared_ptr<k_tree>, R> k_collection;
+        vector<int> div_level_table;
+
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_begin;
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_end;
+    public:
         size_t size() const {
             return n_total_edges;
         }
-        Container_0 first_container() const
-        {
-            return C0;
-        }
 
-        void insert(uint x, uint y) {
+        void insert(uint x, uint y)
+        {
             if (contains(x, y))
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
@@ -185,7 +193,8 @@ namespace dynamic_k_tree {
             n_total_edges++;
         }
 
-        bool contains(int x, int y) {
+        bool contains(int x, int y)
+        {
             if (C0.edge_lst.find(x, y) != -1)
                 return true;
 
@@ -196,7 +205,8 @@ namespace dynamic_k_tree {
             return false;
         }
 
-        void erase(uint32 x, uint32 y) {
+        void erase(uint32 x, uint32 y)
+        {
             if (C0.erase(x, y)) n_total_edges--;
             else {
                 uint n_total_marked = 0;
@@ -243,7 +253,8 @@ namespace dynamic_k_tree {
             }
         }
 
-        vector<int> list_neighbour(int x) {
+        vector<int> list_neighbour(int x)
+        {
             vector<int> neighbours;
             C0.list_neighbours(x, neighbours);
 
@@ -255,17 +266,23 @@ namespace dynamic_k_tree {
             return neighbours;
         }
 
-//        array<shared_ptr<k_tree, R>>::iterator begin_k_collection() { return k_collection.begin(); }
 
-    private:
-        uint max_level;
-        uint max_r;
-        uint n_vertices;
-        uint n_total_edges = 0;
+        Container_0 first_container() const
+        {
+            return C0;
+        }
 
-        Container_0 C0;
-        array<shared_ptr<k_tree>, R> k_collection;
-        vector<int> div_level_table;
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_begin()
+        {
+            it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection, n_total_edges);
+            it_end = it_begin.end();
+            return it_begin;
+        }
+
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_end()
+        {
+            return it_end;
+        }
     };
 }
 

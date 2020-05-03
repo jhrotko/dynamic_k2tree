@@ -13,8 +13,8 @@
 
 using namespace std;
 
-typedef unsigned int uint32;
-typedef unsigned long uint64;
+using uint32 = unsigned int;
+using  uint64 = unsigned long;
 
 class edge_hash_table {
 private:
