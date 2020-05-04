@@ -42,6 +42,8 @@ namespace dynamic_ktree {
                 // shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
                 k_collection[i] = nullptr;
             }
+            it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection);
+            it_end = it_begin.end();
         }
 
         class Container_0 {
@@ -76,15 +78,14 @@ namespace dynamic_ktree {
             }
 
             void insert(uint x, uint y) {
-                if (edge_lst.find(x, y) == -1) {
-
+                if (edge_lst.find(x, y) == -1)
+                {
                     edge_node newNode(x, y);
                     if (adj_lst[x] != -1) {
                         newNode.next = adj_lst[x];
                         elements[adj_lst[x]].prev = n_elements;
                         adj_lst.insert(x, n_elements);
                     }
-
                     edge_lst.insert(x, y, n_elements);
                     elements[n_elements] = newNode;
                     n_elements++;
@@ -174,11 +175,9 @@ namespace dynamic_ktree {
             const tuple<idx_type, idx_type> e(x, y);
             free_edges.push_back(e);
 
-            assert(free_edges.size() == C0.n_elements + 1);
             C0.clean(n_vertices);
             if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
                 max_level--;
-
             shared_ptr<k_tree> tmp = make_shared<k_tree>(free_edges, n_vertices);
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
@@ -274,13 +273,13 @@ namespace dynamic_ktree {
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_begin()
         {
-            it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection, n_total_edges);
-            it_end = it_begin.end();
+            it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection);
             return it_begin;
         }
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_end()
         {
+            it_end = it_begin.end();
             return it_end;
         }
     };

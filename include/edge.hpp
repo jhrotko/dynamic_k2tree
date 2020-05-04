@@ -19,7 +19,7 @@ public:
     }
 
     friend ostream &operator<<(ostream &os, edge const &e) {
-        os << "(" << e.x << ", " << e.y << ")" << endl;
+        os << "(" << e.x << ", " << e.y << ")";
         return os;
     }
 };
@@ -40,8 +40,18 @@ public:
         prev = -1;
     }
 
+    bool operator==(const edge_node &rhs) const
+    {
+        return x == rhs.x && y == rhs.y && next == rhs.next && prev == rhs.prev;
+    }
+
+    bool operator!=(const edge_node &rhs) const
+    {
+        return !(*this == rhs);
+    }
+
     friend ostream &operator<<(ostream &os, edge_node const &e) {
-        os << e.next << "<- (" << edge(e.x, e.y) << ") ->" << e.prev << endl;
+        os << e.next << "<- " << edge(e.x, e.y) << " ->" << e.prev << endl;
         return os;
     }
 };
@@ -53,7 +63,7 @@ public:
     edge_adj() {}
 
     friend ostream &operator<<(ostream &os, edge_adj const &i) {
-        os << "(" << i.next << ")" << endl;
+        os << "(" << i.next << ")";
         return os;
     }
 };

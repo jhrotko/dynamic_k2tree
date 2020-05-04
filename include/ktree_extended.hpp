@@ -17,7 +17,7 @@ template<uint8_t k = 2,
         typename t_rank = typename t_bv::rank_1_type,
         typename l_rank = typename t_bv::rank_1_type>
 class ktree_extended : public k2_tree<k, t_bv, t_rank, l_rank> {
-    typedef k2_tree<k, t_bv, t_rank, l_rank> k_tree;
+    using  k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
 
 public:
     ktree_extended() : k_tree() {}
@@ -29,8 +29,7 @@ public:
     ktree_extended(vector<tuple<k2_tree_ns::idx_type, k2_tree_ns::idx_type>> edges,
                    const size_type size) : k_tree(edges, size) {
         uint max_v = 0;
-
-
+        //FIXME: LOSES PERFORMANCE
         for (size_t i = 0; i < edges.size(); i++) {
             max_v = max(max_v, get<0>(edges[i]));
             max_v = max(max_v, get<1>(edges[i]));

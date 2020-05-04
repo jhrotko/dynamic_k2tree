@@ -11,6 +11,7 @@ TEST(dktreeCreate, createEmpty)
     ASSERT_EQ(tree.size(), 0);
 }
 
+
 TEST(dktreeAddLink, addLink0)
 {
     d_tree tree(2);
@@ -61,6 +62,7 @@ TEST(dktreeContain, containsInCs)
     ASSERT_TRUE(tree.contains(1, 3));
     ASSERT_FALSE(tree.contains(0, 0));
 }
+
 
 TEST(dktreeDelete, deleteItemC0)
 {
@@ -130,14 +132,14 @@ TEST(dktreeIterate, iterate)
         ASSERT_EQ(a.x, 1);
         ASSERT_EQ(a.y, 2);
     }
-
     tree.insert(1, 4);
     tree.insert(3, 0);
 
-    cout << "iterating" << endl;
+    uint i = 0;
     for (d_tree_it it = tree.edge_begin(); it != tree.edge_end(); it++) {
-        cout << *it << endl;
+        i++;
     }
+    ASSERT_EQ(i, tree.size());
 }
 
 int main(int argc, char **argv)
