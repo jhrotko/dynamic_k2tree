@@ -34,12 +34,7 @@ namespace dynamic_ktree {
         dktree(uint n_vertices) : n_vertices(n_vertices) {
             C0 = Container_0(n_vertices);
             max_r = 0;
-            uint aux = log(n_vertices) / log(k);
-            max_level = floor(aux) == aux ? floor(aux) - 1 : floor(aux);
-            for (size_t i = 0; i <= max_level; i++)
-                div_level_table.push_back(pow(k, max_level - i));
             for (size_t i = 0; i < R; i++) {
-                // shared_ptr<k2_tree_extended> p(new k2_tree_extended(n_vertices));
                 k_collection[i] = nullptr;
             }
             it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection);
@@ -124,14 +119,12 @@ namespace dynamic_ktree {
         };
 
     private:
-        uint max_level;
         uint max_r;
         uint n_vertices;
         uint n_total_edges = 0;
 
         Container_0 C0;
         array<shared_ptr<k_tree>, R> k_collection;
-        vector<int> div_level_table; //FIXME
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> it_begin, it_end;
     public:
@@ -153,7 +146,7 @@ namespace dynamic_ktree {
             size_t i = 0;
             for (; i < R; i++) {
                 if (k_collection[i] != nullptr)
-                    max_size += k_collection[i]->get_number_edges(); //TODO: rename me to size
+                    max_size += k_collection[i]->get_number_edges();
                 if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
                     break;
             }
@@ -173,14 +166,11 @@ namespace dynamic_ktree {
             free_edges.push_back(e);
 
             C0.clean(n_vertices);
-            if (floor(log(n_vertices) / log(k)) == (log(n_vertices) / log(k)))
-                max_level--;
             shared_ptr<k_tree> tmp = make_shared<k_tree>(free_edges, n_vertices);
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
                     k_tree aux = tmp->unionOp(*k_collection[j], n_vertices);
                     tmp = make_shared<k_tree>(move(aux));
-                    tmp->set_level(div_level_table);
                 }
                 k_collection[j] = nullptr;
             }
@@ -208,7 +198,6 @@ namespace dynamic_ktree {
                 for (size_t l = 0; l <= max_r; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                         n_total_edges--;
-                        // cout << "n_total_edges " << n_total_edges << endl;
 
                         uint k_marked_edges = k_collection[l]->get_marked_edges();
                         n_total_marked += k_marked_edges;
@@ -223,27 +212,11 @@ namespace dynamic_ktree {
 
                 if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                     /* Rebuild data structure... */
-//                    array<shared_ptr<k_tree>, R> old_k_collection = k_collection;
-//                    uint old_max_r = max_r;
                     max_r = 0;
-
                     for (size_t i = 0; i < R; i++) {
                         shared_ptr<k_tree> p(new k_tree(n_vertices));
                         k_collection[i] = p;
                     }
-//                    //TODO: DUVIDA O QUE E QUE ESTA PARTE DO CODIGO ESTA MESMO A FAZER?
-//                    // ITERA E DEPOIS APAGA?
-//                    n_total_edges = C0.adj_lst.size();
-//                    for (size_t l = 0; l <= old_max_r; l++) {
-//                        if (old_k_collection[l] != nullptr && old_k_collection[l] != 0) {
-//                            function<int(uint, uint)> func = [this](uint x, uint y) {
-//                                insert(x, y);
-//                                return 0;
-//                            };
-//                            old_k_collection[l]->edge_iterator(func);
-//                            old_k_collection[l] = nullptr;
-//                        }
-//                    }
                 }
             }
         }

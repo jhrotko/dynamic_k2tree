@@ -7,7 +7,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 # Link edgeHashTableTests with what we want to test and the GTest and pthread library
 add_executable(edgeHashTableTests edge_hash_table_test.cpp)
 add_executable(adjacencyListTest adjacency_list_test.cpp)
-add_executable(kExtendedTest k_tree_extended_tests.cpp)
+add_executable(kExtendedTest ktree_extended_tests.cpp)
 add_executable(dk2treeTest dktree_test.cpp)
 
 target_link_libraries(edgeHashTableTests ${GTEST_LIBRARIES} pthread)
