@@ -43,7 +43,6 @@ namespace dynamic_ktree {
                 k_collection[i] = nullptr;
             }
             it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection);
-            it_end = it_begin.end();
         }
 
         class Container_0 {
@@ -68,7 +67,6 @@ namespace dynamic_ktree {
                 clean_free_lst();
                 adj_lst.clear();
                 elements.clear();
-                elements.resize(MAXSZ(n_vertices, 0));
                 n_elements = 0;
             }
 
@@ -133,10 +131,9 @@ namespace dynamic_ktree {
 
         Container_0 C0;
         array<shared_ptr<k_tree>, R> k_collection;
-        vector<int> div_level_table;
+        vector<int> div_level_table; //FIXME
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_begin;
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_end;
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_begin, it_end;
     public:
         size_t size() const {
             return n_total_edges;
@@ -187,7 +184,6 @@ namespace dynamic_ktree {
                 }
                 k_collection[j] = nullptr;
             }
-            assert(k_collection[i] == nullptr);
             k_collection[i] = tmp;
             n_total_edges++;
         }
@@ -227,27 +223,27 @@ namespace dynamic_ktree {
 
                 if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                     /* Rebuild data structure... */
-                    array<shared_ptr<k_tree>, R> old_k_collection = k_collection;
-                    uint old_max_r = max_r;
+//                    array<shared_ptr<k_tree>, R> old_k_collection = k_collection;
+//                    uint old_max_r = max_r;
                     max_r = 0;
 
                     for (size_t i = 0; i < R; i++) {
                         shared_ptr<k_tree> p(new k_tree(n_vertices));
                         k_collection[i] = p;
                     }
-                    //TODO: DUVIDA O QUE E QUE ESTA PARTE DO CODIGO ESTA MESMO A FAZER?
-                    // ITERA E DEPOIS APAGA?
-                    n_total_edges = C0.adj_lst.size();
-                    for (size_t l = 0; l <= old_max_r; l++) {
-                        if (old_k_collection[l] != nullptr && old_k_collection[l] != 0) {
-                            function<int(uint, uint)> func = [this](uint x, uint y) {
-                                insert(x, y);
-                                return 0;
-                            };
-                            old_k_collection[l]->edge_iterator(func);
-                            old_k_collection[l] = nullptr;
-                        }
-                    }
+//                    //TODO: DUVIDA O QUE E QUE ESTA PARTE DO CODIGO ESTA MESMO A FAZER?
+//                    // ITERA E DEPOIS APAGA?
+//                    n_total_edges = C0.adj_lst.size();
+//                    for (size_t l = 0; l <= old_max_r; l++) {
+//                        if (old_k_collection[l] != nullptr && old_k_collection[l] != 0) {
+//                            function<int(uint, uint)> func = [this](uint x, uint y) {
+//                                insert(x, y);
+//                                return 0;
+//                            };
+//                            old_k_collection[l]->edge_iterator(func);
+//                            old_k_collection[l] = nullptr;
+//                        }
+//                    }
                 }
             }
         }

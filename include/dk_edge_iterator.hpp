@@ -53,16 +53,38 @@ namespace dynamic_ktree {
         using reference = dktree_edge &;
         using iterator_category = forward_iterator_tag;
 
-        dk_edge_iterator() = default;
+        dk_edge_iterator() {
+            _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+        }
 
-        dk_edge_iterator(const vector<edge_node> &C0, const array<shared_ptr<k_tree>, R> &k_tree_array) :
-                _data_C0(&C0), _data_k_collection(&k_tree_array) {
-            _data_C0_curr = _data_C0->begin();
-            _ptr = _convert_C0_edge(_data_C0_curr);
+        dk_edge_iterator(const vector<edge_node> &C0, const array<shared_ptr<k_tree>, R> &k_tree_array) {
+            //Initialize curr pointers
+            _data_C0 = &C0;
+            _data_k_collection = &k_tree_array;
+
             for (int i = 0; i < _data_k_collection->size(); ++i)
                 if ((*_data_k_collection)[i] != nullptr)
                     _data_k_collection_curr[i] = (*_data_k_collection)[i]->edge_begin();
 
+            if (_data_C0->size() > 0) {
+                distance_C0 = 0;
+                _ptr = _convert_C0_edge(_data_C0->begin());
+            } else {
+                distance_C0 = _data_C0->size();
+                bool initialized = false;
+                for (int i = 0; i < R; ++i) {
+                    if ((*_data_k_collection)[i] != nullptr) {
+                        _ptr = _convert_k_collection_edge(_data_k_collection_curr[i]);
+                        initialized = true;
+                        break;
+                    }
+                }
+                if (!initialized) {
+                    //begin == end
+                    _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+                    distance_C0 = -1;
+                }
+            }
         }
 
         dk_edge_iterator(dk_edge_iterator<k, t_bv, t_rank, l_rank> &it) {
@@ -77,72 +99,91 @@ namespace dynamic_ktree {
             cout << "_data_CO" << endl;
             for (auto a: *_data_C0)
                 cout << a << " ";
-            cout << "_data_k_collection" << endl;
+            cout << "_data_k_collection " << endl;
             for (int i = 0; i < _data_k_collection->size(); ++i) {
+                cout << "ktree " << i << ": ";
                 if ((*_data_k_collection)[i] != nullptr)
-                    cout << (*_data_k_collection)[i]->get_number_edges() << " ";
+                    cout << (*_data_k_collection)[i]->get_number_edges() << endl;
                 else
-                    cout << "0 ";
+                    cout << "0 " << endl;
+
             }
             cout << endl;
         }
+
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> &operator=(const dk_edge_iterator<k, t_bv, t_rank, l_rank> &other) {
             if (this != &other) {
                 this->_data_C0 = other._data_C0;
                 this->_data_k_collection = other._data_k_collection;
-
-                this->_ptr = other._ptr;
                 this->_data_k_collection_curr = other._data_k_collection_curr;
-                copy(other._data_k_collection_curr.begin(), other._data_k_collection_curr.end(),
-                     this->_data_k_collection_curr.begin());
-                this->distance_C0 = other.distance_C0; //FIXME:
+                this->_ptr = other._ptr;
+                this->distance_C0 = other.distance_C0;
             }
             return *this;
         }
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> &operator++() {
-            if (distance_C0 <= _data_C0->size()) {
+            if (distance_C0 < _data_C0->size()) {
                 distance_C0++;
                 if (distance_C0 < _data_C0->size())
                     _ptr = _convert_C0_edge(next(_data_C0->begin(), distance_C0));
                 else
                     for (int i = 0; i < R; i++) {
-                        if ((*_data_k_collection)[i] != nullptr)
+                        if ((*_data_k_collection)[i] != nullptr) {
+                            assert(_data_k_collection_curr[i] == (*_data_k_collection)[i]->edge_begin());
                             _ptr = _convert_k_collection_edge(_data_k_collection_curr[i]);
+                            break;
+                        }
                     }
             } else
-                increment();
-            return *this;
-        }
-
-        void increment() {
-            for (int i = 0; i < R; i++) {
-                if ((*_data_k_collection)[i] != nullptr &&
-                    _data_k_collection_curr[i] != (*_data_k_collection)[i]->edge_end()) {
-                    _data_k_collection_curr[i]++;
-                    _ptr = _convert_k_collection_edge(_data_k_collection_curr[i]);
+                for (int i = 0; i < R; i++) {
+                    if ((*_data_k_collection)[i] != nullptr &&
+                        _data_k_collection_curr[i] != (*_data_k_collection)[i]->edge_end()) {
+                        _data_k_collection_curr[i]++;
+                        if (_data_k_collection_curr[i] == (*_data_k_collection)[i]->edge_end()) {
+                            for (int j = i + 1; j < R; j++) {
+                                if ((*_data_k_collection)[j] != nullptr &&
+                                    _data_k_collection_curr[j] != (*_data_k_collection)[j]->edge_end()) {
+                                    _ptr = _convert_k_collection_edge(_data_k_collection_curr[j]);
+                                    return *this;
+                                }
+                            }
+                        }
+                        _ptr = _convert_k_collection_edge(_data_k_collection_curr[i]);
+                        break;
+                    }
                 }
-            }
+
+            if (is_end())
+                _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+            return *this;
         }
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> &operator++(int) {
             dk_edge_iterator<k, t_bv, t_rank, l_rank> *tmp = new dk_edge_iterator<k, t_bv, t_rank, l_rank>(
                     *this); // copy
-            operator++(); // pre-increment
+            if (*this != end())
+                operator++(); // pre-increment
             return *tmp;
         }
 
+        friend void
+        swap(dk_edge_iterator<k, t_bv, t_rank, l_rank> &rhs, dk_edge_iterator<k, t_bv, t_rank, l_rank> &lhs) {
+            if (lhs != rhs) {
+                std::swap(lhs._data_C0, rhs._data_C0);
+                std::swap(lhs._data_k_collection, rhs._data_k_collection);
+                std::swap(lhs._ptr, rhs._ptr);
+                std::swap(lhs._data_C0_curr, rhs._data_C0_curr);
+                std::swap(lhs.distance_C0, rhs.distance_C0);
+                std::swap(lhs._data_k_collection_curr, rhs._data_k_collection_curr);
+            }
+        }
+
         dk_edge_iterator<k, t_bv, t_rank, l_rank> &end() {
-            dk_edge_iterator<k, t_bv, t_rank, l_rank> *tmp;
-            size_t j = -1;
-            for (uint i = 0; i < R; ++i)
-                if ((*_data_k_collection)[i] != nullptr)
-                    j = i;
-            if (j != -1)
-                tmp = _convert_k_collection_edge_iterator((*_data_k_collection)[j]->edge_end(), j);
-            else
-                tmp = _convert_C0_iterator(_data_C0->end());
+            dk_edge_iterator<k, t_bv, t_rank, l_rank> *tmp = new dk_edge_iterator<k, t_bv, t_rank, l_rank>(
+                    *this);
+            tmp->_ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
             return *tmp;
         }
 
@@ -155,37 +196,42 @@ namespace dynamic_ktree {
         }
 
     private:
-        pointer _convert_C0_edge(vector<edge_node>::const_iterator it) {
-            return new dktree_edge(it->x, it->y);
+        bool is_end() {
+            if (*_ptr == dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE))
+                return true;
+            int containers = 0;
+            int end_containers = 0;
+            for (int j = 0; j < R; ++j) {
+                if ((*_data_k_collection)[j] != nullptr) {
+                    containers++;
+                    if ((_data_k_collection_curr)[j] == (*_data_k_collection)[j]->edge_end()) {
+                        end_containers++;
+                    }
+                }
+            }
+            if (containers == 0) {
+                return _data_C0_curr == _data_C0->end();
+            }
+            return containers == end_containers;
         }
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> *_convert_C0_iterator(vector<edge_node>::const_iterator it) {
-            dk_edge_iterator<k, t_bv, t_rank, l_rank> *new_it = new dk_edge_iterator<k, t_bv, t_rank, l_rank>(*this);
-            new_it->_ptr = _convert_C0_edge(it);
-            new_it->_data_C0_curr = it;
-            return new_it;
+        pointer _convert_C0_edge(vector<edge_node>::const_iterator it) {
+            return new dktree_edge(it->x, it->y);
         }
 
         pointer _convert_k_collection_edge(edge_iterator<k, t_bv, t_rank> &it) {
             return new dktree_edge(*it);
         }
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> *
-        _convert_k_collection_edge_iterator(edge_iterator<k, t_bv, t_rank> it, uint i) {
-            dk_edge_iterator<k, t_bv, t_rank, l_rank> *new_it = new dk_edge_iterator<k, t_bv, t_rank, l_rank>(*this);
-            new_it->_ptr = _convert_k_collection_edge(it);
-            new_it->_data_k_collection_curr[i] = it;
-            return new_it;
-        }
-
         //container
         const vector<edge_node> *_data_C0;
         const array<shared_ptr<k_tree>, R> *_data_k_collection;
+        const idx_type  MAX_SIZE_EDGE = 9999999;
 
         //state
         pointer _ptr;
         vector<edge_node>::const_iterator _data_C0_curr;
-        uint distance_C0 = 0;
+        int distance_C0 = -1;
         array<edge_iterator<k, t_bv, t_rank>, R> _data_k_collection_curr;
     };
 }
