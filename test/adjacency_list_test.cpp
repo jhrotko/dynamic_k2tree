@@ -1,4 +1,4 @@
-#include "../include/adjacency_list.hpp"
+#include "../include/dktree/adjacency_list.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
 
@@ -52,7 +52,7 @@ TEST(adjList, clear)
 
     adj_lst.insert(4,2);
     adj_lst.insert(3,1);
-//    adj_lst.insert(3,0);
+//    adj_lst.add_edge(3,0);
     ASSERT_EQ(adj_lst.size(), 2);
     adj_lst.clear();
     ASSERT_EQ(adj_lst.size(), 0);

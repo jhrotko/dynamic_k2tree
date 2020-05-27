@@ -15,6 +15,7 @@
 #include "ktree_extended.hpp"
 #include "utils.hpp"
 #include "dk_edge_iterator.hpp"
+#include "../graph/Graph.hpp"
 
 using namespace sdsl;
 using namespace std;
@@ -26,7 +27,8 @@ namespace dynamic_ktree {
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class dktree {
+    class dktree: public Graph {
+
         using k_tree = ktree_extended<k, t_bv, t_rank, l_rank>;
 
     public:
@@ -128,11 +130,11 @@ namespace dynamic_ktree {
 
         dk_edge_iterator<k, t_bv, t_rank, l_rank> it_begin, it_end;
     public:
-        size_t size() const {
+        virtual size_t num_edges() const {
             return n_total_edges;
         }
 
-        void insert(uint x, uint y)
+        virtual void add_edge(uint x, uint y)
         {
             if (contains(x, y))
                 return;
@@ -178,7 +180,7 @@ namespace dynamic_ktree {
             n_total_edges++;
         }
 
-        bool contains(int x, int y)
+        virtual bool contains(uint x, uint y)
         {
             if (C0.edge_lst.find(x, y) != -1)
                 return true;
@@ -190,7 +192,7 @@ namespace dynamic_ktree {
             return false;
         }
 
-        void erase(uint32 x, uint32 y)
+        virtual void del_edge(uint32 x, uint32 y)
         {
             if (C0.erase(x, y)) n_total_edges--;
             else {
@@ -221,7 +223,7 @@ namespace dynamic_ktree {
             }
         }
 
-        vector<int> list_neighbour(int x)
+        virtual vector<int> list_neighbour(uint x)
         {
             vector<int> neighbours;
             C0.list_neighbours(x, neighbours);
