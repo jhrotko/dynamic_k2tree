@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <tuple>
 #include <vector>
-#include "../include/ktree_extended.hpp"
+#include "../include/dktree/ktree_extended.hpp"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
-#include "../include/edge_hash_table.hpp"
-#include "../include/edge.hpp"
+#include "../include/dktree/edge_hash_table.hpp"
+#include "../include/dktree/edge.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
 

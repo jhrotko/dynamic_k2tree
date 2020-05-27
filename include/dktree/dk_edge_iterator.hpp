@@ -57,6 +57,10 @@ namespace dynamic_ktree {
             _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
         }
 
+        ~dk_edge_iterator() {
+
+        }
+
         dk_edge_iterator(const vector<edge_node> &C0, const array<shared_ptr<k_tree>, R> &k_tree_array) {
             //Initialize curr pointers
             _data_C0 = &C0;

@@ -9,13 +9,17 @@ add_executable(edgeHashTableTests edge_hash_table_test.cpp)
 add_executable(adjacencyListTest adjacency_list_test.cpp)
 add_executable(kExtendedTest ktree_extended_tests.cpp)
 add_executable(dk2treeTest dktree_test.cpp)
+add_executable(algorithmTest algorithm_test.cpp)
 
 target_link_libraries(edgeHashTableTests ${GTEST_LIBRARIES} pthread)
 target_link_libraries(adjacencyListTest ${GTEST_LIBRARIES} pthread)
 target_link_libraries(kExtendedTest ${GTEST_LIBRARIES} pthread sdsl)
 target_link_libraries(dk2treeTest ${GTEST_LIBRARIES} pthread sdsl)
+target_link_libraries(algorithmTest ${GTEST_LIBRARIES} pthread sdsl)
+
 
 add_test(NAME t1 COMMAND edgeHashTableTests)
 add_test(NAME t2 COMMAND adjacencyListTest)
 add_test(NAME t3 COMMAND kExtendedTest)
 add_test(NAME t4 COMMAND dk2treeTest)
+add_test(NAME t5 COMMAND algorithmTest)

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../include/dktree.hpp"
+#include "../include/dktree/dktree.hpp"
 #include <iostream>
 
 using d_tree = dynamic_ktree::dktree<2, bit_vector>;
@@ -7,37 +7,37 @@ using d_tree_it = dynamic_ktree::dk_edge_iterator<2, bit_vector>;
 
 TEST(dktreeCreate, createEmpty) {
     d_tree tree(2);
-    ASSERT_EQ(tree.size(), 0);
+    ASSERT_EQ(tree.num_edges(), 0);
 }
 
 
 TEST(dktreeAddLink, addLink0) {
     d_tree tree(2);
-    tree.insert(0, 1);
+    tree.add_edge(0, 1);
 
-    ASSERT_EQ(tree.size(), 1);
+    ASSERT_EQ(tree.num_edges(), 1);
 }
 
 TEST(dktreeAddLink, addLink) {
     d_tree tree(5);
-    tree.insert(1, 2);
-    tree.insert(1, 4);
-    tree.insert(3, 0);
-    tree.insert(1, 3);
-    ASSERT_EQ(tree.size(), 4);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 4);
+    tree.add_edge(3, 0);
+    tree.add_edge(1, 3);
+    ASSERT_EQ(tree.num_edges(), 4);
 }
 
 TEST(dktreeAddLink, addSameLink) {
     d_tree tree(6);
-    tree.insert(1, 2);
-    tree.insert(1, 2);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 2);
 
-    ASSERT_EQ(tree.size(), 1);
+    ASSERT_EQ(tree.num_edges(), 1);
 }
 
 TEST(dktreeContains, containsInC0) {
     d_tree tree(6);
-    tree.insert(1, 2);
+    tree.add_edge(1, 2);
 
     ASSERT_TRUE(tree.contains(1, 2));
     ASSERT_FALSE(tree.contains(3, 4));
@@ -45,10 +45,10 @@ TEST(dktreeContains, containsInC0) {
 
 TEST(dktreeContain, containsInCs) {
     d_tree tree(5);
-    tree.insert(1, 2);
-    tree.insert(1, 4);
-    tree.insert(3, 0);
-    tree.insert(1, 3);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 4);
+    tree.add_edge(3, 0);
+    tree.add_edge(1, 3);
 
     ASSERT_TRUE(tree.contains(1, 2));
     ASSERT_TRUE(tree.contains(1, 4));
@@ -60,47 +60,47 @@ TEST(dktreeContain, containsInCs) {
 
 TEST(dktreeDelete, deleteItemC0) {
     d_tree tree(5);
-    tree.insert(1, 2);
-    ASSERT_EQ(tree.size(), 1);
+    tree.add_edge(1, 2);
+    ASSERT_EQ(tree.num_edges(), 1);
 
-    tree.erase(1, 2);
-    ASSERT_EQ(tree.size(), 0);
+    tree.del_edge(1, 2);
+    ASSERT_EQ(tree.num_edges(), 0);
 }
 
 TEST(dktreeDelete, deleteItem) {
     d_tree tree(4);
-    tree.insert(1, 2);
-    tree.insert(1, 3);
-    tree.insert(3, 0);
-    tree.insert(2, 3);
-    tree.insert(3, 3);
-    ASSERT_EQ(tree.size(), 5);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 3);
+    tree.add_edge(3, 0);
+    tree.add_edge(2, 3);
+    tree.add_edge(3, 3);
+    ASSERT_EQ(tree.num_edges(), 5);
 
-    tree.erase(3, 3);
-    ASSERT_EQ(tree.size(), 4);
+    tree.del_edge(3, 3);
+    ASSERT_EQ(tree.num_edges(), 4);
 
-    tree.erase(1, 3);
-    ASSERT_EQ(tree.size(), 3);
+    tree.del_edge(1, 3);
+    ASSERT_EQ(tree.num_edges(), 3);
 
-    tree.erase(3, 0);
-    ASSERT_EQ(tree.size(), 2);
+    tree.del_edge(3, 0);
+    ASSERT_EQ(tree.num_edges(), 2);
 
-    tree.erase(1, 2);
-    ASSERT_EQ(tree.size(), 1);
+    tree.del_edge(1, 2);
+    ASSERT_EQ(tree.num_edges(), 1);
 
-    tree.erase(1, 2);
-    ASSERT_EQ(tree.size(), 1);
+    tree.del_edge(1, 2);
+    ASSERT_EQ(tree.num_edges(), 1);
 
-    tree.erase(2, 3);
-    ASSERT_EQ(tree.size(), 0);
+    tree.del_edge(2, 3);
+    ASSERT_EQ(tree.num_edges(), 0);
 }
 
 TEST(dktreeDelete, listNeighbours) {
     d_tree tree(5);
-    tree.insert(1, 2);
-    tree.insert(1, 4);
-    tree.insert(3, 0);
-    tree.insert(3, 3);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 4);
+    tree.add_edge(3, 0);
+    tree.add_edge(3, 3);
 
     std::vector<int> neighbours = tree.list_neighbour(1);
     ASSERT_EQ(neighbours.size(), 2);
@@ -121,16 +121,16 @@ TEST(dktreeIterate, iterate_empty) {
 
 TEST(dktreeIterate, iterate) {
     d_tree tree(10);
-    tree.insert(1, 2);
-    tree.insert(1, 4);
-    tree.insert(3, 1);
-    tree.insert(3, 4);
-    tree.insert(3, 9);
-    tree.insert(5, 0);
-    tree.insert(5, 1);
-    tree.insert(6, 0);
-    tree.insert(7, 0);
-    tree.insert(9, 0);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 4);
+    tree.add_edge(3, 1);
+    tree.add_edge(3, 4);
+    tree.add_edge(3, 9);
+    tree.add_edge(5, 0);
+    tree.add_edge(5, 1);
+    tree.add_edge(6, 0);
+    tree.add_edge(7, 0);
+    tree.add_edge(9, 0);
 
     //increment operation
     auto it = tree.edge_begin();
