@@ -1,7 +1,3 @@
-//
-// Created by joana on 26/05/20.
-//
-
 #ifndef IMPLEMENTATION_ALGORITHM_HPP
 #define IMPLEMENTATION_ALGORITHM_HPP
 

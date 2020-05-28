@@ -1,11 +1,8 @@
 *.gch
 .vscode
 
-include/*.cpp
+include/*.hpp
 
 test/*
-!test/adjacency_list_test.cpp
-!test/edge_hash_table_test.cpp
-!test/dktree_test.cpp
-!test/ktree_extended_tests.cpp
+!test/*.cpp
 !test/CMakeLists.txt
