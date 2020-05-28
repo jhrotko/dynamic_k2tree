@@ -105,7 +105,7 @@ namespace dynamic_ktree {
 
             void list_neighbours(uint x, vector<int> &neighbours) {
                 int index = adj_lst[x];
-                if (index != -1)
+                if (index != -1 && !elements.empty())
                     for (; index != -1; index = elements[index].next)
                         neighbours.push_back(elements[index].y);
             }

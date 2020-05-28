@@ -2,7 +2,7 @@
 #define IMPLEMENTATION_ALGORITHM_HPP
 
 #include "../graph/Graph.hpp"
-#include <deque>
+#include <queue>
 #include <iostream>
 #include <map>
 
@@ -14,18 +14,18 @@ public:
     static vector<int> bfs(Graph &g, uint root) {
         vector<int> path;
         map<uint, bool> visited;
-        deque<uint> queue;
-        queue.push_back(root);
+        queue<uint> queue;
+        queue.push(root);
+        visited[root] = true;
 
         while (!queue.empty()) {
-            uint current_node = queue.front();
-            queue.pop_front();
+            uint current_node = queue.front(); queue.pop();
             path.push_back(current_node);
 
             vector<int> neighbours = g.list_neighbour(current_node);
             for (int neigh: neighbours)
                 if (!visited[neigh]) {
-                    queue.push_back(neigh);
+                    queue.push(neigh);
                     visited[neigh] = true;
                 }
         }
