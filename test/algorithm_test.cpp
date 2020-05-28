@@ -54,6 +54,17 @@ namespace {
         ASSERT_TRUE(path[4] == 5);
         ASSERT_TRUE(path[5] == 6);
     }
+
+    TYPED_TEST(Algorithm_Test, DFS) {
+        vector<int> path = Algorithm::dfs(*(this->graph_), 1);
+
+        ASSERT_TRUE(path[0] == 1);
+        ASSERT_TRUE(path[1] == 2);
+        ASSERT_TRUE(path[2] == 4);
+        ASSERT_TRUE(path[3] == 6);
+        ASSERT_TRUE(path[4] == 5);
+        ASSERT_TRUE(path[5] == 3);
+    }
 }
 
 int main(int argc, char **argv) {
