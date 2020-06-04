@@ -10,12 +10,13 @@
 using namespace std;
 
 class adjacency_list {
+
 private:
-    vector<edge_adj> vertices;
     size_t n_elements = 0;
     size_t n_vertices;
 
 public:
+    vector<edge_adj> vertices;
     adjacency_list() {} //FIXME: fix the tests for adjacency list
 
     adjacency_list(size_t n_vertices) : n_vertices(n_vertices) {

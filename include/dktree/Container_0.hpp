@@ -85,10 +85,13 @@ namespace dynamic_ktree {
         vector<edge_node>::const_iterator edge_begin() const { return elements.begin(); }
         vector<edge_node>::const_iterator edge_end() const { return elements.end(); }
 
+        vector<edge_adj>::const_iterator node_begin() const { return adj_lst.vertices.begin(); }
+        vector<edge_adj>::const_iterator node_end() const { return adj_lst.vertices.end(); }
+
         edge_hash_table edge_lst;
         vector <edge_node> elements;
         int n_elements;
-        vector <uint> edge_free; //should go inside hash_table
+        vector <uint> edge_free; //TODO: should go inside hash_table
         adjacency_list adj_lst;
     };
 }
