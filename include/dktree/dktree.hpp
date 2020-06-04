@@ -42,7 +42,7 @@ namespace dynamic_ktree {
 
     private:
         uint max_r;
-        uint n_vertices;
+        uint n_vertices = 0;
         uint n_total_edges = 0;
 
         Container_0 C0;
@@ -51,8 +51,12 @@ namespace dynamic_ktree {
         dk_edge_iterator<k, t_bv, t_rank, l_rank> it_edge_begin, it_end;
         dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>> node_it, node_it_end;
     public:
-        virtual size_t num_edges() const {
+        virtual size_t get_number_edges() const {
             return n_total_edges;
+        }
+
+        virtual size_t get_number_nodes() const {
+            return n_vertices;
         }
 
         virtual void add_edge(uint x, uint y)
@@ -179,6 +183,12 @@ namespace dynamic_ktree {
         {
             node_it = dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>>(this);
             return node_it;
+        }
+
+        dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>> &node_end()
+        {
+            node_it_end = node_it.end();
+            return node_it_end;
         }
     };
 }

@@ -59,7 +59,6 @@ public:
 class edge_adj {
 public:
     int next = -1;
-
     edge_adj() {}
 
     friend ostream &operator<<(ostream &os, edge_adj const &i) {
