@@ -9,6 +9,8 @@
 #include <sdsl/k2_tree.hpp>
 #include "edge.hpp"
 #include "ktree_extended.hpp"
+#include "Container_0.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -61,7 +63,7 @@ namespace dynamic_ktree {
 
         }
 
-        dk_edge_iterator(const vector<edge_node> &C0, const array<shared_ptr<k_tree>, R> &k_tree_array) {
+        dk_edge_iterator(const Container_0 &C0, const array<shared_ptr<k_tree>, R> &k_tree_array) {
             //Initialize curr pointers
             _data_C0 = &C0;
             _data_k_collection = &k_tree_array;
@@ -72,7 +74,7 @@ namespace dynamic_ktree {
 
             if (_data_C0->size() > 0) {
                 distance_C0 = 0;
-                _ptr = _convert_C0_edge(_data_C0->begin());
+                _ptr = _convert_C0_edge(_data_C0->edge_begin());
             } else {
                 distance_C0 = _data_C0->size();
                 bool initialized = false;
@@ -101,8 +103,8 @@ namespace dynamic_ktree {
 
         void print() {
             cout << "_data_CO" << endl;
-            for (auto a: *_data_C0)
-                cout << a << " ";
+//            for (auto a: *_data_C0)
+//                cout << a << " ";
             cout << "_data_k_collection " << endl;
             for (int i = 0; i < _data_k_collection->size(); ++i) {
                 cout << "ktree " << i << ": ";
@@ -131,7 +133,7 @@ namespace dynamic_ktree {
             if (distance_C0 < _data_C0->size()) {
                 distance_C0++;
                 if (distance_C0 < _data_C0->size())
-                    _ptr = _convert_C0_edge(next(_data_C0->begin(), distance_C0));
+                    _ptr = _convert_C0_edge(next(_data_C0->edge_begin(), distance_C0));
                 else
                     for (int i = 0; i < R; i++) {
                         if ((*_data_k_collection)[i] != nullptr) {
@@ -214,7 +216,7 @@ namespace dynamic_ktree {
                 }
             }
             if (containers == 0) {
-                return _data_C0_curr == _data_C0->end();
+                return _data_C0_curr == _data_C0->edge_end();
             }
             return containers == end_containers;
         }
@@ -228,7 +230,7 @@ namespace dynamic_ktree {
         }
 
         //container
-        const vector<edge_node> *_data_C0;
+        const Container_0 *_data_C0;
         const array<shared_ptr<k_tree>, R> *_data_k_collection;
         const idx_type  MAX_SIZE_EDGE = 9999999;
 

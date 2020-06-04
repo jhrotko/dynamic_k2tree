@@ -4,17 +4,16 @@
 
 #include <array>
 #include <memory>
-#include <functional>
 #include <unordered_map>
 #include <iostream>
-
-#include "edge.hpp"
-#include "edge_hash_table.hpp"
-#include "adjacency_list.hpp"
-#include <sdsl/k2_tree.hpp>
-#include "ktree_extended.hpp"
 #include "utils.hpp"
+
+
+#include <sdsl/k2_tree.hpp>
+#include "Container_0.hpp"
+#include "ktree_extended.hpp"
 #include "dk_edge_iterator.hpp"
+#include "dk_node_iterator.hpp"
 #include "../graph/Graph.hpp"
 
 using namespace sdsl;
@@ -27,7 +26,7 @@ namespace dynamic_ktree {
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class dktree: public Graph {
+    class dktree: public GraphIterable<dk_edge_iterator<k, t_bv, t_rank, l_rank>> {
 
         using k_tree = ktree_extended<k, t_bv, t_rank, l_rank>;
 
@@ -39,86 +38,7 @@ namespace dynamic_ktree {
             for (size_t i = 0; i < R; i++) {
                 k_collection[i] = nullptr;
             }
-            it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection);
         }
-
-        class Container_0 {
-        public:
-            Container_0() {}
-
-            Container_0(size_t n_vertices) {
-                const size_t max_edges = MAXSZ(n_vertices, 0);
-                elements.resize(max_edges);
-                n_elements = 0;
-
-                edge_free.resize(max_edges);
-                for (uint i = 0; i < max_edges; i++)
-                    edge_free[i] = i;
-
-                adj_lst = adjacency_list(max_edges << 1);
-                clean_free_lst();
-            }
-
-            void clean(size_t n_vertices) {
-                edge_lst.clear();
-                clean_free_lst();
-                adj_lst.clear();
-                elements.clear();
-                n_elements = 0;
-            }
-
-            void clean_free_lst() {
-                for (size_t i = 0; i < edge_free.size(); i++)
-                    edge_free[i] = i;
-            }
-
-            void insert(uint x, uint y) {
-                if (edge_lst.find(x, y) == -1)
-                {
-                    edge_node newNode(x, y);
-                    if (adj_lst[x] != -1) {
-                        newNode.next = adj_lst[x];
-                        elements[adj_lst[x]].prev = n_elements;
-                        adj_lst.insert(x, n_elements);
-                    }
-                    edge_lst.insert(x, y, n_elements);
-                    elements[n_elements] = newNode;
-                    n_elements++;
-                }
-            }
-
-            bool erase(uint x, uint y) {
-                size_t nodeIndex = edge_lst.find(x, y);
-                if (nodeIndex != -1) {
-                    if (elements[nodeIndex].next != -1)
-                        elements[elements[nodeIndex].next].prev = elements[nodeIndex].prev;
-                    if (elements[nodeIndex].prev != -1)
-                        elements[elements[nodeIndex].prev].next = elements[nodeIndex].next;
-                    else
-                        adj_lst.insert(x, elements[nodeIndex].next);
-
-                    edge_free[elements.size()] = nodeIndex;
-                    return true;
-                }
-                return false;
-            }
-
-            void list_neighbours(uint x, vector<int> &neighbours) {
-                int index = adj_lst[x];
-                if (index != -1 && !elements.empty())
-                    for (; index != -1; index = elements[index].next)
-                        neighbours.push_back(elements[index].y);
-            }
-
-            vector<edge_node>::const_iterator begin() { return elements.begin(); }
-            vector<edge_node>::const_iterator end() { return elements.end(); }
-
-            edge_hash_table edge_lst;
-            vector<edge_node> elements;
-            int n_elements;
-            vector<uint> edge_free; //should go inside hash_table
-            adjacency_list adj_lst;
-        };
 
     private:
         uint max_r;
@@ -128,7 +48,8 @@ namespace dynamic_ktree {
         Container_0 C0;
         array<shared_ptr<k_tree>, R> k_collection;
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_begin, it_end;
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_edge_begin, it_end;
+        dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>> node_it, node_it_end;
     public:
         virtual size_t num_edges() const {
             return n_total_edges;
@@ -242,16 +163,22 @@ namespace dynamic_ktree {
             return C0;
         }
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_begin()
+        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_begin()
         {
-            it_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0.elements, k_collection);
-            return it_begin;
+            it_edge_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0, k_collection);
+            return it_edge_begin;
         }
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_end()
+        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_end()
         {
-            it_end = it_begin.end();
+            it_end = it_edge_begin.end();
             return it_end;
+        }
+
+        dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>> &node_begin()
+        {
+            node_it = dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>>(this);
+            return node_it;
         }
     };
 }

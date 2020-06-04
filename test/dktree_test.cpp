@@ -113,13 +113,12 @@ TEST(dktreeDelete, listNeighbours) {
     ASSERT_EQ(neighbours[1], 3);
 }
 
-TEST(dktreeIterate, iterate_empty) {
+TEST(dktreeIterate, edge_iterate_empty) {
     d_tree empty_tree;
     ASSERT_TRUE(empty_tree.edge_begin() == empty_tree.edge_end());
 }
 
-
-TEST(dktreeIterate, iterate) {
+TEST(dktreeIterate, edge_iterate) {
     d_tree tree(10);
     tree.add_edge(1, 2);
     tree.add_edge(1, 4);
@@ -177,6 +176,26 @@ TEST(dktreeIterate, iterate) {
     ASSERT_EQ(a, tree.edge_end());
     ASSERT_EQ(b, tree.edge_begin());
 }
+
+//TODO: Implement me! :(
+//TEST(dktreeIterate, node_empty) {}
+
+//TEST(dktreeIterate, node_iterate) {
+//    d_tree tree(10);
+//    tree.add_edge(1, 2);
+//    tree.add_edge(1, 4);
+//    tree.add_edge(3, 1);
+//    tree.add_edge(3, 4);
+//    tree.add_edge(3, 9);
+//    tree.add_edge(5, 0);
+//    tree.add_edge(5, 1);
+//    tree.add_edge(6, 0);
+//    tree.add_edge(7, 0);
+//    tree.add_edge(9, 0);
+//
+//    auto node_it = tree.node_begin();
+//    ASSERT_EQ(*node_it, 0);
+//}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
