@@ -10,8 +10,8 @@
 
 #include <sdsl/k2_tree.hpp>
 #include "Container_0.hpp"
-#include "dk_edge_iterator.hpp"
-#include "dk_node_iterator.hpp"
+#include "DKtreeEdgeIterator.hpp"
+#include "DKtreeNodeIterator.hpp"
 #include "../graph/Graph.hpp"
 
 using namespace sdsl;
@@ -24,14 +24,15 @@ namespace dynamic_ktree {
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class dktree: public Graph<dk_edge_iterator<dktree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
+    class DKtree: public Graph<DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
         using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
         using k_tree_edge_it = edge_iterator<k_tree>;
-        using dktree_edge_it = dk_edge_iterator<dktree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
-        using dktree_node_it = dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>>;
+
+        using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
+        using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
     public:
-        dktree() {}
-        dktree(uint n_vertices) : n_vertices(n_vertices) {
+        DKtree() {}
+        DKtree(uint n_vertices) : n_vertices(n_vertices) {
             C0 = Container_0(n_vertices);
             max_r = 0;
             for (size_t i = 0; i < R; i++) {

@@ -1,4 +1,4 @@
-#include "../include/dktree/edge_hash_table.hpp"
+#include "../include/dktree/EdgeHashTable.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
 
@@ -7,7 +7,7 @@ using namespace std;
 TEST(edgeHashTableInsert, createHashTable)
 {
     vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
-    edge_hash_table ht(elements);
+    EdgeHashTable ht(elements);
     
     ASSERT_EQ(ht.size(), 3);
 }
@@ -16,7 +16,7 @@ TEST(edgeHashTableInsert, createHashTable)
 TEST(edgeHashTableFind, find)
 {
     vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
-    edge_hash_table ht(elements);
+    EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.find(1,1), -1);
     ASSERT_EQ(ht.find(1,2), 0);
@@ -27,7 +27,7 @@ TEST(edgeHashTableFind, find)
 TEST(edgeHashTableInsert, insert)
 {
     vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
-    edge_hash_table ht(elements);
+    EdgeHashTable ht(elements);
 
     ht.insert(5,6, 3);
 
@@ -38,7 +38,7 @@ TEST(edgeHashTableInsert, insert)
 TEST(edgeHashTableErase, eraseedgeExist)
 {
     vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
-    edge_hash_table ht(elements);
+    EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);
     ht.erase(1,2);
@@ -50,7 +50,7 @@ TEST(edgeHashTableErase, eraseedgeExist)
 TEST(edgeHashTableErase, clear)
 {
     vector<Edge> elements = {Edge(1, 2), Edge(3, 5), Edge(0, 1)};
-    edge_hash_table ht(elements);
+    EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);
     ht.clear();

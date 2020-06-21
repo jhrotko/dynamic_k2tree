@@ -51,7 +51,7 @@ public:
     }
 };
 
-class edge_hash_table {
+class EdgeHashTable {
 private:
     class Hash {
     public:
@@ -89,9 +89,9 @@ protected:
     h_table ht;
 public:
 
-    edge_hash_table() = default;
+    EdgeHashTable() = default;
 
-    edge_hash_table(vector<Edge> new_elements) {
+    EdgeHashTable(vector<Edge> new_elements) {
         for (int i = 0; i < new_elements.size(); ++i)
             ht[new_elements[i]] = i;
     }
@@ -122,7 +122,7 @@ public:
         return ht[edge];
     }
 
-    friend ostream &operator<<(ostream &os, edge_hash_table const &h) {
+    friend ostream &operator<<(ostream &os, EdgeHashTable const &h) {
         for (auto item: h.ht)
             os << "[" << item.first << "] = " << item.second << "  ";
         os << endl;

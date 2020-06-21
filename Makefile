@@ -14,11 +14,11 @@ clean:
 	cd test && rm adjacencyListTest && rm dk2treeTest && rm edgeHashTableTests && rm algorithmTest
 
 tests_adj:
-	cd include/dktree && g++ -std=c++17 adjacency_list.hpp utils.hpp
+	cd include/dktree && g++ -std=c++17 AdjacencyList.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make adjacencyListTest && ./adjacencyListTest
 
 tests_edge:
-	cd include/dktree && g++ -std=c++17 edge_hash_table.hpp utils.hpp
+	cd include/dktree && g++ -std=c++17 EdgeHashTable.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
 
 tests_dktree:

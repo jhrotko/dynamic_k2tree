@@ -20,7 +20,7 @@ public:
     }
 };
 
-class adjacency_list {
+class AdjacencyList {
 
 private:
     size_t n_elements = 0;
@@ -28,9 +28,9 @@ private:
 
 public:
     vector<Node> vertices;
-    adjacency_list() {}
+    AdjacencyList() {}
 
-    adjacency_list(size_t n_vertices) : n_vertices(n_vertices) {
+    AdjacencyList(size_t n_vertices) : n_vertices(n_vertices) {
         vertices.resize(n_vertices);
     }
 

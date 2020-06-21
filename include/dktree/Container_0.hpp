@@ -5,8 +5,8 @@
 #ifndef IMPLEMENTATION_CONTAINER_0_HPP
 #define IMPLEMENTATION_CONTAINER_0_HPP
 
-#include "edge_hash_table.hpp"
-#include "adjacency_list.hpp"
+#include "EdgeHashTable.hpp"
+#include "AdjacencyList.hpp"
 
 namespace dynamic_ktree {
 
@@ -23,7 +23,7 @@ namespace dynamic_ktree {
             for (uint i = 0; i < max_edges; i++)
                 edge_free[i] = i;
 
-            adj_lst = adjacency_list(max_edges << 1);
+            adj_lst = AdjacencyList(max_edges << 1);
             clean_free_lst();
         }
 
@@ -87,11 +87,11 @@ namespace dynamic_ktree {
         vector<Node>::const_iterator node_begin() const { return adj_lst.vertices.begin(); }
         vector<Node>::const_iterator node_end() const { return adj_lst.vertices.end(); }
 
-        edge_hash_table edge_lst;
+        EdgeHashTable edge_lst;
         vector <NodeDouble> elements;
         int n_elements;
         vector <uint> edge_free;
-        adjacency_list adj_lst;
+        AdjacencyList adj_lst;
     };
 }
 #endif //IMPLEMENTATION_CONTAINER_0_HPP

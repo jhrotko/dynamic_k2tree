@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../include/algorithm/Algorithm.hpp"
-#include "../include/dktree/dktree.hpp"
+#include "../include/dktree/DKtree.hpp"
 #include <iostream>
 
 using namespace std;
@@ -48,7 +48,7 @@ namespace {
         }
     };
 
-    typedef ::testing::Types<dktree<2, bit_vector>> graph_implementations;
+    typedef ::testing::Types<DKtree<2, bit_vector>> graph_implementations;
 
     TYPED_TEST_CASE(Algorithm_Test, graph_implementations);
 

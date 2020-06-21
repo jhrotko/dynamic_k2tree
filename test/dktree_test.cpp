@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "../include/dktree/dktree.hpp"
+#include "../include/dktree/DKtree.hpp"
 #include <iostream>
 
-using d_tree = dynamic_ktree::dktree<2, bit_vector>;
+using d_tree = dynamic_ktree::DKtree<2, bit_vector>;
 
 TEST(dktreeCreate, createEmpty) {
     d_tree tree(2);
