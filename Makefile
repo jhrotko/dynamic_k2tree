@@ -35,3 +35,7 @@ tests_graph_all:
 tests_algorithms:
 	make all
 	cd test && cmake CMakeLists.txt && make algorithmTest && ./algorithmTest
+
+tests_all:
+	make tests_graph_all
+	make tests_algorithms

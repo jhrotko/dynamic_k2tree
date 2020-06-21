@@ -61,7 +61,7 @@ public:
 
         // Construct hash_edges;
         edge_hash_table hash_edges;
-        for (auto edge_it = g.edge_begin(); edge_it != *g.edge_end(); edge_it++) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
             cout << "hue" << endl;
         }
 
