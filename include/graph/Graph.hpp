@@ -16,20 +16,23 @@ private:
     etype x_, y_;
 public:
     Edge() {}
-
     Edge(etype x, etype y) : x_(x), y_(y) {}
 
     etype x() const {
         return x_;
     }
-
     etype y() const {
         return y_;
     }
-
     friend ostream &operator<<(ostream &os, Edge const &e) {
         os << "(" << e.x() << ", " << e.y() << ")";
         return os;
+    }
+    bool operator==(const Edge &rhs) const {
+        return x() == rhs.x() && y() == rhs.y();
+    }
+    bool operator!=(const Edge &rhs) const {
+        return !(*this == rhs);
     }
 };
 
