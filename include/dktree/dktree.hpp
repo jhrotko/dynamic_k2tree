@@ -167,9 +167,14 @@ namespace dynamic_ktree {
             return C0;
         }
 
+        array<shared_ptr<k_tree>, R> k_collections() const
+        {
+            return k_collection;
+        }
+
         virtual dktree_edge_it &edge_begin()
         {
-            it_edge_begin = dktree_edge_it(C0, &k_collection);
+            it_edge_begin = dktree_edge_it(this); //TODO: should send this instead
             return it_edge_begin;
         }
 

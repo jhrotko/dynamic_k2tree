@@ -36,23 +36,22 @@ namespace dynamic_ktree {
             _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
         }
 
-        dk_edge_iterator(const Container_0 &C0, const array<shared_ptr<k2tree>, R> *k_tree_array) {
+        dk_edge_iterator(const dk_tree *tree) {
             //Initialize curr pointers
-            _data_C0 = &C0;
-            _data_k_collection = k_tree_array;
+            this->_tree = tree;
 
-            for (int i = 0; i < _data_k_collection->size(); ++i)
-                if ((*_data_k_collection)[i] != nullptr)
-                    _data_k_collection_curr[i] = (*_data_k_collection)[i]->edge_begin();
+            for (int i = 0; i < _tree->k_collections().size(); ++i)
+                if (_tree->k_collections()[i] != nullptr)
+                    _data_k_collection_curr[i] = _tree->k_collections()[i]->edge_begin();
 
-            if (_data_C0->size() > 0) {
+            if (_tree->first_container().size() > 0) {
                 distance_C0 = 0;
-                _ptr = _convert_C0_edge(_data_C0->edge_begin());
+                _ptr = _convert_C0_edge(_tree->first_container().edge_begin());
             } else {
-                distance_C0 = _data_C0->size();
+                distance_C0 = _tree->first_container().size();
                 bool initialized = false;
                 for (int i = 0; i < R; ++i) {
-                    if ((*_data_k_collection)[i] != nullptr) {
+                    if (_tree->k_collections()[i] != nullptr) {
                         _ptr = _convert_k_collection_edge(_data_k_collection_curr[i]);
                         initialized = true;
                         break;
@@ -87,10 +86,10 @@ namespace dynamic_ktree {
 //            for (auto a: *_data_C0)
 //                cout << a << " ";
             cout << "_data_k_collection " << endl;
-            for (int i = 0; i < _data_k_collection->size(); ++i) {
+            for (int i = 0; i < _tree->k_collections().size(); ++i) {
                 cout << "ktree " << i << ": ";
-                if ((*_data_k_collection)[i] != nullptr)
-                    cout << (*_data_k_collection)[i]->get_number_edges() << endl;
+                if (_tree->k_collections()[i] != nullptr)
+                    cout << _tree->k_collections()[i]->get_number_edges() << endl;
                 else
                     cout << "0 " << endl;
 
@@ -101,8 +100,8 @@ namespace dynamic_ktree {
 
         dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &operator=(const dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
             if (this != &other) {
-                this->_data_C0 = other._data_C0;
-                this->_data_k_collection = other._data_k_collection;
+                this->_tree = other._tree;
+
                 this->_data_k_collection_curr = other._data_k_collection_curr;
                 this->_ptr = other._ptr;
                 this->distance_C0 = other.distance_C0;
@@ -111,27 +110,27 @@ namespace dynamic_ktree {
         }
 
         dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
-            if (distance_C0 < _data_C0->size()) {
+            if (distance_C0 < _tree->first_container().size()) {
                 distance_C0++;
-                if (distance_C0 < _data_C0->size())
-                    _ptr = _convert_C0_edge(next(_data_C0->edge_begin(), distance_C0));
+                if (distance_C0 < _tree->first_container().size())
+                    _ptr = _convert_C0_edge(next(_tree->first_container().edge_begin(), distance_C0));
                 else
                     for (int i = 0; i < R; i++) {
-                        if ((*_data_k_collection)[i] != nullptr) {
-                            assert(_data_k_collection_curr[i] == (*_data_k_collection)[i]->edge_begin());
+                        if (_tree->k_collections()[i] != nullptr) {
+                            assert(_data_k_collection_curr[i] == _tree->k_collections()[i]->edge_begin());
                             _ptr = _convert_k_collection_edge(_data_k_collection_curr[i]);
                             break;
                         }
                     }
             } else
                 for (int i = 0; i < R; i++) {
-                    if ((*_data_k_collection)[i] != nullptr &&
-                        _data_k_collection_curr[i] != (*_data_k_collection)[i]->edge_end()) {
+                    if (_tree->k_collections()[i] != nullptr &&
+                        _data_k_collection_curr[i] != _tree->k_collections()[i]->edge_end()) {
                         _data_k_collection_curr[i]++;
-                        if (_data_k_collection_curr[i] == (*_data_k_collection)[i]->edge_end()) {
+                        if (_data_k_collection_curr[i] == _tree->k_collections()[i]->edge_end()) {
                             for (int j = i + 1; j < R; j++) {
-                                if ((*_data_k_collection)[j] != nullptr &&
-                                    _data_k_collection_curr[j] != (*_data_k_collection)[j]->edge_end()) {
+                                if (_tree->k_collections()[j] != nullptr &&
+                                    _data_k_collection_curr[j] != _tree->k_collections()[j]->edge_end()) {
                                     _ptr = _convert_k_collection_edge(_data_k_collection_curr[j]);
                                     return *this;
                                 }
@@ -158,8 +157,7 @@ namespace dynamic_ktree {
         friend void
         swap(dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs, dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &lhs) {
             if (lhs != rhs) {
-                std::swap(lhs._data_C0, rhs._data_C0);
-                std::swap(lhs._data_k_collection, rhs._data_k_collection);
+                std::swap(lhs._tree, rhs._tree);
                 std::swap(lhs._ptr, rhs._ptr);
                 std::swap(lhs._data_C0_curr, rhs._data_C0_curr);
                 std::swap(lhs.distance_C0, rhs.distance_C0);
@@ -189,15 +187,15 @@ namespace dynamic_ktree {
             int containers = 0;
             int end_containers = 0;
             for (int j = 0; j < R; ++j) {
-                if ((*_data_k_collection)[j] != nullptr) {
+                if (_tree->k_collections()[j] != nullptr) {
                     containers++;
-                    if ((_data_k_collection_curr)[j] == (*_data_k_collection)[j]->edge_end()) {
+                    if ((_data_k_collection_curr)[j] == _tree->k_collections()[j]->edge_end()) {
                         end_containers++;
                     }
                 }
             }
             if (containers == 0) {
-                return _data_C0_curr == _data_C0->edge_end();
+                return _data_C0_curr == _tree->first_container().edge_end();
             }
             return containers == end_containers;
         }
@@ -211,8 +209,7 @@ namespace dynamic_ktree {
         }
 
         //container
-        const Container_0 *_data_C0;
-        const array<shared_ptr<k2tree>, R> *_data_k_collection;
+        const dk_tree *_tree;
         const idx_type  MAX_SIZE_EDGE = 9999999;
 
         //state
