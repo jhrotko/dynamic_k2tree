@@ -43,7 +43,7 @@ namespace dynamic_ktree {
 
         void insert(uint x, uint y) {
             if (edge_lst.find(x, y) == -1) {
-                edge_node newNode(x, y);
+                NodeDouble newNode(x, y);
                 if (adj_lst[x] > -1 && adj_lst[x] < elements.size()) {
                     newNode.next = adj_lst[x];
                     elements[adj_lst[x]].prev = n_elements;
@@ -75,21 +75,21 @@ namespace dynamic_ktree {
             int index = adj_lst[x];
             if (index != -1 && !elements.empty())
                 for (; index != -1; index = elements[index].next)
-                    neighbours.push_back(elements[index].y);
+                    neighbours.push_back(elements[index].y());
         }
 
         size_t size() const {
             return elements.size();
         }
 
-        vector<edge_node>::const_iterator edge_begin() const { return elements.begin(); }
-        vector<edge_node>::const_iterator edge_end() const { return elements.end(); }
+        vector<NodeDouble>::const_iterator edge_begin() const { return elements.begin(); }
+        vector<NodeDouble>::const_iterator edge_end() const { return elements.end(); }
 
-        vector<edge_adj>::const_iterator node_begin() const { return adj_lst.vertices.begin(); }
-        vector<edge_adj>::const_iterator node_end() const { return adj_lst.vertices.end(); }
+        vector<Node>::const_iterator node_begin() const { return adj_lst.vertices.begin(); }
+        vector<Node>::const_iterator node_end() const { return adj_lst.vertices.end(); }
 
         edge_hash_table edge_lst;
-        vector <edge_node> elements;
+        vector <NodeDouble> elements;
         int n_elements;
         vector <uint> edge_free; //TODO: should go inside hash_table
         adjacency_list adj_lst;

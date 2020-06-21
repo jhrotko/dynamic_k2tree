@@ -5,9 +5,20 @@
 #include <iostream>
 
 #include "utils.hpp"
-#include "edge.hpp"
+#include "../graph/Graph.hpp"
 
 using namespace std;
+
+class Node {
+public:
+    etype next = -1;
+    Node() {}
+
+    friend ostream &operator<<(ostream &os, Node const &i) {
+        os << "(" << i.next << ")";
+        return os;
+    }
+};
 
 class adjacency_list {
 
@@ -16,8 +27,8 @@ private:
     size_t n_vertices;
 
 public:
-    vector<edge_adj> vertices;
-    adjacency_list() {} //FIXME: fix the tests for adjacency list
+    vector<Node> vertices;
+    adjacency_list() {}
 
     adjacency_list(size_t n_vertices) : n_vertices(n_vertices) {
         vertices.resize(n_vertices);
@@ -29,7 +40,7 @@ public:
         return vertices[idx].next;
     }
 
-    void insert(int node, int next) {
+    void insert(unsigned int node, etype next) {
         if(vertices[node].next == -1)
             n_elements++;
         vertices[node].next = next;
