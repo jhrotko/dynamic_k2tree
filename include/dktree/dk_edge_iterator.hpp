@@ -8,12 +8,13 @@
 #include <array>
 #include <sdsl/k2_tree.hpp>
 
-#include "ktree_extended.hpp"
 #include "Container_0.hpp"
 #include "../graph/Graph.hpp"
 #include "utils.hpp"
 
 using namespace std;
+using namespace sdsl;
+using namespace k2_tree_ns;
 
 namespace dynamic_ktree {
 

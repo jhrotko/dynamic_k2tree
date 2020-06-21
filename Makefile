@@ -11,7 +11,7 @@ all:
 clean:
 	cd include/dktree && rm *.hpp.gch
 	cd include/algorithm && rm *.hpp.gch
-	cd test && rm adjacencyListTest && rm dk2treeTest && rm edgeHashTableTests && rm kExtendedTest && rm algorithmTest
+	cd test && rm adjacencyListTest && rm dk2treeTest && rm edgeHashTableTests && rm algorithmTest
 
 tests_adj:
 	cd include/dktree && g++ -std=c++17 adjacency_list.hpp utils.hpp
@@ -20,10 +20,6 @@ tests_adj:
 tests_edge:
 	cd include/dktree && g++ -std=c++17 edge_hash_table.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
-
-tests_k_extended:
-	cd include/dktree && g++ -std=c++17 ktree_extended.hpp utils.hpp
-	cd test && cmake CMakeLists.txt && make kExtendedTest && ./kExtendedTest
 
 tests_dktree:
 	make dktree
@@ -36,7 +32,7 @@ valgrind_dk2tree:
 tests_dktree_all:
 	make dktree
 	cd test && cmake CMakeLists.txt && make
-	cd test && ./edgeHashTableTests && ./adjacencyListTest && ./kExtendedTest &&./dk2treeTest
+	cd test && ./edgeHashTableTests && ./adjacencyListTest &&./dk2treeTest
 
 tests_algorithm:
 	make algorithm

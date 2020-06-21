@@ -10,7 +10,6 @@
 
 #include <sdsl/k2_tree.hpp>
 #include "Container_0.hpp"
-#include "ktree_extended.hpp"
 #include "dk_edge_iterator.hpp"
 #include "dk_node_iterator.hpp"
 #include "../graph/Graph.hpp"
@@ -25,9 +24,9 @@ namespace dynamic_ktree {
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class dktree: public Graph<dk_edge_iterator<dktree<k, t_bv, t_rank, l_rank>, ktree_extended<k, t_bv, t_rank, l_rank>, edge_iterator<k, t_bv, t_rank>>> {
-        using k_tree = ktree_extended<k, t_bv, t_rank, l_rank>;
-        using k_tree_edge_it = edge_iterator<k, t_bv, t_rank>;
+    class dktree: public Graph<dk_edge_iterator<dktree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
+        using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
+        using k_tree_edge_it = edge_iterator<k_tree>;
         using dktree_edge_it = dk_edge_iterator<dktree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
         using dktree_node_it = dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>>;
     public:
@@ -96,7 +95,7 @@ namespace dynamic_ktree {
             shared_ptr<k_tree> tmp = make_shared<k_tree>(free_edges, n_vertices);
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
-                    k_tree aux = tmp->unionOp(*k_collection[j], n_vertices);
+                    k_tree aux = tmp->unionOp(*k_collection[j]);
                     tmp = make_shared<k_tree>(move(aux));
                 }
                 k_collection[j] = nullptr;
@@ -141,7 +140,7 @@ namespace dynamic_ktree {
                     /* Rebuild data structure... */
                     max_r = 0;
                     for (size_t i = 0; i < R; i++) {
-                        shared_ptr<k_tree> p(new k_tree(n_vertices));
+                        shared_ptr<k_tree> p(new k_tree());
                         k_collection[i] = p;
                     }
                 }
@@ -174,7 +173,7 @@ namespace dynamic_ktree {
 
         virtual dktree_edge_it &edge_begin()
         {
-            it_edge_begin = dktree_edge_it(this); //TODO: should send this instead
+            it_edge_begin = dktree_edge_it(this);
             return it_edge_begin;
         }
 
