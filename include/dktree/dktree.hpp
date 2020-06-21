@@ -57,7 +57,7 @@ namespace dynamic_ktree {
             return n_vertices;
         }
 
-        virtual void add_edge(uint x, uint y)
+        virtual void add_edge(etype x, etype y)
         {
             if (contains(x, y))
                 return;
@@ -83,7 +83,7 @@ namespace dynamic_ktree {
             //Load edges in C0...
             vector<tuple<idx_type, idx_type>> free_edges;
             for (uint j = 0; j < C0.n_elements; j++) {
-                const tuple<idx_type, idx_type> e(C0.elements[j].x, C0.elements[j].y);
+                const tuple<idx_type, idx_type> e(C0.elements[j].x(), C0.elements[j].y());
                 free_edges.push_back(e);
             }
             //Add new link...
@@ -103,7 +103,7 @@ namespace dynamic_ktree {
             n_total_edges++;
         }
 
-        virtual bool contains(uint x, uint y)
+        virtual bool contains(etype x, etype y)
         {
             if (C0.edge_lst.find(x, y) != -1)
                 return true;
@@ -115,7 +115,7 @@ namespace dynamic_ktree {
             return false;
         }
 
-        virtual void del_edge(uint32 x, uint32 y)
+        virtual void del_edge(etype x, etype y)
         {
             if (C0.erase(x, y)) n_total_edges--;
             else {
@@ -146,9 +146,9 @@ namespace dynamic_ktree {
             }
         }
 
-        virtual vector<int> list_neighbour(uint x)
+        virtual vector<etype> list_neighbour(etype x)
         {
-            vector<int> neighbours;
+            vector<etype> neighbours;
             C0.list_neighbours(x, neighbours);
 
             for (size_t l = 0; l <= max_r; l++)

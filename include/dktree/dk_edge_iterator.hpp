@@ -26,7 +26,7 @@ namespace dynamic_ktree {
             y = std::get<1>(t);
         }
 
-        dktree_edge(edge_node e) : x(e.x), y(e.y) {}
+        dktree_edge(NodeDouble e) : x(e.x()), y(e.y()) {}
 
         dktree_edge(idx_type x, idx_type y) : x(x), y(y) {}
 
@@ -227,8 +227,8 @@ namespace dynamic_ktree {
             return containers == end_containers;
         }
 
-        pointer _convert_C0_edge(vector<edge_node>::const_iterator it) {
-            return new dktree_edge(it->x, it->y);
+        pointer _convert_C0_edge(vector<NodeDouble>::const_iterator it) {
+            return new dktree_edge(it->x(), it->y());
         }
 
         pointer _convert_k_collection_edge(edge_iterator<k, t_bv, t_rank> &it) {
@@ -242,7 +242,7 @@ namespace dynamic_ktree {
 
         //state
         pointer _ptr;
-        vector<edge_node>::const_iterator _data_C0_curr;
+        vector<NodeDouble>::const_iterator _data_C0_curr;
         int distance_C0 = -1;
         array<edge_iterator<k, t_bv, t_rank>, R> _data_k_collection_curr;
     };

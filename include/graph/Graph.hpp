@@ -46,13 +46,13 @@ public:
 template<class GraphEdgeIteratorImpl>
 class Graph {
 public:
-    virtual void add_edge(unsigned int x, unsigned int y) = 0;
-    virtual void del_edge(unsigned int x, unsigned int y) = 0;
+    virtual void add_edge(etype x, etype y) = 0;
+    virtual void del_edge(etype x, etype y) = 0;
 
-    virtual vector<int> list_neighbour(unsigned int x) = 0; //TODO: change int to etype
+    virtual vector<etype> list_neighbour(etype x) = 0;
     virtual size_t get_number_edges() const = 0;
     virtual size_t get_number_nodes() const = 0;
-    virtual bool contains(unsigned int x, unsigned int y) = 0;
+    virtual bool contains(etype x, etype y) = 0;
     virtual GraphEdgeIterator<GraphEdgeIteratorImpl> &edge_begin() = 0;
     virtual GraphEdgeIterator<GraphEdgeIteratorImpl> &edge_end() = 0;
 };
