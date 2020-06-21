@@ -74,11 +74,11 @@ namespace {
         ASSERT_EQ(path[5], 3);
     }
 
-    TYPED_TEST(Algorithm_Test, Count_Triangles) {
-        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
-
-        ASSERT_EQ(num_triangles, 2);
-    }
+//    TYPED_TEST(Algorithm_Test, Count_Triangles) {
+//        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
+//
+//        ASSERT_EQ(num_triangles, 2);
+//    }
 }
 
 int main(int argc, char **argv) {

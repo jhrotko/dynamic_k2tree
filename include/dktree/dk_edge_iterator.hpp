@@ -22,13 +22,6 @@ namespace dynamic_ktree {
         dktree_edge(tuple<idx_type, idx_type> t) : Edge(std::get<0>(t), std::get<1>(t)) {}
         dktree_edge(NodeDouble e) : Edge(e.x(), e.y()) {}
         dktree_edge(idx_type x, idx_type y) : Edge(x, y) {}
-
-        bool operator==(const dktree_edge &rhs) const {
-            return x() == rhs.x() && y() == rhs.y();
-        }
-        bool operator!=(const dktree_edge &rhs) const {
-            return !(*this == rhs);
-        }
     };
 
     //TODO: replace this whole template for ktree
