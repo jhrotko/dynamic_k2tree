@@ -1,6 +1,12 @@
-all:
+dktree:
 	cd include/dktree && g++ -std=c++17 *.hpp
+
+algorithm:
 	cd include/algorithm && g++ -std=c++17 *.hpp
+
+all:
+	make dktree
+	make algorithm
 
 clean:
 	cd include/dktree && rm *.hpp.gch
@@ -19,23 +25,23 @@ tests_k_extended:
 	cd include/dktree && g++ -std=c++17 ktree_extended.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make kExtendedTest && ./kExtendedTest
 
-tests_dk2tree:
-	make all
+tests_dktree:
+	make dktree
 	cd test && cmake CMakeLists.txt && make dk2treeTest && ./dk2treeTest
 
 valgrind_dk2tree:
-	make all
+	make dktree
 	cd test && make dk2treeTest && valgrind --leak-check=yes ./dk2treeTest
 
-tests_graph_all:
-	make all
+tests_dktree_all:
+	make dktree
 	cd test && cmake CMakeLists.txt && make
 	cd test && ./edgeHashTableTests && ./adjacencyListTest && ./kExtendedTest &&./dk2treeTest
 
-tests_algorithms:
-	make all
+tests_algorithm:
+	make algorithm
 	cd test && cmake CMakeLists.txt && make algorithmTest && ./algorithmTest
 
 tests_all:
-	make tests_graph_all
-	make tests_algorithms
+	make tests_dktree_all
+	make tests_algorithm

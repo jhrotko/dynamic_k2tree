@@ -3,7 +3,6 @@
 #include <iostream>
 
 using d_tree = dynamic_ktree::dktree<2, bit_vector>;
-using d_tree_it = dynamic_ktree::dk_edge_iterator<2, bit_vector>;
 
 TEST(dktreeCreate, createEmpty) {
     d_tree tree(2);
@@ -168,8 +167,8 @@ TEST(dktreeIterate, edge_iterate) {
     it++;
     ASSERT_TRUE(it == tree.edge_end());
 
-    d_tree_it a = tree.edge_begin();
-    d_tree_it b = tree.edge_end();
+    auto a = tree.edge_begin();
+    auto b = tree.edge_end();
 
     // SWAP operation
     swap(a, b);
