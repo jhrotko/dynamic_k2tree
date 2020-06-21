@@ -32,6 +32,6 @@ tests_graph_all:
 	cd test && cmake CMakeLists.txt && make
 	cd test && ./edgeHashTableTests && ./adjacencyListTest && ./kExtendedTest &&./dk2treeTest
 
-test_algorithms:
+tests_algorithms:
 	make all
 	cd test && cmake CMakeLists.txt && make algorithmTest && ./algorithmTest
