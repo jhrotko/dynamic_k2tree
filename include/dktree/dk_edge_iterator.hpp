@@ -10,6 +10,7 @@
 #include "edge.hpp"
 #include "ktree_extended.hpp"
 #include "Container_0.hpp"
+#include "../graph/Graph.hpp"
 #include "utils.hpp"
 
 using namespace std;
@@ -43,11 +44,12 @@ namespace dynamic_ktree {
         }
     };
 
+    //TODO: replace this whole template for ktree
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class dk_edge_iterator {
+    class dk_edge_iterator: virtual public GraphEdgeIterator<dk_edge_iterator<k,t_bv, t_rank, l_rank>> {
         using k_tree = ktree_extended<k, t_bv, t_rank, l_rank>;
     public:
         using value_type = dktree_edge;
@@ -99,6 +101,14 @@ namespace dynamic_ktree {
 
         value_type operator*() {
             return *_ptr;
+        }
+
+        virtual etype x() const {
+            return _ptr->x;
+        }
+
+        virtual etype y() const {
+            return _ptr->y;
         }
 
         void print() {
@@ -166,7 +176,7 @@ namespace dynamic_ktree {
             return *this;
         }
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> &operator++(int) {
+        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> &operator++(int) {
             dk_edge_iterator<k, t_bv, t_rank, l_rank> *tmp = new dk_edge_iterator<k, t_bv, t_rank, l_rank>(
                     *this); // copy
             if (*this != end())
@@ -193,11 +203,11 @@ namespace dynamic_ktree {
             return *tmp;
         }
 
-        bool operator==(const dk_edge_iterator<k, t_bv, t_rank, l_rank> &rhs) const {
+        virtual bool operator==(const dk_edge_iterator<k, t_bv, t_rank, l_rank> &rhs) const {
             return *(this->_ptr) == *(rhs._ptr);
         }
 
-        bool operator!=(const dk_edge_iterator<k, t_bv, t_rank, l_rank> &rhs) const {
+        virtual bool operator!=(const dk_edge_iterator<k, t_bv, t_rank, l_rank> &rhs) const {
             return !(*this == rhs);
         }
 

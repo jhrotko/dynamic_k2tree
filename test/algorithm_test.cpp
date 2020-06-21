@@ -5,10 +5,18 @@
 #include <iostream>
 
 using namespace std;
+using namespace dynamic_ktree;
 
 namespace {
 
-    template<class G>
+    template<class G, class E>
+    struct Case
+    {
+        using graph_type = G;
+        using edge_it_type = E;
+    };
+
+    template<typename G>
     class Algorithm_Test : public ::testing::Test {
     protected:
         G *graph_;
@@ -17,7 +25,7 @@ namespace {
         virtual ~Algorithm_Test() {}
 
         virtual void SetUp() {
-            graph_ = new G(7);
+            graph_ = new G(7); //undirect graph
             graph_->add_edge(1, 2);
             graph_->add_edge(1, 3);
             graph_->add_edge(2, 5);
@@ -40,30 +48,36 @@ namespace {
         }
     };
 
-    typedef ::testing::Types<dynamic_ktree::dktree<2, bit_vector>> graph_implementations;
+    typedef ::testing::Types<dktree<2, bit_vector>> graph_implementations;
 
     TYPED_TEST_CASE(Algorithm_Test, graph_implementations);
 
     TYPED_TEST(Algorithm_Test, BFS) {
-        vector<int> path = Algorithm::bfs(*(this->graph_), 1);
+        vector<int> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
 
-        ASSERT_TRUE(path[0] == 1);
-        ASSERT_TRUE(path[1] == 2);
-        ASSERT_TRUE(path[2] == 3);
-        ASSERT_TRUE(path[3] == 4);
-        ASSERT_TRUE(path[4] == 5);
-        ASSERT_TRUE(path[5] == 6);
+        ASSERT_EQ(path[0], 1);
+        ASSERT_EQ(path[1], 2);
+        ASSERT_EQ(path[2], 3);
+        ASSERT_EQ(path[3], 4);
+        ASSERT_EQ(path[4], 5);
+        ASSERT_EQ(path[5], 6);
     }
 
     TYPED_TEST(Algorithm_Test, DFS) {
-        vector<int> path = Algorithm::dfs(*(this->graph_), 1);
+        vector<int> path = Algorithm<TypeParam>::dfs(*(this->graph_), 1);
 
-        ASSERT_TRUE(path[0] == 1);
-        ASSERT_TRUE(path[1] == 2);
-        ASSERT_TRUE(path[2] == 4);
-        ASSERT_TRUE(path[3] == 6);
-        ASSERT_TRUE(path[4] == 5);
-        ASSERT_TRUE(path[5] == 3);
+        ASSERT_EQ(path[0], 1);
+        ASSERT_EQ(path[1], 2);
+        ASSERT_EQ(path[2], 4);
+        ASSERT_EQ(path[3], 6);
+        ASSERT_EQ(path[4], 5);
+        ASSERT_EQ(path[5], 3);
+    }
+
+    TYPED_TEST(Algorithm_Test, Count_Triangles) {
+        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
+
+        ASSERT_EQ(num_triangles, 2);
     }
 }
 

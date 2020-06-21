@@ -44,7 +44,7 @@ namespace dynamic_ktree {
         void insert(uint x, uint y) {
             if (edge_lst.find(x, y) == -1) {
                 edge_node newNode(x, y);
-                if (adj_lst[x] != -1) {
+                if (adj_lst[x] > -1 && adj_lst[x] < elements.size()) {
                     newNode.next = adj_lst[x];
                     elements[adj_lst[x]].prev = n_elements;
                     adj_lst.insert(x, n_elements);

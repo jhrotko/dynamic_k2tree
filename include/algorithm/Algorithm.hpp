@@ -2,11 +2,13 @@
 #define IMPLEMENTATION_ALGORITHM_HPP
 
 #include "../graph/Graph.hpp"
+#include "../dktree/edge_hash_table.hpp"
 #include <deque>
 #include <map>
 
 using namespace std;
 
+template<class Graph>
 class Algorithm {
     using uint = unsigned int;
 public:
@@ -52,6 +54,22 @@ public:
             }
         }
         return path;
+    }
+
+    static int count_triangles(Graph &g) {
+        uint  n_nodes = g.get_number_edges();
+
+        // Construct hash_edges;
+        edge_hash_table hash_edges;
+        for (auto edge_it = g.edge_begin(); edge_it != *g.edge_end(); edge_it++) {
+            cout << "hue" << endl;
+        }
+
+//        map<int, vector<int>> adj_node;
+//        for (auto node = g.node_begin(); node != g.node_end(); node++) {
+//            adj_node[node]
+//        }
+        return 0;
     }
 };
 
