@@ -90,7 +90,7 @@ namespace dynamic_ktree {
         edge_hash_table edge_lst;
         vector <NodeDouble> elements;
         int n_elements;
-        vector <uint> edge_free; //TODO: should go inside hash_table
+        vector <uint> edge_free;
         adjacency_list adj_lst;
     };
 }
