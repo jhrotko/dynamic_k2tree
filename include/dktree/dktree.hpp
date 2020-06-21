@@ -46,7 +46,7 @@ namespace dynamic_ktree {
         Container_0 C0;
         array<shared_ptr<k_tree>, R> k_collection;
 
-        dk_edge_iterator<k, t_bv, t_rank, l_rank> *it_edge_begin, *it_end;
+        dk_edge_iterator<k, t_bv, t_rank, l_rank> it_edge_begin, it_end;
         dk_node_iterator<dktree<k, t_bv, t_rank, l_rank>> node_it, node_it_end;
     public:
         virtual size_t get_number_edges() const {
@@ -165,15 +165,15 @@ namespace dynamic_ktree {
             return C0;
         }
 
-        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> *edge_begin()
+        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_begin()
         {
-            it_edge_begin = new dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0, k_collection);
+            it_edge_begin = dk_edge_iterator<k, t_bv, t_rank, l_rank>(C0, k_collection);
             return it_edge_begin;
         }
 
-        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> *edge_end()
+        virtual dk_edge_iterator<k, t_bv, t_rank, l_rank> &edge_end()
         {
-            it_end = &(it_edge_begin->end());
+            it_end = it_edge_begin.end();
             return it_end;
         }
 
