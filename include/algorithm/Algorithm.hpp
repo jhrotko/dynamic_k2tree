@@ -2,7 +2,7 @@
 #define IMPLEMENTATION_ALGORITHM_HPP
 
 #include "../graph/Graph.hpp"
-#include "../dktree/edge_hash_table.hpp"
+#include "../dktree/EdgeHashTable.hpp"
 #include <deque>
 #include <map>
 
@@ -60,7 +60,7 @@ public:
         uint  n_nodes = g.get_number_edges();
 
         // Construct hash_edges;
-        edge_hash_table hash_edges;
+        EdgeHashTable hash_edges;
         for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
             cout << "hue" << endl;
         }

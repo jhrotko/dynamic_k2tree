@@ -8,19 +8,19 @@ using namespace std;
 namespace dynamic_ktree {
 
     template<class dktree>
-    class dk_node_iterator {
+    class DKtreeNodeIterator {
     public:
         using value_type = int;
         using pointer = int *;
         using reference = int &;
         using iterator_category = forward_iterator_tag;
 
-        dk_node_iterator() {
+        DKtreeNodeIterator() {
             _ptr = (int *) malloc(sizeof(int));
             end();
         }
 
-        dk_node_iterator(const dktree *tree) {
+        DKtreeNodeIterator(const dktree *tree) {
             tree_size = tree->get_number_nodes();
             _ptr = (int *) malloc(sizeof(int));
             if (tree_size > 0) {
@@ -30,7 +30,7 @@ namespace dynamic_ktree {
             }
         }
 
-        dk_node_iterator(dk_node_iterator<dktree> &other) {
+        DKtreeNodeIterator(DKtreeNodeIterator<dktree> &other) {
             this->_ptr = other._ptr;
             this->tree_size = other.tree_size;
         }
@@ -39,35 +39,35 @@ namespace dynamic_ktree {
             return *_ptr;
         }
 
-        dk_node_iterator<dktree> &end() {
+        DKtreeNodeIterator<dktree> &end() {
             *_ptr = -1;
             return *this;
         }
 
-        bool operator==(const dk_node_iterator<dktree> &rhs) const {
+        bool operator==(const DKtreeNodeIterator<dktree> &rhs) const {
             if(this->_ptr != NULL && rhs._ptr != NULL)
                 return *(this->_ptr) == *(rhs._ptr);
             return false;
         }
 
-        bool operator!=(const dk_node_iterator<dktree> &rhs) const {
+        bool operator!=(const DKtreeNodeIterator<dktree> &rhs) const {
             return !(*this == rhs);
         }
 
-        dk_node_iterator<dktree> &operator++() {
+        DKtreeNodeIterator<dktree> &operator++() {
             if(this->_ptr != NULL)
                 *_ptr = *_ptr + 1;
                 if(*(this->_ptr) >= tree_size)
                     end();
         }
 
-        dk_node_iterator<dktree> &operator++(int) {
-            dk_node_iterator<dktree> *tmp = new dk_node_iterator<dktree>(*this); // copy
+        DKtreeNodeIterator<dktree> &operator++(int) {
+            DKtreeNodeIterator<dktree> *tmp = new DKtreeNodeIterator<dktree>(*this); // copy
             operator++(); // pre-increment
             return *tmp;
         }
 
-        dk_node_iterator<dktree> &operator=(const dk_node_iterator<dktree> &other) {
+        DKtreeNodeIterator<dktree> &operator=(const DKtreeNodeIterator<dktree> &other) {
             if (this != &other) {
                 this->_ptr = other._ptr;
                 this->tree_size = other.tree_size;

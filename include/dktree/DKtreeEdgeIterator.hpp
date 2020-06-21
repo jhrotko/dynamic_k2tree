@@ -18,26 +18,26 @@ using namespace k2_tree_ns;
 
 namespace dynamic_ktree {
 
-    class dktree_edge : public Edge {
+    class DKtreeEdge : public Edge {
     public:
-        dktree_edge(tuple<idx_type, idx_type> t) : Edge(std::get<0>(t), std::get<1>(t)) {}
-        dktree_edge(NodeDouble e) : Edge(e.x(), e.y()) {}
-        dktree_edge(idx_type x, idx_type y) : Edge(x, y) {}
+        DKtreeEdge(tuple<idx_type, idx_type> t) : Edge(std::get<0>(t), std::get<1>(t)) {}
+        DKtreeEdge(NodeDouble e) : Edge(e.x(), e.y()) {}
+        DKtreeEdge(idx_type x, idx_type y) : Edge(x, y) {}
     };
 
     template<class dk_tree, class k2tree, class k2tree_edge_iterator>
-    class dk_edge_iterator: virtual public GraphEdgeIterator<dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator>> {
+    class DKtreeEdgeIterator: virtual public GraphEdgeIterator<DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>> {
     public:
-        using value_type = dktree_edge;
-        using pointer = dktree_edge *;
-        using reference = dktree_edge &;
+        using value_type = DKtreeEdge;
+        using pointer = DKtreeEdge *;
+        using reference = DKtreeEdge &;
         using iterator_category = forward_iterator_tag;
 
-        dk_edge_iterator() {
-            _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+        DKtreeEdgeIterator() {
+            _ptr = new DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
         }
 
-        dk_edge_iterator(const dk_tree *tree) {
+        DKtreeEdgeIterator(const dk_tree *tree) {
             //Initialize curr pointers
             this->_tree = tree;
 
@@ -60,13 +60,13 @@ namespace dynamic_ktree {
                 }
                 if (!initialized) {
                     //begin == end
-                    _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+                    _ptr = new DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
                     distance_C0 = -1;
                 }
             }
         }
 
-        dk_edge_iterator(dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &it) {
+        DKtreeEdgeIterator(DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &it) {
             *this = it;
         }
 
@@ -99,7 +99,7 @@ namespace dynamic_ktree {
         }
 
 
-        dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &operator=(const dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
+        DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator=(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
             if (this != &other) {
                 this->_tree = other._tree;
 
@@ -110,7 +110,7 @@ namespace dynamic_ktree {
             return *this;
         }
 
-        dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
+        DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
             if (distance_C0 < _tree->first_container().size()) {
                 distance_C0++;
                 if (distance_C0 < _tree->first_container().size())
@@ -143,12 +143,12 @@ namespace dynamic_ktree {
                 }
 
             if (is_end())
-                _ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+                _ptr = new DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
             return *this;
         }
 
-        virtual dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++(int) {
-            dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> *tmp = new dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator>(
+        virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++(int) {
+            DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> *tmp = new DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>(
                     *this); // copy
             if (*this != end())
                 operator++(); // pre-increment
@@ -156,7 +156,7 @@ namespace dynamic_ktree {
         }
 
         friend void
-        swap(dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs, dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &lhs) {
+        swap(DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs, DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &lhs) {
             if (lhs != rhs) {
                 std::swap(lhs._tree, rhs._tree);
                 std::swap(lhs._ptr, rhs._ptr);
@@ -166,24 +166,24 @@ namespace dynamic_ktree {
             }
         }
 
-        dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &end() {
-            dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> *tmp = new dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator>(
+        DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &end() {
+            DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> *tmp = new DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>(
                     *this);
-            tmp->_ptr = new dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+            tmp->_ptr = new DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
             return *tmp;
         }
 
-        virtual bool operator==(const dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs) const {
+        virtual bool operator==(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs) const {
             return *(this->_ptr) == *(rhs._ptr);
         }
 
-        virtual bool operator!=(const dk_edge_iterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs) const {
+        virtual bool operator!=(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &rhs) const {
             return !(*this == rhs);
         }
 
     private:
         bool is_end() {
-            if (*_ptr == dktree_edge(MAX_SIZE_EDGE, MAX_SIZE_EDGE))
+            if (*_ptr == DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE))
                 return true;
             int containers = 0;
             int end_containers = 0;
@@ -202,11 +202,11 @@ namespace dynamic_ktree {
         }
 
         pointer _convert_C0_edge(vector<NodeDouble>::const_iterator it) {
-            return new dktree_edge(it->x(), it->y());
+            return new DKtreeEdge(it->x(), it->y());
         }
 
         pointer _convert_k_collection_edge(k2tree_edge_iterator &it) {
-            return new dktree_edge(*it);
+            return new DKtreeEdge(*it);
         }
 
         //container
