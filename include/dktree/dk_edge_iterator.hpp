@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include <sdsl/k2_tree.hpp>
-#include "edge.hpp"
+
 #include "ktree_extended.hpp"
 #include "Container_0.hpp"
 #include "../graph/Graph.hpp"
@@ -17,30 +17,17 @@ using namespace std;
 
 namespace dynamic_ktree {
 
-    class dktree_edge {
+    class dktree_edge : public Edge {
     public:
-        idx_type x, y;
-
-        dktree_edge(tuple<idx_type, idx_type> t) {
-            x = std::get<0>(t);
-            y = std::get<1>(t);
-        }
-
-        dktree_edge(NodeDouble e) : x(e.x()), y(e.y()) {}
-
-        dktree_edge(idx_type x, idx_type y) : x(x), y(y) {}
+        dktree_edge(tuple<idx_type, idx_type> t) : Edge(std::get<0>(t), std::get<1>(t)) {}
+        dktree_edge(NodeDouble e) : Edge(e.x(), e.y()) {}
+        dktree_edge(idx_type x, idx_type y) : Edge(x, y) {}
 
         bool operator==(const dktree_edge &rhs) const {
-            return x == rhs.x && y == rhs.y;
+            return x() == rhs.x() && y() == rhs.y();
         }
-
         bool operator!=(const dktree_edge &rhs) const {
             return !(*this == rhs);
-        }
-
-        friend ostream &operator<<(ostream &os, const dktree_edge &edge) {
-            os << edge.x << "  " << edge.y;
-            return os;
         }
     };
 
@@ -100,11 +87,11 @@ namespace dynamic_ktree {
         }
 
         virtual etype x() const {
-            return _ptr->x;
+            return _ptr->x();
         }
 
         virtual etype y() const {
-            return _ptr->y;
+            return _ptr->y();
         }
 
         void print() {

@@ -5,7 +5,6 @@
 #ifndef IMPLEMENTATION_CONTAINER_0_HPP
 #define IMPLEMENTATION_CONTAINER_0_HPP
 
-#include "edge.hpp"
 #include "edge_hash_table.hpp"
 #include "adjacency_list.hpp"
 
