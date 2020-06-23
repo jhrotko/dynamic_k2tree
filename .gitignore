@@ -1,8 +1,6 @@
 *.gch
 .vscode
 
-include/*.hpp
-
 test/*
 !test/*.cpp
 !test/CMakeLists.txt

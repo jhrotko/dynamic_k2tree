@@ -25,7 +25,7 @@ tests_dktree:
 	make dktree
 	cd test && cmake CMakeLists.txt && make dk2treeTest && ./dk2treeTest
 
-valgrind_dk2tree:
+valgrind_dktree:
 	make dktree
 	cd test && make dk2treeTest && valgrind --leak-check=yes ./dk2treeTest
 
@@ -41,3 +41,6 @@ tests_algorithm:
 tests_all:
 	make tests_dktree_all
 	make tests_algorithm
+
+valgrind_test:
+	cd test && valgrind --leak-check=yes ./$(test)
