@@ -141,8 +141,7 @@ namespace dynamic_ktree {
                     /* Rebuild data structure... */
                     max_r = 0;
                     for (size_t i = 0; i < R; i++) {
-                        shared_ptr<k_tree> p(new k_tree());
-                        k_collection[i] = p;
+                        k_collection[i] = make_shared<k_tree>();
                     }
                 }
             }

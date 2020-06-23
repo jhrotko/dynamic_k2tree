@@ -2,6 +2,7 @@
 #define __D_K_ITERATOR_VERTICE__
 
 #include <iterator>
+#include <memory>
 
 using namespace std;
 
@@ -11,22 +12,21 @@ namespace dynamic_ktree {
     class DKtreeNodeIterator {
     public:
         using value_type = int;
-        using pointer = int *;
+        using pointer = shared_ptr<int>;
         using reference = int &;
         using iterator_category = forward_iterator_tag;
 
         DKtreeNodeIterator() {
-            _ptr = (int *) malloc(sizeof(int));
+            _ptr = make_shared<int>(-1);
             end();
         }
 
         DKtreeNodeIterator(const dktree *tree) {
             tree_size = tree->get_number_nodes();
-            _ptr = (int *) malloc(sizeof(int));
             if (tree_size > 0) {
-                *_ptr = 0;
+                _ptr = make_shared<int>(0);
             } else {
-                end();
+                _ptr = make_shared<int>(-1);
             }
         }
 
@@ -62,9 +62,8 @@ namespace dynamic_ktree {
         }
 
         DKtreeNodeIterator<dktree> &operator++(int) {
-            DKtreeNodeIterator<dktree> *tmp = new DKtreeNodeIterator<dktree>(*this); // copy
             operator++(); // pre-increment
-            return *tmp;
+            return *this;
         }
 
         DKtreeNodeIterator<dktree> &operator=(const DKtreeNodeIterator<dktree> &other) {
