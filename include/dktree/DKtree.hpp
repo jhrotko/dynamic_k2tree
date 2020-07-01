@@ -24,7 +24,9 @@ namespace dynamic_ktree {
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class DKtree: public Graph<DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
+    class DKtree: public Graph<
+            DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>,
+            DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>> {
         using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
         using k_tree_edge_it = edge_iterator<k_tree>;
 
@@ -49,7 +51,7 @@ namespace dynamic_ktree {
         array<shared_ptr<k_tree>, R> k_collection;
 
         dktree_edge_it it_edge_begin, it_end;
-        dktree_node_it node_it, node_it_end;
+        dktree_node_it it_node_begin, it_node_end;
     public:
         virtual size_t get_number_edges() const {
             return n_total_edges;
@@ -183,16 +185,16 @@ namespace dynamic_ktree {
             return it_end;
         }
 
-        dktree_node_it &node_begin()
+        virtual dktree_node_it &node_begin()
         {
-            node_it = dktree_node_it(this);
-            return node_it;
+            it_node_begin = dktree_node_it(this);
+            return it_node_begin;
         }
 
-        dktree_node_it &node_end()
+        virtual dktree_node_it &node_end()
         {
-            node_it_end = node_it.end();
-            return node_it_end;
+            it_node_end = it_node_begin.end();
+            return it_node_end;
         }
     };
 }
