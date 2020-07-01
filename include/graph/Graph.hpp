@@ -46,7 +46,14 @@ public:
     virtual Implement &operator++(int) = 0;
 };
 
-template<class GraphEdgeIteratorImpl>
+template<class Implement>
+class GraphNodeIterator {
+public:
+    virtual bool operator!=(const Implement &rhs) const = 0;
+    virtual Implement &operator++(int) = 0;
+};
+
+template<class GraphEdgeIteratorImpl, class GraphNodeIteratorImpl>
 class Graph {
 public:
     virtual void add_edge(etype x, etype y) = 0;
@@ -58,6 +65,8 @@ public:
     virtual bool contains(etype x, etype y) = 0;
     virtual GraphEdgeIterator<GraphEdgeIteratorImpl> &edge_begin() = 0;
     virtual GraphEdgeIterator<GraphEdgeIteratorImpl> &edge_end() = 0;
+    virtual GraphNodeIterator<GraphNodeIteratorImpl> &node_begin() = 0;
+    virtual GraphNodeIterator<GraphNodeIteratorImpl> &node_end() = 0;
 };
 
 #endif //_GRAPH_INTERFACE_HPP

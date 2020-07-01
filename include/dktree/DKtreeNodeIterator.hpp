@@ -9,7 +9,7 @@ using namespace std;
 namespace dynamic_ktree {
 
     template<class dktree>
-    class DKtreeNodeIterator {
+    class DKtreeNodeIterator: virtual public GraphNodeIterator<DKtreeNodeIterator<dktree>> {
     public:
         using value_type = int;
         using pointer = shared_ptr<int>;
@@ -39,26 +39,27 @@ namespace dynamic_ktree {
             return *_ptr;
         }
 
-        DKtreeNodeIterator<dktree> &end() {
-            *_ptr = -1;
-            return *this;
+        DKtreeNodeIterator<dktree> end() {
+            DKtreeNodeIterator<dktree> tmp (*this);
+            tmp._ptr = make_shared<value_type>(-1);
+            return tmp;
         }
 
-        bool operator==(const DKtreeNodeIterator<dktree> &rhs) const {
+        virtual bool operator==(const DKtreeNodeIterator<dktree> &rhs) const {
             if(this->_ptr != NULL && rhs._ptr != NULL)
                 return *(this->_ptr) == *(rhs._ptr);
             return false;
         }
 
-        bool operator!=(const DKtreeNodeIterator<dktree> &rhs) const {
+        virtual bool operator!=(const DKtreeNodeIterator<dktree> &rhs) const {
             return !(*this == rhs);
         }
 
         DKtreeNodeIterator<dktree> &operator++() {
             if(this->_ptr != NULL)
-                *_ptr = *_ptr + 1;
+                *_ptr += 1;
                 if(*(this->_ptr) >= tree_size)
-                    end();
+                    *_ptr = -1;
         }
 
         DKtreeNodeIterator<dktree> &operator++(int) {

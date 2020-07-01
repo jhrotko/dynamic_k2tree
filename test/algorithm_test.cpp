@@ -10,18 +10,18 @@ using namespace dynamic_ktree;
 namespace {
 
     template<class G, class E>
-    struct Case
-    {
+    struct Case {
         using graph_type = G;
         using edge_it_type = E;
     };
 
-    template<typename G>
+    template<class G>
     class Algorithm_Test : public ::testing::Test {
     protected:
         G *graph_;
 
         Algorithm_Test() {}
+
         virtual ~Algorithm_Test() {}
 
         virtual void SetUp() {
@@ -74,11 +74,20 @@ namespace {
         ASSERT_EQ(path[5], 3);
     }
 
-//    TYPED_TEST(Algorithm_Test, Count_Triangles) {
+    TYPED_TEST(Algorithm_Test, Count_Triangles) {
 //        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
-//
-//        ASSERT_EQ(num_triangles, 2);
-//    }
+        TypeParam simple_graph(4);
+        simple_graph.add_edge(1,2);
+        simple_graph.add_edge(2,1);
+        simple_graph.add_edge(2,3);
+        simple_graph.add_edge(3,2);
+        simple_graph.add_edge(3,1);
+        simple_graph.add_edge(1,3);
+
+        int num_triangles = Algorithm<TypeParam>::count_triangles(simple_graph);
+
+        ASSERT_EQ(num_triangles, 1);
+    }
 }
 
 int main(int argc, char **argv) {
