@@ -193,9 +193,34 @@ TEST(dktreeIterate, node_iterate) {
     node_it++;
     ASSERT_EQ(*node_it, 2);
     node_it++;
-    ASSERT_EQ(node_it, tree.node_end());
+    ASSERT_EQ(*node_it, *tree.node_end());
     node_it++;
-    ASSERT_EQ(node_it, tree.node_end());
+    ASSERT_EQ(*node_it, *tree.node_end());
+}
+
+TEST(dktreeIterate, neightbour_iterator) {
+    d_tree tree(3);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 1);
+    tree.add_edge(2, 0);
+
+    auto neighbour_it = tree.neighbour_begin(1);
+    ASSERT_EQ(*neighbour_it, 1);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, 2);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, *tree.neighbour_end());
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, *tree.neighbour_end());
+
+    neighbour_it = tree.neighbour_begin(2);
+    ASSERT_EQ(*neighbour_it, 0);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, *tree.neighbour_end());
+
+    neighbour_it = tree.neighbour_begin(0);
+    ASSERT_EQ(*neighbour_it, *tree.neighbour_end());
+
 }
 
 int main(int argc, char **argv) {
