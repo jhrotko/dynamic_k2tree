@@ -27,7 +27,7 @@ namespace dynamic_ktree {
     };
 
     template<class dk_tree, class k2tree, class k2tree_edge_iterator>
-    class DKtreeEdgeIterator: virtual public GraphEdgeIterator<DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>> {
+    class DKtreeEdgeIterator: public GraphEdgeIterator<DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>> {
     public:
         using value_type = DKtreeEdge;
         using pointer = shared_ptr<DKtreeEdge>;
@@ -100,7 +100,7 @@ namespace dynamic_ktree {
         }
 
 
-        DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator=(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
+        virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator=(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
             if (this != &other) {
                 this->_tree = other._tree;
 
@@ -111,7 +111,7 @@ namespace dynamic_ktree {
             return *this;
         }
 
-        DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
+        virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
             if (distance_C0 < _tree->first_container().size()) {
                 distance_C0++;
                 if (distance_C0 < _tree->first_container().size())
