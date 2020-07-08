@@ -12,6 +12,7 @@
 #include "Container_0.hpp"
 #include "DKtreeEdgeIterator.hpp"
 #include "DKtreeNodeIterator.hpp"
+#include "DKtreeNeighbourIterator.hpp"
 #include "../graph/Graph.hpp"
 
 using namespace sdsl;
@@ -29,9 +30,12 @@ namespace dynamic_ktree {
             DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>> {
         using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
         using k_tree_edge_it = edge_iterator<k_tree>;
+        using k_tree_neighbour_it = neighbour_iterator<k_tree>;
 
         using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
         using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
+        using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it>;
+
     public:
         DKtree() {}
         DKtree(uint n_vertices) : n_vertices(n_vertices) {
@@ -52,6 +56,7 @@ namespace dynamic_ktree {
 
         dktree_edge_it it_edge_begin, it_end;
         dktree_node_it it_node_begin, it_node_end;
+        dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
     public:
         virtual size_t get_number_edges() const {
             return n_total_edges;
@@ -59,6 +64,10 @@ namespace dynamic_ktree {
 
         virtual size_t get_number_nodes() const {
             return n_vertices;
+        }
+
+        int get_max_r() const {
+            return max_r;
         }
 
         virtual void add_edge(etype x, etype y)
@@ -195,6 +204,18 @@ namespace dynamic_ktree {
         {
             it_node_end = it_node_begin.end();
             return it_node_end;
+        }
+
+        dktree_neighbour_it &neighbour_begin(etype node)
+        {
+            it_neighbour_begin = dktree_neighbour_it(this, node);
+            return it_neighbour_begin;
+        }
+
+        dktree_neighbour_it &neighbour_end()
+        {
+            it_neighbour_end = it_neighbour_begin.end();
+            return it_neighbour_end;
         }
     };
 }
