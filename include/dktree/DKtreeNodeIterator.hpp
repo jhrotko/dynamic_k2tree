@@ -3,13 +3,14 @@
 
 #include <iterator>
 #include <memory>
+#include "../graph/Graph.hpp"
 
 using namespace std;
 
 namespace dynamic_ktree {
 
     template<class dktree>
-    class DKtreeNodeIterator: virtual public GraphNodeIterator<DKtreeNodeIterator<dktree>> {
+    class DKtreeNodeIterator : public GraphNodeIterator<DKtreeNodeIterator<dktree>> {
     public:
         using value_type = int;
         using pointer = shared_ptr<int>;
@@ -40,13 +41,13 @@ namespace dynamic_ktree {
         }
 
         DKtreeNodeIterator<dktree> end() {
-            DKtreeNodeIterator<dktree> tmp (*this);
+            DKtreeNodeIterator<dktree> tmp(*this);
             tmp._ptr = make_shared<value_type>(-1);
             return tmp;
         }
 
         virtual bool operator==(const DKtreeNodeIterator<dktree> &rhs) const {
-            if(this->_ptr != NULL && rhs._ptr != NULL)
+            if (this->_ptr != NULL && rhs._ptr != NULL)
                 return *(this->_ptr) == *(rhs._ptr);
             return false;
         }
@@ -55,19 +56,21 @@ namespace dynamic_ktree {
             return !(*this == rhs);
         }
 
-        DKtreeNodeIterator<dktree> &operator++() {
-            if(this->_ptr != NULL)
-                *_ptr += 1;
-                if(*(this->_ptr) >= tree_size)
+        virtual DKtreeNodeIterator<dktree> &operator++() {
+            if (this->_ptr != NULL) {
+                if (*(this->_ptr) >= tree_size - 1 || *(this->_ptr) == -1)
                     *_ptr = -1;
+                else
+                    *_ptr += 1;
+            }
         }
 
-        DKtreeNodeIterator<dktree> &operator++(int) {
+        virtual DKtreeNodeIterator<dktree> &operator++(int) {
             operator++(); // pre-increment
             return *this;
         }
 
-        DKtreeNodeIterator<dktree> &operator=(const DKtreeNodeIterator<dktree> &other) {
+        virtual DKtreeNodeIterator<dktree> &operator=(const DKtreeNodeIterator<dktree> &other) {
             if (this != &other) {
                 this->_ptr = other._ptr;
                 this->tree_size = other.tree_size;
