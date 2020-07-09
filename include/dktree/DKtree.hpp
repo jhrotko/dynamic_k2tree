@@ -27,7 +27,8 @@ namespace dynamic_ktree {
             typename l_rank = typename t_bv::rank_1_type>
     class DKtree: public Graph<
             DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>,
-            DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>> {
+            DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>,
+            DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
         using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
         using k_tree_edge_it = edge_iterator<k_tree>;
         using k_tree_neighbour_it = neighbour_iterator<k_tree>;
@@ -206,13 +207,13 @@ namespace dynamic_ktree {
             return it_node_end;
         }
 
-        dktree_neighbour_it &neighbour_begin(etype node)
+        virtual dktree_neighbour_it &neighbour_begin(etype node)
         {
             it_neighbour_begin = dktree_neighbour_it(this, node);
             return it_neighbour_begin;
         }
 
-        dktree_neighbour_it &neighbour_end()
+        virtual dktree_neighbour_it &neighbour_end()
         {
             it_neighbour_end = it_neighbour_begin.end();
             return it_neighbour_end;
