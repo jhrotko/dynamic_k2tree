@@ -2,7 +2,7 @@
 
 ### Installation
 1. First you will need to install gtest and cmake
-1. Install the sdsl-lite fork (https://github.com/joo95h/sdsl-lite):\
+1. Install the sdsl-lite fork (https://github.com/joo95h/sdsl-lite): \
  ```cd sdsl-lite```\
  ```sudo ./install.sh /usr/local/```
 
