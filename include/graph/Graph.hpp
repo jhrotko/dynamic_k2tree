@@ -58,10 +58,7 @@ public:
     virtual etype y() const = 0;
 };
 
-template<class Implement>
-class GraphNodeIterator: public GraphIterator<Implement> {};
-
-template<class GraphEdgeIteratorImpl, class GraphNodeIteratorImpl>
+template<class GraphEdgeIteratorImpl, class GraphNodeIteratorImpl, class GraphNeighbourIteratorImpl>
 class Graph {
 public:
     virtual void add_edge(etype x, etype y) = 0;
@@ -80,9 +77,13 @@ public:
 
     virtual GraphEdgeIterator<GraphEdgeIteratorImpl> &edge_end() = 0;
 
-    virtual GraphNodeIterator<GraphNodeIteratorImpl> &node_begin() = 0;
+    virtual GraphIterator<GraphNodeIteratorImpl> &node_begin() = 0;
 
-    virtual GraphNodeIterator<GraphNodeIteratorImpl> &node_end() = 0;
+    virtual GraphIterator<GraphNodeIteratorImpl> &node_end() = 0;
+
+    virtual GraphIterator<GraphNeighbourIteratorImpl> &neighbour_begin(etype node) = 0;
+
+    virtual GraphIterator<GraphNeighbourIteratorImpl> &neighbour_end() = 0;
 };
 
 #endif //_GRAPH_INTERFACE_HPP

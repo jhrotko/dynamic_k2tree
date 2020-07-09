@@ -10,7 +10,7 @@ using namespace std;
 namespace dynamic_ktree {
 
     template<class dktree>
-    class DKtreeNodeIterator : public GraphNodeIterator<DKtreeNodeIterator<dktree>> {
+    class DKtreeNodeIterator : public GraphIterator<DKtreeNodeIterator<dktree>> {
     public:
         using value_type = int;
         using pointer = shared_ptr<int>;

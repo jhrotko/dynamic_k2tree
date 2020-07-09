@@ -106,9 +106,9 @@ public:
 //                        num_triangles++;
 //                }
 //            }
-    //     }
-    //     return num_triangles;
-    // }
+         }
+         return num_triangles;
+     }
 
     // static unsigned int count_triangles_basic(Graph &g) {
     //     unsigned int total_triangles = 0;
@@ -124,7 +124,7 @@ public:
     //         }
     //     }
     //     return total_triangles;
-    }
+//    }
 
 private:
 
