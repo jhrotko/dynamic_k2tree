@@ -48,7 +48,7 @@ namespace dynamic_ktree {
         }
 
     private:
-        uint max_r;
+        uint max_r = 0;
         uint n_vertices = 0;
         uint n_total_edges = 0;
 

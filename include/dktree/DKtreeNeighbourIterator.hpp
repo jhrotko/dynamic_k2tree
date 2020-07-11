@@ -13,40 +13,62 @@ using namespace std;
 template<class dktree, class ktree, class k2_tree_neighbour_iterator>
 class DKtreeNeighbourIterator
         : public GraphIterator<DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator>> {
-    using value_type = etype;
-    using pointer = shared_ptr<etype>;
-    using reference = etype &;
+    using value_type = int;
+    using pointer = shared_ptr<int>;
+    using reference = int &;
     using iterator_category = forward_iterator_tag;
 public:
-    DKtreeNeighbourIterator() {}
+    DKtreeNeighbourIterator() {
+        end();
+    }
 
     DKtreeNeighbourIterator(const dktree *tree, etype node) : tree(tree), node(node) {
         tree->first_container().list_neighbours(node, C0_neighbours);
 
-        if (C0_neighbours.size() != 0)
-            _ptr = make_shared<value_type>(C0_neighbours[_c0_index]);
+        if (C0_neighbours.size() > 0) {
+            _ptr = C0_neighbours[_c0_index];
+            return;
+        }
         else {
             _c0_index = -1;
             for (_curr_ktree = 0; _curr_ktree <= tree->get_max_r(); _curr_ktree++) {
                 shared_ptr<ktree> curr_ktree = tree->k_collections()[_curr_ktree];
-                if (curr_ktree != nullptr &&
-                    curr_ktree->neighbour_begin(node) != curr_ktree->neighbour_end()) {
-                    _ptr = make_shared<value_type>(*curr_ktree->neighbour_begin(node));
-                    _curr_neigh_it = curr_ktree->neighbour_begin(node);
-                    break;
+
+                if (curr_ktree != nullptr) {
+                    k2_tree_neighbour_iterator neigh_it = curr_ktree->neighbour_begin(node);
+                    k2_tree_neighbour_iterator neigh_it_end = curr_ktree->neighbour_end();
+                    if (*neigh_it != *neigh_it_end) {
+                        _ptr = *neigh_it;
+                        _curr_neigh_it = neigh_it;
+                        return;
+                    }
                 }
             }
         }
+        end();
     }
 
     value_type operator*() {
-        return *_ptr;
+        return _ptr;
+    }
+
+    virtual DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &operator=(
+            const DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &other) {
+        if (this != &other) {
+            tree = other.tree;
+            node = other.node;
+            _ptr = other._ptr;
+
+            C0_neighbours = other.C0_neighbours;
+            _c0_index = other._c0_index;
+            _curr_ktree =  other._curr_ktree;
+            _curr_neigh_it = other._curr_neigh_it;
+        }
+        return *this;
     }
 
     virtual bool operator==(const DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &rhs) const {
-        if (this->_ptr != NULL && rhs._ptr != NULL)
-            return *(this->_ptr) == *(rhs._ptr);
-        return false;
+        return this->_ptr == rhs._ptr;
     }
 
     virtual bool operator!=(const DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &rhs) const {
@@ -54,7 +76,8 @@ public:
     }
 
     virtual DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &operator++(int) {
-        operator++(); // pre-increment
+        if(_ptr != -1)
+            operator++(); // pre-increment
         return *this;
     }
 
@@ -62,7 +85,7 @@ public:
         if (_c0_index != -1) {
             _c0_index++;
             if (_c0_index < C0_neighbours.size())
-                *_ptr = C0_neighbours[_c0_index];
+                _ptr = C0_neighbours[_c0_index];
             else
                 _c0_index = -1;
         } else {
@@ -72,46 +95,43 @@ public:
                     if (curr_ktree != nullptr &&
                         curr_ktree->neighbour_begin(node) != curr_ktree->neighbour_end()) {
                         _curr_neigh_it = curr_ktree->neighbour_begin(node);
-                        *_ptr = *_curr_neigh_it;
+                        _ptr = *_curr_neigh_it;
                     }
                 }
             } else {
                 _curr_neigh_it++;
 
-                auto curr_end = tree->k_collections()[_curr_ktree]->neighbour_end();
-                if (_curr_neigh_it == curr_end) {
-                    if (_curr_ktree < tree->get_max_r()) {
-                        *_ptr = -1;
-                        return *this;
-                    } else {
-                        _curr_ktree++;
-                        for (; _curr_ktree <= tree->get_max_r(); _curr_ktree++) {
-                            shared_ptr<ktree> curr_ktree = tree->k_collections()[_curr_ktree];
-                            if (curr_ktree != nullptr &&
-                                curr_ktree->neighbour_begin(node) != curr_ktree->neighbour_end()) {
-                                _curr_neigh_it = curr_ktree->neighbour_begin(node);
-                            }
+                if (_curr_neigh_it == tree->k_collections()[_curr_ktree]->neighbour_end()) {
+                    _curr_ktree++;
+                    for (; _curr_ktree <= tree->get_max_r(); _curr_ktree++) {
+                        shared_ptr<ktree> curr_ktree = tree->k_collections()[_curr_ktree];
+                        if (curr_ktree != nullptr &&
+                            curr_ktree->neighbour_begin(node) != curr_ktree->neighbour_end()) {
+                            _curr_neigh_it = curr_ktree->neighbour_begin(node);
                         }
                     }
+                    if (_curr_ktree > tree->get_max_r()) {
+                        end();
+                        return *this;
+                    }
+
                 } else
-                    *_ptr = *_curr_neigh_it;
+                    _ptr = *_curr_neigh_it;
             }
             return *this;
         }
     }
 
-    virtual DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> end() {
-        DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> tmp(*this);
-        tmp._ptr = make_shared<value_type>(-1);
-//        tmp._c0_index = -1;
-//        tmp._curr_ktree = tree->get_max_r() + 1;
-        return tmp;
+    DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> end() {
+        _ptr = -1;
+        _c0_index = -1;
+        return *this;
     }
 
 private:
     const dktree *tree;
     etype node;
-    pointer _ptr;
+    value_type _ptr;
 
     //FIXME: Create neighbour iterator in C0
     vector<etype> C0_neighbours;
