@@ -2,7 +2,6 @@
 
 #include "../include/algorithm/Algorithm.hpp"
 #include "../include/dktree/DKtree.hpp"
-#include <iostream>
 
 using namespace std;
 using namespace dynamic_ktree;
