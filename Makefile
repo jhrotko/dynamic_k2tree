@@ -44,3 +44,12 @@ tests_all:
 
 valgrind_test:
 	cd test && valgrind --leak-check=yes ./$(test)
+
+sdsl-path="../sdsl-lite"
+update_repo:
+	cd $(sdsl-path) && git pull || exit
+	git pull --rebase --autostash
+
+# Make sure you commited before
+ship:
+	make update_repo && make tests_all && git push
