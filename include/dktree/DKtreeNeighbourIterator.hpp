@@ -108,6 +108,8 @@ public:
                         if (curr_ktree != nullptr &&
                             curr_ktree->neighbour_begin(node) != curr_ktree->neighbour_end()) {
                             _curr_neigh_it = curr_ktree->neighbour_begin(node);
+                            _ptr = *_curr_neigh_it;
+                            return *this;
                         }
                     }
                     if (_curr_ktree > tree->get_max_r()) {

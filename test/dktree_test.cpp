@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 #include "../include/dktree/DKtree.hpp"
 #include <iostream>
+#include "sdsl/k2_tree.hpp"
 
 using d_tree = dynamic_ktree::DKtree<2, bit_vector>;
+using k_tree = sdsl::k2_tree<2>;
 
 TEST(dktreeCreate, createEmpty) {
     d_tree tree(2);
@@ -221,6 +223,37 @@ TEST(dktreeIterate, neightbour_iterator) {
     neighbour_it = tree.neighbour_begin(0);
     ASSERT_EQ(*neighbour_it, *tree.neighbour_end());
 
+}
+
+TEST(dktreeIterate, neighbour_iterator_other) {
+    d_tree simple_graph(4);
+    simple_graph.add_edge(1,2);
+    simple_graph.add_edge(2,3);
+    simple_graph.add_edge(3,1);
+    simple_graph.add_edge(2,1);
+    simple_graph.add_edge(3,2);
+    simple_graph.add_edge(1,3);
+
+    auto neighbour_it = simple_graph.neighbour_begin(1);
+    ASSERT_EQ(*neighbour_it, 3);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, 2);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, *simple_graph.neighbour_end());
+
+    neighbour_it = simple_graph.neighbour_begin(2);
+    ASSERT_EQ(*neighbour_it, 1);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, 3);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, *simple_graph.neighbour_end());
+
+    neighbour_it = simple_graph.neighbour_begin(3);
+    ASSERT_EQ(*neighbour_it, 2);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, 1);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, *simple_graph.neighbour_end());
 }
 
 int main(int argc, char **argv) {

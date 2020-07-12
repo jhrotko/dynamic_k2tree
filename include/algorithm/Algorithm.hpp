@@ -110,21 +110,22 @@ public:
          return num_triangles;
      }
 
-    // static unsigned int count_triangles_basic(Graph &g) {
-    //     unsigned int total_triangles = 0;
-    //     for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++ ) {
-    //         etype v1 = edge_it.x();
-    //         etype  v2 = edge_it.y();
-    //         for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); neigh_v2_it++) {
-    //             etype v3 = *neigh_v2_it;
-    //             for(auto neigh_it = g.neighbour_begin(v3); neigh_it != g.neighbour_end(); neigh_it++) {
-    //                 etype v1_maybe = *neigh_it;
-    //                 if(v1 == v1_maybe) total_triangles++;
-    //             }
-    //         }
-    //     }
-    //     return total_triangles;
-//    }
+     static unsigned int count_triangles_basic(Graph &g) {
+         unsigned int total_triangles = 0;
+         for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++ ) {
+             etype v1 = edge_it.x();
+             etype  v2 = edge_it.y();
+             for (auto neigh_v2_it = g.neighbour_begin(v2); *neigh_v2_it != *g.neighbour_end(); ) {
+                 etype v3 = *neigh_v2_it;
+                 for(auto neigh_it = g.neighbour_begin(v3); neigh_it != g.neighbour_end(); neigh_it++) {
+                     etype v1_maybe = *neigh_it;
+                     if(v1 == v1_maybe) total_triangles++;
+                 }
+                 neigh_v2_it++;
+             }
+         }
+         return total_triangles;
+    }
 
 private:
 
