@@ -84,20 +84,20 @@ namespace {
 //        ASSERT_EQ(num_triangles, 3);
 //    }
 //
-//    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Simple_Both_Ways) {
-////        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
-//        TypeParam simple_graph(4);
-//        simple_graph.add_edge(1,2);
-//        simple_graph.add_edge(2,3);
-//        simple_graph.add_edge(3,1);
-//        simple_graph.add_edge(2,1);
-//        simple_graph.add_edge(3,2);
-//        simple_graph.add_edge(1,3);
-//
-//        int num_triangles = Algorithm<TypeParam>::count_triangles_basic(simple_graph);
-//
-//        ASSERT_EQ(num_triangles, 6);
-//    }
+    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Simple_Both_Ways) {
+//        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
+        TypeParam simple_graph(4);
+        simple_graph.add_edge(1,2);
+        simple_graph.add_edge(2,3);
+        simple_graph.add_edge(3,1);
+        simple_graph.add_edge(2,1);
+        simple_graph.add_edge(3,2);
+        simple_graph.add_edge(1,3);
+
+        int num_triangles = Algorithm<TypeParam>::count_triangles_basic(simple_graph);
+
+        ASSERT_EQ(num_triangles, 6);
+    }
 }
 
 int main(int argc, char **argv) {
