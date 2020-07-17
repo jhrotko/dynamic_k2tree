@@ -6,10 +6,10 @@
 #define _GRAPH_INTERFACE_HPP
 
 #include <vector>
-#include <iostream>
+#include "sdsl/k2_tree.hpp"
 
 using namespace std;
-using etype = int;
+using etype = sdsl::idx_type;
 
 template<class IterImplement>
 class GraphIterator {

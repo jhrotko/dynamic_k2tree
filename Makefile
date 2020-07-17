@@ -1,8 +1,10 @@
+CFLAGS=-Wall -O9 -g -DNDEBUG -std=c++17
+
 dktree:
-	cd include/dktree && g++ -std=c++17 *.hpp
+	cd include/dktree && g++ $(CFLAGS) *.hpp
 
 algorithm:
-	cd include/algorithm && g++ -std=c++17 *.hpp
+	cd include/algorithm && g++ $(CFLAGS) *.hpp
 
 all:
 	make dktree
