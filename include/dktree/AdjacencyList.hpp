@@ -10,12 +10,31 @@
 using namespace std;
 
 class Node {
+private:
+    etype _next;
+    bool _end = true;
+
 public:
-    etype next = -1;
     Node() {}
 
+    void next(etype value) {
+        _next = value;
+        _end = false;
+    }
+
+    etype next() const {
+        return _next;
+    }
+
+    bool end() const{
+        return _end;
+    }
+
     friend ostream &operator<<(ostream &os, Node const &i) {
-        os << "(" << i.next << ")";
+        if(i._end)
+            os << "( )";
+        else
+            os << "(" <<  i._next << ")";
         return os;
     }
 };
@@ -26,6 +45,10 @@ private:
     size_t n_elements = 0;
     size_t n_vertices;
 
+    bool is_within_range(etype idx) const {
+        return idx > n_vertices;
+    }
+
 public:
     vector<Node> vertices;
     AdjacencyList() {}
@@ -34,19 +57,19 @@ public:
         vertices.resize(n_vertices);
     }
 
-    int operator[](size_t idx) {
-        if (idx > n_vertices)
-            return -1;
-        return vertices[idx].next;
+    Node operator[](etype idx) {
+        if(!is_within_range(idx))
+            return Node();
+        return vertices[idx];
     }
 
-    void insert(unsigned int node, etype next) {
-        if(vertices[node].next == -1)
+    void insert(etype node, etype next) {
+        if(vertices[node].end())
             n_elements++;
-        vertices[node].next = next;
+        vertices[node].next(next);
     }
 
-    uint size() {
+    size_t size() {
         return n_elements;
     }
 

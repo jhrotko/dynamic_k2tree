@@ -3,50 +3,76 @@
 
 #include <vector>
 #include <tuple>
-#include <stdexcept>
 #include <algorithm>
-#include <memory>
 #include <unordered_map>
 #include <iostream>
+#include <climits>
 
 #include "../graph/Graph.hpp"
 
 using namespace std;
 
-using  uint64 = unsigned long;
 
-class NodeDouble {
+class NodeEdge {
+private:
+    Edge _edge;
+    etype _next, _prev;
+    bool _next_set, _prev_set;
 public:
-    Edge edge;
-    etype next, prev;
 
-    NodeDouble() {
-        edge = Edge(-1,-1);
-        next = -1;
-        prev = -1;
+
+    NodeEdge() : _next_set(false), _prev_set(false) {}
+
+    NodeEdge(etype x, etype y) : _next_set(false), _prev_set(false) {
+        _edge = Edge(x,y);
     }
-    NodeDouble(etype x, etype y) {
-        edge = Edge(x,y);
-        next = -1;
-        prev = -1;
+
+    etype next() const {
+        return _next;
     }
+
+    void next(etype value) {
+        _next = value;
+        _next_set = true;
+    }
+
+    bool has_next() const {
+        return _next_set;
+    }
+
+    etype prev() const {
+        return _prev;
+    }
+
+    void prev(etype value) {
+        _prev = value;
+        _prev_set = true;
+    }
+
+    bool has_prev() const {
+        return _prev_set;
+    }
+
     etype x() const {
-        return edge.x();
-    }
-    etype y() const {
-        return edge.y();
+        return _edge.x();
     }
 
-    bool operator==(const NodeDouble &rhs) const
-    {
-        return x() == rhs.x() && y() == rhs.y() && next == rhs.next && prev == rhs.prev;
+    etype y() const {
+        return _edge.y();
     }
-    bool operator!=(const NodeDouble &rhs) const
+
+    bool operator==(const NodeEdge &rhs) const
+    {
+        return x() == rhs.x() && y() == rhs.y() && _next == rhs._next && _prev == rhs._prev;
+    }
+    bool operator!=(const NodeEdge &rhs) const
     {
         return !(*this == rhs);
     }
-    friend ostream &operator<<(ostream &os, NodeDouble const &node) {
-        os << node.next << "<- " << node.edge << " ->" << node.prev << endl;
+    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
+        string next_string = node._next_set? node._next + "<- ": "";
+        string prev_string = node._prev_set? " ->" + node._prev :  "";
+        os << "[" << next_string << node._edge << prev_string << "]" << endl;
         return os;
     }
 };
@@ -83,7 +109,7 @@ private:
         }
     };
 
-    typedef unordered_map<Edge, int, Hash, Comparator> h_table;
+    typedef unordered_map<Edge, unsigned int, Hash, Comparator> h_table;
 
 protected:
     h_table ht;
@@ -92,7 +118,7 @@ public:
     EdgeHashTable() = default;
 
     EdgeHashTable(vector<Edge> new_elements) {
-        for (int i = 0; i < new_elements.size(); ++i)
+        for (unsigned int i = 0; i < new_elements.size(); ++i)
             ht[new_elements[i]] = i;
     }
 
@@ -102,10 +128,10 @@ public:
 
     // Returns the index of the index where the Edge is.
     // Returns -1 in case it cannot find
-    int find(etype x, etype y) {
+    unsigned int find(etype x, etype y) {
         h_table::const_iterator iterator = ht.find(Edge(x, y));
         if (iterator == ht.end())
-            return -1;
+            return UINT_MAX;
         return iterator->second;
     }
 
@@ -118,7 +144,7 @@ public:
         return ht.size();
     }
 
-    int &operator[](const Edge &edge) {
+    unsigned int &operator[](const Edge &edge) {
         return ht[edge];
     }
 
