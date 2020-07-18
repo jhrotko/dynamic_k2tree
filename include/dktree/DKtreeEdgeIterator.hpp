@@ -41,6 +41,11 @@ namespace dynamic_ktree {
             //Initialize curr pointers
             this->_tree = tree;
 
+            if (tree->get_number_nodes() == 0) {
+                _ptr = DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
+                distance_C0 = -1;
+                return;
+            }
             for (int i = 0; i < _tree->k_collections().size(); ++i)
                 if (_tree->k_collections()[i] != nullptr)
                     _data_k_collection_curr[i] = _tree->k_collections()[i]->edge_begin();

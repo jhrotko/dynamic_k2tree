@@ -52,7 +52,7 @@ namespace {
     TYPED_TEST_CASE(Algorithm_Test, graph_implementations);
 
     TYPED_TEST(Algorithm_Test, BFS) {
-        vector<int> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
+        vector<long unsigned int> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
 
         ASSERT_EQ(path[0], 1);
         ASSERT_EQ(path[1], 2);
@@ -63,7 +63,7 @@ namespace {
     }
 
     TYPED_TEST(Algorithm_Test, DFS) {
-        vector<int> path = Algorithm<TypeParam>::dfs(*(this->graph_), 1);
+        vector<long unsigned int> path = Algorithm<TypeParam>::dfs(*(this->graph_), 1);
 
         ASSERT_EQ(path[0], 1);
         ASSERT_EQ(path[1], 2);
@@ -73,31 +73,92 @@ namespace {
         ASSERT_EQ(path[5], 3);
     }
 
-//    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Simple_One_Way) {
-//        TypeParam simple_graph(4);
-//        simple_graph.add_edge(1,2);
-//        simple_graph.add_edge(2,3);
-//        simple_graph.add_edge(3,1);
-//
-//        int num_triangles = Algorithm<TypeParam>::count_triangles_basic(simple_graph);
-//
-//        ASSERT_EQ(num_triangles, 3);
-//    }
-//
-    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Simple_Both_Ways) {
-//        int num_triangles = Algorithm<TypeParam>::count_triangles(*(this->graph_));
+
+    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Simpl) {
         TypeParam simple_graph(4);
-        simple_graph.add_edge(1,2);
-        simple_graph.add_edge(2,3);
-        simple_graph.add_edge(3,1);
-        simple_graph.add_edge(2,1);
-        simple_graph.add_edge(3,2);
-        simple_graph.add_edge(1,3);
+        simple_graph.add_edge(1, 2);
+        simple_graph.add_edge(2, 3);
+        simple_graph.add_edge(3, 1);
+        simple_graph.add_edge(2, 1);
+        simple_graph.add_edge(3, 2);
+        simple_graph.add_edge(1, 3);
 
         int num_triangles = Algorithm<TypeParam>::count_triangles_basic(simple_graph);
 
         ASSERT_EQ(num_triangles, 6);
     }
+
+//    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Star) {
+//        TypeParam star_graph(7);
+//        star_graph.add_edge(1, 2);
+//        star_graph.add_edge(1, 3);
+//        star_graph.add_edge(1, 4);
+//        star_graph.add_edge(1, 5);
+//        star_graph.add_edge(1, 6);
+//
+//        star_graph.add_edge(2, 1);
+//        star_graph.add_edge(2, 4);
+//
+//        star_graph.add_edge(3, 1);
+//        star_graph.add_edge(3, 5);
+//
+//        star_graph.add_edge(4, 1);
+//        star_graph.add_edge(4, 2);
+//
+//        star_graph.add_edge(5, 1);
+//        star_graph.add_edge(5, 3);
+//        star_graph.add_edge(5, 6);
+//
+//        star_graph.add_edge(6, 1);
+//        star_graph.add_edge(6, 5);
+//
+//        int num_triangles = Algorithm<TypeParam>::count_triangles_basic(star_graph);
+//
+//        ASSERT_EQ(num_triangles, 12);
+//    }
+
+//    TYPED_TEST(Algorithm_Test, Count_Triangles_Basic_Hash) {
+//        TypeParam simple_graph(4);
+//        simple_graph.add_edge(1, 2);
+//        simple_graph.add_edge(2, 3);
+//        simple_graph.add_edge(3, 1);
+//        simple_graph.add_edge(2, 1);
+//        simple_graph.add_edge(3, 2);
+//        simple_graph.add_edge(1, 3);
+//
+//        int num_triangles = Algorithm<TypeParam>::count_triangles_hash(simple_graph);
+//
+//        ASSERT_EQ(num_triangles, 6);
+//    }
+//
+//    TYPED_TEST(Algorithm_Test, Count_Triangles_Hash_Star) {
+//        TypeParam star_graph(7);
+//        star_graph.add_edge(1, 2);
+//        star_graph.add_edge(1, 3);
+//        star_graph.add_edge(1, 4);
+//        star_graph.add_edge(1, 5);
+//        star_graph.add_edge(1, 6);
+//
+//        star_graph.add_edge(2, 1);
+//        star_graph.add_edge(2, 4);
+//
+//        star_graph.add_edge(3, 1);
+//        star_graph.add_edge(3, 5);
+//
+//        star_graph.add_edge(4, 1);
+//        star_graph.add_edge(4, 2);
+//
+//        star_graph.add_edge(5, 1);
+//        star_graph.add_edge(5, 3);
+//        star_graph.add_edge(5, 6);
+//
+//        star_graph.add_edge(6, 1);
+//        star_graph.add_edge(6, 5);
+//
+//        int num_triangles = Algorithm<TypeParam>::count_triangles_hash(star_graph);
+//
+//        ASSERT_EQ(num_triangles, 12);
+//    }
 }
 
 int main(int argc, char **argv) {

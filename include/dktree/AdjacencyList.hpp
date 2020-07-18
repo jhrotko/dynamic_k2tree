@@ -46,7 +46,7 @@ private:
     size_t n_vertices;
 
     bool is_within_range(etype idx) const {
-        return idx > n_vertices;
+        return idx < n_vertices;
     }
 
 public:
@@ -64,9 +64,11 @@ public:
     }
 
     void insert(etype node, etype next) {
-        if(vertices[node].end())
-            n_elements++;
-        vertices[node].next(next);
+        if(is_within_range(node)) {
+            if(vertices[node].end())
+                n_elements++;
+            vertices[node].next(next);
+        }
     }
 
     size_t size() {
