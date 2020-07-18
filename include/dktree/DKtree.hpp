@@ -76,14 +76,14 @@ namespace dynamic_ktree {
             if (contains(x, y))
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
-            if (C0.n_elements < max_size) {
+            if (C0.size() < max_size) {
                 C0.insert(x, y);
                 n_total_edges++;
                 return;
             }
 
-            size_t i = 0;
-            for (; i < R; i++) {
+            size_t i;
+            for (i = 0; i < R; i++) {
                 if (k_collection[i] != nullptr)
                     max_size += k_collection[i]->get_number_edges();
                 if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
@@ -96,7 +96,7 @@ namespace dynamic_ktree {
 
             //Load edges in C0...
             vector<tuple<idx_type, idx_type>> free_edges;
-            for (uint j = 0; j < C0.n_elements; j++) {
+            for (uint j = 0; j < C0.size(); j++) {
                 const tuple<idx_type, idx_type> e(C0.elements[j].x(), C0.elements[j].y());
                 free_edges.push_back(e);
             }

@@ -11,6 +11,8 @@
 namespace dynamic_ktree {
 
     class Container_0 {
+    private:
+        etype n_elements;
     public:
         Container_0() {}
 
@@ -64,7 +66,8 @@ namespace dynamic_ktree {
                 else
                     adj_lst.insert(x, elements[nodeIndex].next());
 
-                edge_free[elements.size()] = nodeIndex;
+                n_elements--;
+                edge_free[n_elements] = nodeIndex;
                 return true;
             }
             return false;
@@ -78,7 +81,7 @@ namespace dynamic_ktree {
         }
 
         size_t size() const {
-            return elements.size();
+            return n_elements;
         }
 
         vector<NodeEdge>::const_iterator edge_begin() const { return elements.begin(); }
@@ -89,7 +92,6 @@ namespace dynamic_ktree {
 
         EdgeHashTable edge_lst;
         vector <NodeEdge> elements;
-        etype n_elements;
         vector <etype> edge_free;
         AdjacencyList adj_lst;
     };

@@ -42,8 +42,8 @@ TEST(adjList, next)
     AdjacencyList adj_lst(5);
 
     adj_lst.insert(4,2);
-    ASSERT_EQ(adj_lst[4], 2);
-    ASSERT_EQ(adj_lst[10], -1);
+    ASSERT_EQ(adj_lst[4].next(), 2);
+    ASSERT_TRUE(adj_lst[2].end());
 }
 
 TEST(adjList, clear)

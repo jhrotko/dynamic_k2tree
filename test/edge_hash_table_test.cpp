@@ -1,6 +1,5 @@
 #include "../include/dktree/EdgeHashTable.hpp"
 #include <gtest/gtest.h>
-#include <iostream>
 
 using namespace std;
 
