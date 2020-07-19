@@ -1,7 +1,6 @@
 #ifndef __D_K_ITERATOR_EDGE__
 #define __D_K_ITERATOR_EDGE__
 
-#define R 8
 
 #include <iterator>
 #include <vector>
@@ -19,16 +18,21 @@ using namespace k2_tree_ns;
 
 namespace dynamic_ktree {
 
+    #define R 8
+
     class DKtreeEdge : public Edge {
     public:
         DKtreeEdge() {}
+
         DKtreeEdge(tuple<idx_type, idx_type> t) : Edge(std::get<0>(t), std::get<1>(t)) {}
+
         DKtreeEdge(NodeEdge e) : Edge(e.x(), e.y()) {}
+
         DKtreeEdge(idx_type x, idx_type y) : Edge(x, y) {}
     };
 
     template<class dk_tree, class k2tree, class k2tree_edge_iterator>
-    class DKtreeEdgeIterator: public GraphEdgeIterator<DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>> {
+    class DKtreeEdgeIterator : public GraphEdgeIterator<DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator>> {
     public:
         using value_type = DKtreeEdge;
         using pointer = shared_ptr<DKtreeEdge>;
@@ -143,7 +147,7 @@ namespace dynamic_ktree {
         }
 
         DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> end() {
-            DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> tmp (*this);
+            DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> tmp(*this);
             tmp._ptr = DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
             return tmp;
         }
@@ -156,7 +160,8 @@ namespace dynamic_ktree {
             return !(*this == rhs);
         }
 
-        virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator=(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
+        virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &
+        operator=(const DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &other) {
             if (this != &other) {
                 this->_tree = other._tree;
 
@@ -197,7 +202,7 @@ namespace dynamic_ktree {
 
         //container
         const dk_tree *_tree;
-        const idx_type  MAX_SIZE_EDGE = 9999999;
+        const idx_type MAX_SIZE_EDGE = 9999999;
 
         //state
         value_type _ptr = DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);

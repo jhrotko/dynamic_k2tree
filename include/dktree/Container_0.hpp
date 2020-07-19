@@ -7,17 +7,19 @@
 
 #include "EdgeHashTable.hpp"
 #include "AdjacencyList.hpp"
+#include "utils.hpp"
 
 namespace dynamic_ktree {
 
     class Container_0 {
     private:
         etype n_elements;
+        etype max_edges;
     public:
         Container_0() {}
 
         Container_0(size_t n_vertices) {
-            const etype max_edges = MAXSZ(n_vertices, 0);
+            max_edges = MAXSZ(n_vertices, 0);
             elements.resize(max_edges);
             n_elements = 0;
 
@@ -34,16 +36,17 @@ namespace dynamic_ktree {
             clean_free_lst();
             adj_lst.clear();
             elements.clear();
+            elements.resize(max_edges);
             n_elements = 0;
         }
 
         void clean_free_lst() {
-            for (etype i = 0; i < edge_free.size(); i++)
+            for (etype i = 0; i < max_edges; i++)
                 edge_free[i] = i;
         }
 
         void insert(etype x, etype y) {
-            if (edge_lst.find(x, y) == UINT_MAX) {
+            if (!edge_lst.contains(x, y)) {
                 NodeEdge newNode(x, y);
                 if (!adj_lst[x].end() && adj_lst[x].next() < elements.size()) {
                     newNode.next(adj_lst[x].next());
@@ -51,6 +54,9 @@ namespace dynamic_ktree {
                     adj_lst.insert(x, n_elements);
                 }
                 edge_lst.insert(x, y, n_elements);
+//                cout << n_elements << endl;
+//                cout << elements.size() << endl;
+//                assert(n_elements < elements.size());
                 elements[n_elements] = newNode;
                 n_elements++;
             }
@@ -82,6 +88,19 @@ namespace dynamic_ktree {
 
         size_t size() const {
             return n_elements;
+        }
+
+        etype max_size() const noexcept {
+            return max_edges;
+        }
+
+        void resize(etype new_max_edges) {
+            elements.resize(new_max_edges);
+            edge_free.resize(new_max_edges);
+            for(etype i = max_edges; i < new_max_edges; i++) {
+                edge_free[i] = i;
+            }
+            max_edges = new_max_edges;
         }
 
         vector<NodeEdge>::const_iterator edge_begin() const { return elements.begin(); }
