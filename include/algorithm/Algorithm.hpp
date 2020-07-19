@@ -110,7 +110,7 @@ public:
         return total_triangles;
     }
 
-    static int count_triangles(Graph &g) {
+    static unsigned int count_triangles(Graph &g) {
         // Create an index on edges, with the pair of nodes
         // at its ends as the key
         EdgeHashTable edges_table;
@@ -133,9 +133,9 @@ public:
         }
 
         uint num_triangles = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
-            etype v1 = edge_it.x();
-            etype v2 = edge_it.y();
+        for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); edge_it++) {
+            etype v1 = edge_it->first.x();
+            etype v2 = edge_it->first.y();
             if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))
                 continue;
 
@@ -149,6 +149,11 @@ public:
         }
 
         return num_triangles;
+    }
+
+    static float clustering_coefficient(Graph &g) {
+        float total_edges = g.get_number_edges();
+        return count_triangles(g)/(total_edges*(total_edges-1));
     }
 
 private:

@@ -163,6 +163,14 @@ public:
     {
         ht.clear();
     }
+
+    h_table::const_iterator cbegin() const noexcept {
+        return ht.cbegin();
+    }
+
+    h_table::const_iterator cend() const noexcept {
+        return ht.cend();
+    }
 };
 
 #endif
