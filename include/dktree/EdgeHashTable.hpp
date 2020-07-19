@@ -127,12 +127,16 @@ public:
     }
 
     // Returns the index of the index where the Edge is.
-    // Returns -1 in case it cannot find
+    // Returns UINT_MAX in case it cannot find
     unsigned int find(etype x, etype y) {
         h_table::const_iterator iterator = ht.find(Edge(x, y));
         if (iterator == ht.end())
             return UINT_MAX;
         return iterator->second;
+    }
+
+    bool contains(etype x, etype y) {
+        return find(x,y) != UINT_MAX;
     }
 
     void erase(etype x, etype y)

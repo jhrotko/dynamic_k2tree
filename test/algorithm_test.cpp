@@ -83,7 +83,7 @@ namespace {
         simple_graph.add_edge(3, 2);
         simple_graph.add_edge(1, 3);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_basic(simple_graph);
+        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy(simple_graph);
 
         ASSERT_EQ(num_triangles, 6);
     }
@@ -112,7 +112,7 @@ namespace {
         star_graph.add_edge(6, 1);
         star_graph.add_edge(6, 5);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_basic(star_graph);
+        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy(star_graph);
 
         ASSERT_EQ(num_triangles, 18);
     }
@@ -126,7 +126,7 @@ namespace {
         simple_graph.add_edge(3, 2);
         simple_graph.add_edge(1, 3);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_hash(simple_graph);
+        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy_hash(simple_graph);
 
         ASSERT_EQ(num_triangles, 6);
     }
@@ -155,9 +155,38 @@ namespace {
         star_graph.add_edge(6, 1);
         star_graph.add_edge(6, 5);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_hash(star_graph);
+        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy_hash(star_graph);
 
         ASSERT_EQ(num_triangles, 18);
+    }
+
+    TYPED_TEST(Algorithm_Test, count_triangles_heavy_hitters) {
+        TypeParam star_graph(7);
+        star_graph.add_edge(1, 2);
+        star_graph.add_edge(1, 3);
+        star_graph.add_edge(1, 4);
+        star_graph.add_edge(1, 5);
+        star_graph.add_edge(1, 6);
+
+        star_graph.add_edge(2, 1);
+        star_graph.add_edge(2, 4);
+
+        star_graph.add_edge(3, 1);
+        star_graph.add_edge(3, 5);
+
+        star_graph.add_edge(4, 1);
+        star_graph.add_edge(4, 2);
+
+        star_graph.add_edge(5, 1);
+        star_graph.add_edge(5, 3);
+        star_graph.add_edge(5, 6);
+
+        star_graph.add_edge(6, 1);
+        star_graph.add_edge(6, 5);
+
+        int num_triangles = Algorithm<TypeParam>::count_triangles(star_graph);
+
+        ASSERT_EQ(num_triangles, 3);
     }
 }
 
