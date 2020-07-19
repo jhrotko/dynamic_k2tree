@@ -77,6 +77,8 @@ namespace dynamic_ktree {
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
+                if(C0.max_size() < max_size)
+                    C0.resize(max_size);
                 C0.insert(x, y);
                 n_total_edges++;
                 return;
@@ -119,7 +121,7 @@ namespace dynamic_ktree {
 
         virtual bool contains(etype x, etype y)
         {
-            if (C0.edge_lst.find(x, y) != -1)
+            if (C0.edge_lst.contains(x, y))
                 return true;
 
             // check in other containers
