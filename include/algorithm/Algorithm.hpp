@@ -60,7 +60,7 @@ public:
         return path;
     }
 
-    static int count_triangles_hash(Graph &g) {
+    static int count_triangles_dummy_hash(Graph &g) {
         // Create an index on edges, with the pair of nodes
         // at its ends as the key
         EdgeHashTable edges_table;
@@ -92,7 +92,7 @@ public:
         return num_triangles;
     }
 
-    static unsigned int count_triangles_basic(Graph &g) {
+    static unsigned int count_triangles_dummy(Graph &g) {
         unsigned int total_triangles = 0;
         for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
             etype v1 = edge_it.x();
@@ -108,6 +108,58 @@ public:
             }
         }
         return total_triangles;
+    }
+
+    static int count_triangles(Graph &g) {
+        // Create an index on edges, with the pair of nodes
+        // at its ends as the key
+        EdgeHashTable edges_table;
+        uint index = 0;
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
+            edges_table.insert(edge_it.x(), edge_it.y(), index++);
+        }
+
+        // Given a node v, we can retrieve the nodes adjacent to v
+        // in time proportional to the number of those nodes
+        unordered_map<etype, vector<etype>> adj_node;
+        map<etype, etype> degree_node;
+        for (auto node_it = g.node_begin(); node_it != g.node_end(); node_it++) {
+            etype node = *node_it;
+            if (g.list_neighbour(node).size() == 0) continue;
+            adj_node[node] = g.list_neighbour(node);
+
+            //Order nodes by degree
+            degree_node[node] = adj_node[node].size();
+        }
+
+        uint num_triangles = 0;
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
+            etype v1 = edge_it.x();
+            etype v2 = edge_it.y();
+            if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))
+                continue;
+
+            else if (!is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2])
+                     && minor_degree(v1, degree_node[v1], v2, degree_node[v2])) {
+                for (auto u = adj_node[v1].cbegin(); u != adj_node[v1].cend(); u++) {
+                    if (edges_table.contains(*u, v2) && minor_degree(v1, degree_node[v1], *u, degree_node[*u]))
+                        num_triangles++;
+                }
+            }
+        }
+
+        return num_triangles;
+    }
+
+private:
+
+    static bool is_heavy_hitter(Graph &g, uint node_degree) {
+        return node_degree >= sqrt(g.get_number_edges());
+    }
+
+    static bool minor_degree(etype v1, uint degree_v1, etype v2, uint degree_v2) {
+        if (degree_v1 < degree_v2) return true;
+        return degree_v1 == degree_v2 && v1 < v2;
     }
 };
 
