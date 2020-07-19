@@ -184,9 +184,12 @@ namespace {
         star_graph.add_edge(6, 1);
         star_graph.add_edge(6, 5);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles(star_graph);
+        unsigned int num_triangles = Algorithm<TypeParam>::count_triangles(star_graph);
 
         ASSERT_EQ(num_triangles, 3);
+
+        float coefficient = Algorithm<TypeParam>::clustering_coefficient(star_graph);
+        ASSERT_TRUE(coefficient == 0.0125f);
     }
 }
 
