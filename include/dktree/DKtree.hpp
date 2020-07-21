@@ -36,17 +36,6 @@ namespace dynamic_ktree {
         using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
         using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
         using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it>;
-
-    public:
-        DKtree() {}
-        DKtree(uint n_vertices) : n_vertices(n_vertices) {
-            C0 = Container_0(n_vertices);
-            max_r = 0;
-            for (size_t i = 0; i < R; i++) {
-                k_collection[i] = nullptr;
-            }
-        }
-
     private:
         uint max_r = 0;
         uint n_vertices = 0;
@@ -58,7 +47,17 @@ namespace dynamic_ktree {
         dktree_edge_it it_edge_begin, it_end;
         dktree_node_it it_node_begin, it_node_end;
         dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
+
     public:
+        DKtree() {}
+        DKtree(uint n_vertices) : n_vertices(n_vertices) {
+            C0 = Container_0(n_vertices);
+            max_r = 0;
+            for (size_t i = 0; i < R; i++) {
+                k_collection[i] = nullptr;
+            }
+        }
+
         virtual size_t get_number_edges() const {
             return n_total_edges;
         }
@@ -77,9 +76,7 @@ namespace dynamic_ktree {
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
-                if(C0.max_size() < max_size)
-                    C0.resize(max_size);
-                C0.insert(x, y);
+                C0.insert(x, y, n_vertices, n_total_edges);
                 n_total_edges++;
                 return;
             }
@@ -97,17 +94,18 @@ namespace dynamic_ktree {
             max_r = max(i, max_r);
 
             //Load edges in C0...
-            vector<tuple<idx_type, idx_type>> free_edges;
-            for (uint j = 0; j < C0.size(); j++) {
-                const tuple<idx_type, idx_type> e(C0.elements[j].x(), C0.elements[j].y());
-                free_edges.push_back(e);
-            }
+//            vector<tuple<idx_type, idx_type>> free_edges;
+//            for (uint j = 0; j < C0.size(); j++) {
+//                const tuple<idx_type, idx_type> e(C0.elements[j].x(), C0.elements[j].y());
+//                free_edges.push_back(e);
+//            }
             //Add new link...
-            const tuple<idx_type, idx_type> e(x, y);
-            free_edges.push_back(e);
+            C0.elements_nodes.push_back(tuple<idx_type, idx_type>(x, y));
+//            const tuple<idx_type, idx_type> e(x, y);
+//            free_edges.push_back(e);
 
-            C0.clean(n_vertices);
-            shared_ptr<k_tree> tmp = make_shared<k_tree>(free_edges, n_vertices);
+            shared_ptr<k_tree> tmp = make_shared<k_tree>(C0.elements_nodes, n_vertices);
+            C0.clean();
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
                     k_tree aux = tmp->unionOp(*k_collection[j]);

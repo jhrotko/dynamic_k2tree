@@ -14,7 +14,11 @@ void split(const std::string& str, vector<string>& cont,
 }
 
 TEST(ReadTest, heavy_50000) {
-    ifstream test_case ("datasets/50000/50000.tsv");
+    unsigned int n_vertices = 50000;
+
+    std::ostringstream path;
+    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+    ifstream test_case (path.str());
 
     if (test_case.is_open())
     {
@@ -22,7 +26,7 @@ TEST(ReadTest, heavy_50000) {
         vector<std::string> substrings;
         const std::string delims = " ";
 
-        dynamic_ktree::DKtree<2> graph(50000);
+        dynamic_ktree::DKtree<2> graph(n_vertices);
         while (getline (test_case, line))
         {
             split(line, substrings, delims);
@@ -32,11 +36,16 @@ TEST(ReadTest, heavy_50000) {
             if( substrings[0] == "a") {
                 graph.add_edge(x, y);
                 cout << "number of edges: " << graph.get_number_edges() << endl;
+                if(graph.get_number_edges() == 511332)
+                    cout << "hue" << endl;
             }
         }
         test_case.close();
     }
-    else cout << "Unable to open file";
+    else {
+        cout << "Unable to open file";
+        FAIL();
+    }
 }
 
 int main(int argc, char **argv) {
