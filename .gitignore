@@ -1,5 +1,6 @@
 *.gch
 .vscode
+.idea
 
 test/*
 !test/*.cpp

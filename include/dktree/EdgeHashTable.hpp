@@ -15,7 +15,7 @@ using namespace std;
 
 class NodeEdge {
 private:
-    Edge _edge;
+//    tuple<etype, etype> _edge;
     etype _next, _prev;
     bool _next_set, _prev_set;
 public:
@@ -23,9 +23,9 @@ public:
 
     NodeEdge() : _next_set(false), _prev_set(false) {}
 
-    NodeEdge(etype x, etype y) : _next_set(false), _prev_set(false) {
-        _edge = Edge(x,y);
-    }
+//    NodeEdge(etype x, etype y) : _next_set(false), _prev_set(false) {
+////        _edge = tuple<etype, etype>(x,y);
+//    }
 
     etype next() const {
         return _next;
@@ -53,35 +53,36 @@ public:
         return _prev_set;
     }
 
-    etype x() const {
-        return _edge.x();
-    }
+//    etype x() const {
+//        return get<0>(_edge);
+//    }
+//
+//    etype y() const {
+//        return get<1>(_edge);
+//    }
 
-    etype y() const {
-        return _edge.y();
-    }
-
-    bool operator==(const NodeEdge &rhs) const
-    {
-        return x() == rhs.x() && y() == rhs.y() && _next == rhs._next && _prev == rhs._prev;
-    }
-    bool operator!=(const NodeEdge &rhs) const
-    {
-        return !(*this == rhs);
-    }
-    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
-        string next_string = node._next_set? node._next + "<- ": "";
-        string prev_string = node._prev_set? " ->" + node._prev :  "";
-        os << "[" << next_string << node._edge << prev_string << "]" << endl;
-        return os;
-    }
+//    bool operator==(const NodeEdge &rhs) const
+//    {
+//        return x() == rhs.x() && y() == rhs.y();
+////        return x() == rhs.x() && y() == rhs.y() && _next == rhs._next && _prev == rhs._prev;
+//    }
+//    bool operator!=(const NodeEdge &rhs) const
+//    {
+//        return !(*this == rhs);
+//    }
+//    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
+//        string next_string = node._next_set? node._next + "<- ": "";
+//        string prev_string = node._prev_set? " ->" + node._prev :  "";
+//        os << "[" << next_string << node.x() << ", " << node.y() << prev_string << "]" << endl;
+//        return os;
+//    }
 };
 
 class EdgeHashTable {
 private:
     class Hash {
     public:
-        unsigned int operator()(Edge const &e) const {
+        unsigned int operator()(tuple<etype, etype> const &e) const {
             unsigned long key = edge_to_uint64(e);
             key = (~key) + (key << 18);
             key = key ^ (key >> 31);
@@ -93,10 +94,10 @@ private:
             return (unsigned int) key;
         }
 
-        unsigned long edge_to_uint64(Edge const &e) const {
-            unsigned long concat_edge = e.x();
+        unsigned long edge_to_uint64(tuple<etype, etype> const &e) const {
+            unsigned long concat_edge = get<0>(e);
             concat_edge <<= 32;
-            concat_edge |= e.y();
+            concat_edge |= get<1>(e);
 
             return concat_edge;
         }
@@ -104,12 +105,12 @@ private:
 
     class Comparator {
     public:
-        bool operator()(Edge const &e1, Edge const &e2) const {
-            return e1.x() == e2.x() && e1.y() == e2.y();
+        bool operator()(tuple<etype, etype> const &e1, tuple<etype, etype> const &e2) const {
+            return get<0>(e1) == get<0>(e2) && get<1>(e1) == get<1>(e2);
         }
     };
 
-    typedef unordered_map<Edge, unsigned int, Hash, Comparator> h_table;
+    typedef unordered_map<tuple<etype, etype>, unsigned int, Hash, Comparator> h_table;
 
 protected:
     h_table ht;
@@ -117,19 +118,19 @@ public:
 
     EdgeHashTable() = default;
 
-    EdgeHashTable(vector<Edge> new_elements) {
+    EdgeHashTable(vector<tuple<etype, etype>> new_elements) {
         for (unsigned int i = 0; i < new_elements.size(); ++i)
             ht[new_elements[i]] = i;
     }
 
     void insert(etype x, etype y, unsigned int index) {
-        ht[Edge(x, y)] = index;
+        ht[tuple<etype, etype>(x, y)] = index;
     }
 
     // Returns the index of the index where the Edge is.
     // Returns UINT_MAX in case it cannot find
     unsigned int find(etype x, etype y) {
-        h_table::const_iterator iterator = ht.find(Edge(x, y));
+        h_table::const_iterator iterator = ht.find(tuple<etype, etype>(x, y));
         if (iterator == ht.end())
             return UINT_MAX;
         return iterator->second;
@@ -141,20 +142,20 @@ public:
 
     void erase(etype x, etype y)
     {
-        ht.erase(Edge(x, y));
+        ht.erase(tuple<etype, etype>(x, y));
     }
 
     size_t size() {
         return ht.size();
     }
 
-    unsigned int &operator[](const Edge &edge) {
+    unsigned int &operator[](const tuple<etype, etype> &edge) {
         return ht[edge];
     }
 
     friend ostream &operator<<(ostream &os, EdgeHashTable const &h) {
         for (auto item: h.ht)
-            os << "[" << item.first << "] = " << item.second << "  ";
+            os << "[" << get<0>(item.first) << "," << get<1>(item.first) << "] = " << item.second << "  ";
         os << endl;
         return os;
     }
