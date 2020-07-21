@@ -103,6 +103,14 @@ namespace dynamic_ktree {
             max_edges = new_max_edges;
         }
 
+        void load(std::istream &in) {
+            in.read((char*)&elements, sizeof(vector <NodeEdge>));
+            in.read((char*)&edge_free, sizeof(vector <etype>));
+            in.read((char*)&edge_free, sizeof(vector <etype>));
+            edge_lst.load(in);
+            adj_lst.load(in);
+        }
+
         vector<NodeEdge>::const_iterator edge_begin() const { return elements.begin(); }
         vector<NodeEdge>::const_iterator edge_end() const { return elements.end(); }
 

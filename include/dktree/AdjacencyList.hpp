@@ -30,6 +30,10 @@ public:
         return _end;
     }
 
+    bool operator==(const Node &node) const {
+        return node._next == _next && node._end == _end;
+    }
+
     friend ostream &operator<<(ostream &os, Node const &i) {
         if(i._end)
             os << "( )";
@@ -85,6 +89,12 @@ public:
         vertices.clear();
         vertices.resize(n_vertices);
         n_elements = 0;
+    }
+
+    void load(std::istream &in) {
+        in.read((char*)&vertices, sizeof(vector<Node>));
+        in.read((char*)&n_elements, sizeof(size_t));
+        in.read((char*)&n_vertices, sizeof(size_t));
     }
 };
 

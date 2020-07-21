@@ -171,6 +171,17 @@ public:
     h_table::const_iterator cend() const noexcept {
         return ht.cend();
     }
+
+//    void load(std::istream &in) {
+//        in >> ht;
+//    }
+
+    std::size_t serialize(std::ostream &out) {
+        out << ht. << ht.get_allocator();
+
+        out << ht.size();
+        for (auto const& p: ht) { out << p.first << p.second; }
+    }
 };
 
 #endif

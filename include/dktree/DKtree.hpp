@@ -73,6 +73,10 @@ namespace dynamic_ktree {
 
         virtual void add_edge(etype x, etype y)
         {
+            if (n_vertices < 0){
+                throw ("Unintialized dktree");
+            }
+
             if (contains(x, y))
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
@@ -219,6 +223,32 @@ namespace dynamic_ktree {
         {
             it_neighbour_end = it_neighbour_begin.end();
             return it_neighbour_end;
+        }
+
+        void load(std::istream &in) {
+            sdsl::read_member(max_r, in);
+            sdsl::read_member(n_vertices, in);
+            sdsl::read_member(n_total_edges, in);
+            C0 = Container_0(n_vertices);
+            sdsl::read_member(C0, in);
+//            sdsl::read_member(k_collection, in);
+        }
+
+        size_type serialize(std::ostream &out, structure_tree_node *v = nullptr,
+                       std::string name = "") const {
+            {
+                structure_tree_node *child = structure_tree::add_child(
+                        v, name, util::class_name(*this));
+                size_type written_bytes = 0;
+
+                written_bytes += write_member(max_r, out, child, "max_r");
+                written_bytes += write_member(n_vertices, out, child, "n_vertices");
+                written_bytes += write_member(n_total_edges, out, child, "n_total_edges");
+                written_bytes += write_member(C0, out, child, "C0");
+//                written_bytes += write_member(k_collection, out, child, "k_collection");
+                structure_tree::add_size(child, written_bytes);
+                return written_bytes;
+            }
         }
     };
 }

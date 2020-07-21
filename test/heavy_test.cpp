@@ -1,17 +1,8 @@
-//
-// Created by joana on 19/07/20.
-//
 #include <gtest/gtest.h>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/classification.hpp>
+#include "test_utils.hpp"
 #include <string>
 #include <vector>
 #include "../include/dktree/DKtree.hpp"
-
-void split(const std::string& str, vector<string>& cont,
-            const std::string& delims = " ") {
-    boost::split(cont, str, boost::is_any_of(delims));
-}
 
 TEST(ReadTest, heavy_50000) {
     ifstream test_case ("datasets/50000/50000.tsv");
