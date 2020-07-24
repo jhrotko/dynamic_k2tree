@@ -44,8 +44,9 @@ tests_all:
 	make tests_dktree_all
 	make tests_algorithm
 
-valgrind_test:
-	cd test && valgrind --leak-check=yes ./$(test)
+valgrind_dktree:
+	cd test && cmake CMakeLists.txt && make
+	cd test && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out-heavy.txt ./heavyTest
 
 sdsl-path="../sdsl-lite"
 update_repo:
