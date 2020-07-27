@@ -14,15 +14,15 @@ template<class Graph>
 class Algorithm {
     using uint = unsigned int;
 public:
-    static vector<etype> bfs(Graph &g, uint root) {
+    static vector<etype> bfs(Graph &g, etype root) {
         vector<etype> path;
-        map<uint, bool> visited;
-        deque<uint> queue;
+        map<etype, bool> visited;
+        deque<etype> queue;
         queue.push_back(root);
         visited[root] = true;
 
         while (!queue.empty()) {
-            uint current_node = queue.front();
+            etype current_node = queue.front();
             queue.pop_front();
             path.push_back(current_node);
 
@@ -134,8 +134,8 @@ public:
 
         uint num_triangles = 0;
         for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); edge_it++) {
-            etype v1 = edge_it->first.x();
-            etype v2 = edge_it->first.y();
+            etype v1 = get<0>(edge_it->first); //FIXME: improve interface of the Edge.
+            etype v2 = get<1>(edge_it->first);
             if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))
                 continue;
 

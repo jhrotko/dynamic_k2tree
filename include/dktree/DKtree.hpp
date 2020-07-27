@@ -108,10 +108,9 @@ namespace dynamic_ktree {
             C0.clean();
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
-                    k_tree aux = tmp->unionOp(*k_collection[j]);
-                    tmp = make_shared<k_tree>(move(aux));
+                    tmp->unionOp(*k_collection[j]);
+                    k_collection[j].reset();
                 }
-                k_collection[j] = nullptr;
             }
             k_collection[i] = tmp;
             n_total_edges++;

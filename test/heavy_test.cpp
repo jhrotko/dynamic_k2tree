@@ -8,8 +8,8 @@
 #include <vector>
 #include "../include/dktree/DKtree.hpp"
 
-void split(const std::string& str, vector<string>& cont,
-            const std::string& delims = " ") {
+void split(const std::string &str, vector<string> &cont,
+           const std::string &delims = " ") {
     boost::split(cont, str, boost::is_any_of(delims));
 }
 
@@ -20,9 +20,8 @@ TEST(ReadTest, heavy_50000) {
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
     ifstream test_case (path.str());
 
-    if (test_case.is_open())
-    {
-        std::string  line;
+    if (test_case.is_open()) {
+        std::string line;
         vector<std::string> substrings;
         const std::string delims = " ";
 
@@ -31,9 +30,9 @@ TEST(ReadTest, heavy_50000) {
         {
             split(line, substrings, delims);
 
-            etype  x = (etype) stoi(substrings[1]);
-            etype  y = (etype) stoi(substrings[2]);
-            if( substrings[0] == "a") {
+            etype x = (etype) stoi(substrings[1]);
+            etype y = (etype) stoi(substrings[2]);
+            if (substrings[0] == "a") {
                 graph.add_edge(x, y);
                 cout << "number of edges: " << graph.get_number_edges() << endl;
                 if(graph.get_number_edges() == 511332)
@@ -41,12 +40,27 @@ TEST(ReadTest, heavy_50000) {
             }
         }
         test_case.close();
-    }
-    else {
+    } else  {
         cout << "Unable to open file";
         FAIL();
     }
 }
+
+//TEST(ktreeUnion, memoryLeaks) {
+//    using ktree = k2_tree<2>;
+//
+//    ktree tree1({{1, 0, 1, 0},
+//                        {0, 1, 1, 1},
+//                        {1, 1, 1, 1},
+//                        {0, 0, 0, 1}});
+//    shared_ptr<ktree> ptr_tree1 = make_shared<ktree>(tree1);
+//
+//    ktree tree2({{1, 0, 1, 0},
+//                        {0, 0, 0, 1},
+//                        {1, 0, 1, 1},
+//                        {0, 0, 0, 1}});
+//    shared_ptr<ktree> ptr_tree2 = make_shared<ktree>(tree2);
+//}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

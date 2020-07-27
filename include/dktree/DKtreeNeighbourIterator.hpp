@@ -18,13 +18,11 @@ class DKtreeNeighbourIterator
     using reference = int &;
     using iterator_category = forward_iterator_tag;
 public:
-    DKtreeNeighbourIterator() {
-        end();
-    }
+    DKtreeNeighbourIterator() {}
 
     DKtreeNeighbourIterator(const dktree *tree, etype node) : tree(tree), node(node) {
         tree->first_container().list_neighbours(node, C0_neighbours);
-
+        _c0_index = 0;
         if (C0_neighbours.size() > 0) {
             _ptr = C0_neighbours[_c0_index];
             return;
@@ -84,7 +82,7 @@ public:
     virtual DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &operator++() {
         if (_c0_index != -1) {
             _c0_index++;
-            if (_c0_index < C0_neighbours.size())
+            if (_c0_index < (int) C0_neighbours.size())
                 _ptr = C0_neighbours[_c0_index];
             else
                 _c0_index = -1;
@@ -120,8 +118,8 @@ public:
                 } else
                     _ptr = *_curr_neigh_it;
             }
-            return *this;
         }
+        return *this;
     }
 
     DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> end() {
@@ -133,11 +131,11 @@ public:
 private:
     const dktree *tree;
     etype node;
-    value_type _ptr;
+    value_type _ptr = -1;
 
     //FIXME: Create neighbour iterator in C0
     vector<etype> C0_neighbours;
-    int _c0_index = 0;
+    int _c0_index = -1;
     int _curr_ktree = -1;
     k2_tree_neighbour_iterator _curr_neigh_it;
 };

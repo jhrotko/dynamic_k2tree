@@ -59,7 +59,7 @@ namespace dynamic_ktree {
                 _ptr = -1;
             else
                 _ptr += 1;
-
+            return *this;
         }
 
         virtual DKtreeNodeIterator<dktree> &operator++(int) {
@@ -78,7 +78,7 @@ namespace dynamic_ktree {
     private:
         //state
         value_type _ptr;
-        size_t tree_size = 0;
+        int tree_size = 0;
     };
 }
 
