@@ -50,7 +50,7 @@ namespace dynamic_ktree {
                 distance_C0 = -1;
                 return;
             }
-            for (int i = 0; i < _tree->k_collections().size(); ++i)
+            for (unsigned int i = 0; i < _tree->k_collections().size(); ++i)
                 if (_tree->k_collections()[i] != nullptr)
                     _data_k_collection_curr[i] = _tree->k_collections()[i]->edge_begin();
 
@@ -104,9 +104,9 @@ namespace dynamic_ktree {
         }
 
         virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
-            if (distance_C0 < _tree->first_container().size()) {
+            if (distance_C0 < (int) _tree->first_container().size()) {
                 distance_C0++;
-                if (distance_C0 < _tree->first_container().size())
+                if (distance_C0 < (int) _tree->first_container().size())
                     _ptr = _convert_C0_edge(next(_tree->first_container().edge_begin(), distance_C0));
                 else
                     for (int i = 0; i < R; i++) {
