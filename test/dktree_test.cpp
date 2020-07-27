@@ -200,6 +200,15 @@ TEST(dktreeIterate, node_iterate) {
     ASSERT_EQ(*node_it, *tree.node_end());
 }
 
+TEST(dktreeIterate, neighbour_iterator_empty) {
+    d_tree tree(3);
+    tree.add_edge(1, 2);
+    tree.add_edge(1, 1);
+    tree.add_edge(2, 0);
+
+    ASSERT_EQ(*tree.neighbour_begin(0), *tree.neighbour_end());
+}
+
 TEST(dktreeIterate, neightbour_iterator) {
     d_tree tree(3);
     tree.add_edge(1, 2);

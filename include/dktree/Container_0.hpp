@@ -6,7 +6,6 @@
 #define IMPLEMENTATION_CONTAINER_0_HPP
 
 #include "EdgeHashTable.hpp"
-#include "AdjacencyList.hpp"
 #include "utils.hpp"
 
 namespace dynamic_ktree {
@@ -95,8 +94,9 @@ namespace dynamic_ktree {
 
         void list_neighbours(etype x, vector<etype> &neighbours) {
             if (adj_contains(x) && !elements.empty())
-                for (auto neigh_it = adj_map.find(x); neigh_it != adj_map.end();  neigh_it = adj_map.find(elements[adj_map[neigh_it->first]].next()))
-                    neighbours.push_back(get<1>(elements_nodes[neigh_it->first]));
+                for (auto neigh_it = adj_map.find(x); neigh_it != adj_map.end();  neigh_it = adj_map.find(elements[adj_map[neigh_it->first]].next())) {
+                    neighbours.push_back(get<1>(elements_nodes[neigh_it->second]));
+                }
         }
 
         size_t size() const {
