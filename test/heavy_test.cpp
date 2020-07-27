@@ -13,7 +13,7 @@ void split(const std::string &str, vector<string> &cont,
     boost::split(cont, str, boost::is_any_of(delims));
 }
 
-TEST(ReadTest, heavy_50000) {
+TEST(ReadTest, ReadFromDataset) {
     unsigned int n_vertices = 50000;
 
     std::ostringstream path;
@@ -34,9 +34,7 @@ TEST(ReadTest, heavy_50000) {
             etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
                 graph.add_edge(x, y);
-                cout << "number of edges: " << graph.get_number_edges() << endl;
-                if(graph.get_number_edges() == 511332)
-                    cout << "hue" << endl;
+//                cout << "number of edges: " << graph.get_number_edges() << endl;
             }
         }
         test_case.close();
@@ -45,22 +43,6 @@ TEST(ReadTest, heavy_50000) {
         FAIL();
     }
 }
-
-//TEST(ktreeUnion, memoryLeaks) {
-//    using ktree = k2_tree<2>;
-//
-//    ktree tree1({{1, 0, 1, 0},
-//                        {0, 1, 1, 1},
-//                        {1, 1, 1, 1},
-//                        {0, 0, 0, 1}});
-//    shared_ptr<ktree> ptr_tree1 = make_shared<ktree>(tree1);
-//
-//    ktree tree2({{1, 0, 1, 0},
-//                        {0, 0, 0, 1},
-//                        {1, 0, 1, 1},
-//                        {0, 0, 0, 1}});
-//    shared_ptr<ktree> ptr_tree2 = make_shared<ktree>(tree2);
-//}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

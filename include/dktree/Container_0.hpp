@@ -14,10 +14,12 @@ namespace dynamic_ktree {
     private:
         etype n_elements;
         etype max_edges;
+        size_t  n_vertices;
+        const uint *n_edges;
     public:
         Container_0() {}
 
-        Container_0(size_t n_vertices) {
+        Container_0(size_t n_vertices, const uint *n_edges) : n_vertices(n_vertices), n_edges(n_edges){
             max_edges = MAXSZ(n_vertices, 0);
             elements.resize(max_edges);
             elements_nodes.resize(max_edges);
@@ -54,10 +56,10 @@ namespace dynamic_ktree {
             return adj_map.find(x) != adj_map.end();
         }
 
-        void insert(etype x, etype y, size_t n_vertices, size_t n_edges) {
+        void insert(etype x, etype y) {
             if (!edge_lst.contains(x, y)) {
                 if(n_elements >= elements.size()) {
-                    resize(MAXSZ(max(n_vertices, n_edges), 0));
+                    resize(MAXSZ(max(n_vertices, *n_edges), 0));
                 }
                 etype i = edge_free[n_elements++];
                 elements_nodes[i] = tuple<etype, etype>(x,y);

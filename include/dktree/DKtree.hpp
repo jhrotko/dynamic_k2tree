@@ -51,7 +51,7 @@ namespace dynamic_ktree {
     public:
         DKtree() {}
         DKtree(uint n_vertices) : n_vertices(n_vertices) {
-            C0 = Container_0(n_vertices);
+            C0 = Container_0(n_vertices, &n_total_edges);
             max_r = 0;
             for (size_t i = 0; i < R; i++) {
                 k_collection[i] = nullptr;
@@ -76,7 +76,7 @@ namespace dynamic_ktree {
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
-                C0.insert(x, y, n_vertices, n_total_edges);
+                C0.insert(x, y);
                 n_total_edges++;
                 return;
             }
@@ -93,17 +93,8 @@ namespace dynamic_ktree {
                 throw logic_error("Error: collection too big...");
             max_r = max(i, max_r);
 
-            //Load edges in C0...
-//            vector<tuple<idx_type, idx_type>> free_edges;
-//            for (uint j = 0; j < C0.size(); j++) {
-//                const tuple<idx_type, idx_type> e(C0.elements[j].x(), C0.elements[j].y());
-//                free_edges.push_back(e);
-//            }
             //Add new link...
             C0.elements_nodes.push_back(tuple<idx_type, idx_type>(x, y));
-//            const tuple<idx_type, idx_type> e(x, y);
-//            free_edges.push_back(e);
-
             shared_ptr<k_tree> tmp = make_shared<k_tree>(C0.elements_nodes, n_vertices);
             C0.clean();
             for (size_t j = 0; j <= i; j++) {
