@@ -82,7 +82,7 @@ public:
     virtual DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> &operator++() {
         if (_c0_index != -1) {
             _c0_index++;
-            if (_c0_index < C0_neighbours.size())
+            if (_c0_index < (int) C0_neighbours.size())
                 _ptr = C0_neighbours[_c0_index];
             else
                 _c0_index = -1;
@@ -118,8 +118,8 @@ public:
                 } else
                     _ptr = *_curr_neigh_it;
             }
-            return *this;
         }
+        return *this;
     }
 
     DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator> end() {

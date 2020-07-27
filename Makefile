@@ -1,7 +1,7 @@
 CFLAGS=-Wall -O9 -g -DNDEBUG -std=c++17
 
 dktree:
-	cd include/dktree && g++ $(CFLAGS) *.hpp
+	cd include/dktree && g++ $(CFLAGS) *.hpp && cd ../graph && g++ $(CFLAGS) *.hpp
 
 algorithm:
 	cd include/algorithm && g++ $(CFLAGS) *.hpp
@@ -26,10 +26,6 @@ tests_edge:
 tests_dktree:
 	make dktree
 	cd test && cmake CMakeLists.txt && make dk2treeTest && ./dk2treeTest
-
-valgrind_dktree:
-	make dktree
-	cd test && make dk2treeTest && valgrind --leak-check=yes ./dk2treeTest
 
 tests_dktree_all:
 	make dktree
