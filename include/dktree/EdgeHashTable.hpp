@@ -19,17 +19,12 @@ using namespace std;
 
 class NodeEdge {
 private:
-//    tuple<etype, etype> _edge;
     etype _next, _prev;
     bool _next_set, _prev_set;
 public:
 
 
     NodeEdge() : _next_set(false), _prev_set(false) {}
-
-//    NodeEdge(etype x, etype y) : _next_set(false), _prev_set(false) {
-////        _edge = tuple<etype, etype>(x,y);
-//    }
 
     etype next() const {
         return _next;
@@ -57,38 +52,49 @@ public:
         return _prev_set;
     }
 
-//    etype x() const {
-//        return get<0>(_edge);
-//    }
-//
-//    etype y() const {
-//        return get<1>(_edge);
-//    }
-
     bool operator==(const NodeEdge &rhs) const
     {
         bool eval = _next_set == rhs._next_set && _prev_set == rhs._prev_set;
 
-        return  eval && (_prev_set && rhs._prev_set && _prev == rhs._prev) &&
-        (_next_set && rhs._next_set && _next == rhs._next)&& _next == rhs._next;
+        if(eval) {
+            if(_next_set)
+                eval &= _next == rhs._next;
+            if(_prev_set)
+                eval &= _prev == rhs._prev;
+        }
+        return  eval;
     }
+
     bool operator!=(const NodeEdge &rhs) const
     {
         return !(*this == rhs);
     }
-//    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
-//        string next_string = node._next_set? node._next + "<- ": "";
-//        string prev_string = node._prev_set? " ->" + node._prev :  "";
-//        os << "[" << next_string << node.x() << ", " << node.y() << prev_string << "]" << endl;
-//        return os;
-//    }
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & _next_set;
+        ar & _prev_set;
+        ar & _next;
+        ar & _prev;
+    }
+
+    template<class Archive>
+    void load(Archive & ar, const unsigned int)
+    {
+        ar >> _next_set;
+        ar >> _prev_set;
+        ar >> _next;
+        ar >> _prev;
+    }
 };
 
 class EdgeHashTable {
 private:
     class Hash {
     public:
-        unsigned int operator()(tuple<etype, etype> const &e) const {
+        unsigned int operator()(Edge const &e) const {
             unsigned long key = edge_to_uint64(e);
             key = (~key) + (key << 18);
             key = key ^ (key >> 31);
@@ -100,10 +106,10 @@ private:
             return (unsigned int) key;
         }
 
-        unsigned long edge_to_uint64(tuple<etype, etype> const &e) const {
-            unsigned long concat_edge = get<0>(e);
+        unsigned long edge_to_uint64(Edge const &e) const {
+            unsigned long concat_edge = e.x();
             concat_edge <<= 32;
-            concat_edge |= get<1>(e);
+            concat_edge |= e.y();
 
             return concat_edge;
         }
@@ -111,31 +117,31 @@ private:
 
     class Comparator {
     public:
-        bool operator()(tuple<etype, etype> const &e1, tuple<etype, etype> const &e2) const {
-            return get<0>(e1) == get<0>(e2) && get<1>(e1) == get<1>(e2);
+        bool operator()(Edge const &e1, Edge const &e2) const {
+            return e1 == e2;
         }
     };
 
 protected:
-    using h_table = unordered_map<tuple<etype, etype>, unsigned int, Hash, Comparator>;
+    using h_table = unordered_map<Edge, unsigned int, Hash, Comparator>;
     h_table ht;
 public:
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
     EdgeHashTable() = default;
 
-    EdgeHashTable(vector<tuple<etype, etype>> new_elements) {
+    EdgeHashTable(vector<Edge> new_elements) {
         for (unsigned int i = 0; i < new_elements.size(); ++i)
             ht[new_elements[i]] = i;
     }
 
     void insert(etype x, etype y, unsigned int index) {
-        ht[tuple<etype, etype>(x, y)] = index;
+        ht[Edge(x, y)] = index;
     }
 
     // Returns the index of the index where the Edge is.
     // Returns UINT_MAX in case it cannot find
     unsigned int find(etype x, etype y) {
-        h_table::const_iterator iterator = ht.find(tuple<etype, etype>(x, y));
+        h_table::const_iterator iterator = ht.find(Edge(x, y));
         if (iterator == ht.end())
             return UINT_MAX;
         return iterator->second;
@@ -147,43 +153,16 @@ public:
 
     void erase(etype x, etype y)
     {
-        ht.erase(tuple<etype, etype>(x, y));
+        ht.erase(Edge(x, y));
     }
 
     size_t size() {
         return ht.size();
     }
 
-    unsigned int &operator[](const tuple<etype, etype> &edge) {
+    unsigned int &operator[](const Edge &edge) {
         return ht[edge];
     }
-
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-        ar & boost::serialization::base_object<EdgeHashTable>(*this);
-        ar & ht;
-    }
-
-//    Map deserialize(Deserializer& in) {
-//        +   Map::key_compare comparator;
-//        +   Map::allocator_type allocator;
-//        +
-//                +   in >> comparator >> allocator;
-//        +
-//                +   Map map(comparator, allocator)
-//
-//        size_t size = 0;
-//        in >> size;
-//        for (size_t i = 0; i != size; ++i) {
-//            Map::key_type key;
-//            Map::mapped_type value;
-//            in >> key >> value;
-//            map[key] = value;
-//        }
-//
-//        return map;
-//    }
 
     void clear()
     {
@@ -204,6 +183,19 @@ public:
 
     bool operator!=(const EdgeHashTable &rhs) const {
         return rhs.ht != ht;
+    }
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & ht;
+    }
+
+    template<class Archive>
+    void load(Archive & ar, const unsigned int)
+    {
+        ar >> ht;
     }
 };
 

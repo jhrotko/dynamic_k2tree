@@ -1,5 +1,6 @@
 #include "../include/dktree/EdgeHashTable.hpp"
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -7,7 +8,7 @@ using edge = tuple<etype, etype>;
 
 TEST(edgeHashTableInsert, createHashTable)
 {
-    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
     
     ASSERT_EQ(ht.size(), 3);
@@ -16,7 +17,7 @@ TEST(edgeHashTableInsert, createHashTable)
 
 TEST(edgeHashTableFind, find)
 {
-    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.find(1,1), -1);
@@ -27,7 +28,7 @@ TEST(edgeHashTableFind, find)
 
 TEST(edgeHashTableInsert, insert)
 {
-    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ht.insert(5,6, 3);
@@ -38,7 +39,7 @@ TEST(edgeHashTableInsert, insert)
 
 TEST(edgeHashTableErase, eraseedgeExist)
 {
-    vector<edge> elements = {edge(1, 2), edge(3, 4), edge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);
@@ -50,7 +51,7 @@ TEST(edgeHashTableErase, eraseedgeExist)
 
 TEST(edgeHashTableErase, clear)
 {
-    vector<edge> elements = {edge(1, 2), edge(3, 5), edge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 5), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);
@@ -60,18 +61,19 @@ TEST(edgeHashTableErase, clear)
 
 TEST(edgeHashTableSerialization, SerializaAndLoad)
 {
-    EdgeHashTable unserializedHt;
 
     std::stringstream ss;
-    {
-        boost::archive::text_oarchive oa(ss);
+    boost::archive::text_oarchive oa(ss);
 
-    vector<edge> elements = {edge(1, 2), edge(3, 5), edge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 5), Edge(0, 1)};
     EdgeHashTable ht(elements);
-        oa << ht;
-    }
+    oa << ht;
 
-//    ASSERT_EQ(ht, unserializedHt);
+    EdgeHashTable unserializedHt;
+    boost::archive::text_iarchive iar(ss); //exception
+    iar >> unserializedHt;
+
+    ASSERT_EQ(ht, unserializedHt);
 }
 
 int main(int argc, char **argv)
