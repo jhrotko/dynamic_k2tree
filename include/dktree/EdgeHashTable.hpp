@@ -10,8 +10,12 @@
 
 #include "../graph/Graph.hpp"
 
-using namespace std;
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/access.hpp>
 
+#include <boost/serialization/unordered_map.hpp>
+using namespace std;
 
 class NodeEdge {
 private:
@@ -61,15 +65,17 @@ public:
 //        return get<1>(_edge);
 //    }
 
-//    bool operator==(const NodeEdge &rhs) const
-//    {
-//        return x() == rhs.x() && y() == rhs.y();
-////        return x() == rhs.x() && y() == rhs.y() && _next == rhs._next && _prev == rhs._prev;
-//    }
-//    bool operator!=(const NodeEdge &rhs) const
-//    {
-//        return !(*this == rhs);
-//    }
+    bool operator==(const NodeEdge &rhs) const
+    {
+        bool eval = _next_set == rhs._next_set && _prev_set == rhs._prev_set;
+
+        return  eval && (_prev_set && rhs._prev_set && _prev == rhs._prev) &&
+        (_next_set && rhs._next_set && _next == rhs._next)&& _next == rhs._next;
+    }
+    bool operator!=(const NodeEdge &rhs) const
+    {
+        return !(*this == rhs);
+    }
 //    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
 //        string next_string = node._next_set? node._next + "<- ": "";
 //        string prev_string = node._prev_set? " ->" + node._prev :  "";
@@ -110,12 +116,11 @@ private:
         }
     };
 
-    typedef unordered_map<tuple<etype, etype>, unsigned int, Hash, Comparator> h_table;
-
 protected:
+    using h_table = unordered_map<tuple<etype, etype>, unsigned int, Hash, Comparator>;
     h_table ht;
 public:
-
+    friend class boost::serialization::access;
     EdgeHashTable() = default;
 
     EdgeHashTable(vector<tuple<etype, etype>> new_elements) {
@@ -153,12 +158,32 @@ public:
         return ht[edge];
     }
 
-    friend ostream &operator<<(ostream &os, EdgeHashTable const &h) {
-        for (auto item: h.ht)
-            os << "[" << get<0>(item.first) << "," << get<1>(item.first) << "] = " << item.second << "  ";
-        os << endl;
-        return os;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<EdgeHashTable>(*this);
+        ar & ht;
     }
+
+//    Map deserialize(Deserializer& in) {
+//        +   Map::key_compare comparator;
+//        +   Map::allocator_type allocator;
+//        +
+//                +   in >> comparator >> allocator;
+//        +
+//                +   Map map(comparator, allocator)
+//
+//        size_t size = 0;
+//        in >> size;
+//        for (size_t i = 0; i != size; ++i) {
+//            Map::key_type key;
+//            Map::mapped_type value;
+//            in >> key >> value;
+//            map[key] = value;
+//        }
+//
+//        return map;
+//    }
 
     void clear()
     {
@@ -171,6 +196,14 @@ public:
 
     h_table::const_iterator cend() const noexcept {
         return ht.cend();
+    }
+
+    bool operator==(const EdgeHashTable &rhs) const {
+        return rhs.ht == ht;
+    }
+
+    bool operator!=(const EdgeHashTable &rhs) const {
+        return rhs.ht != ht;
     }
 };
 
