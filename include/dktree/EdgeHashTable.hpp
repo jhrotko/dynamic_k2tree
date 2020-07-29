@@ -10,6 +10,12 @@
 
 #include "../graph/Graph.hpp"
 
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/access.hpp>
+
+#include <boost/serialization/unordered_map.hpp>
+
 using namespace std;
 
 
@@ -19,8 +25,6 @@ private:
     etype _next, _prev;
     bool _next_set, _prev_set;
 public:
-
-
     NodeEdge() : _next_set(false), _prev_set(false) {}
 
     NodeEdge(etype x, etype y) : _next_set(false), _prev_set(false) {
@@ -69,12 +73,12 @@ public:
     {
         return !(*this == rhs);
     }
-    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
-        string next_string = node._next_set? node._next + "<- ": "";
-        string prev_string = node._prev_set? " ->" + node._prev :  "";
-        os << "[" << next_string << node._edge << prev_string << "]" << endl;
-        return os;
-    }
+//    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
+//        string next_string = node._next_set? node._next + "<- ": "";
+//        string prev_string = node._prev_set? " ->" + node._prev :  "";
+//        os << "[" << next_string << node._edge << prev_string << "]" << endl;
+//        return os;
+//    }
 };
 
 class EdgeHashTable {
@@ -128,14 +132,14 @@ public:
 
     // Returns the index of the index where the Edge is.
     // Returns UINT_MAX in case it cannot find
-    unsigned int find(etype x, etype y) {
+    unsigned int find(etype x, etype y) const {
         h_table::const_iterator iterator = ht.find(Edge(x, y));
         if (iterator == ht.end())
             return UINT_MAX;
         return iterator->second;
     }
 
-    bool contains(etype x, etype y) {
+    bool contains(etype x, etype y) const {
         return find(x,y) != UINT_MAX;
     }
 
@@ -152,16 +156,30 @@ public:
         return ht[edge];
     }
 
-    friend ostream &operator<<(ostream &os, EdgeHashTable const &h) {
-        for (auto item: h.ht)
-            os << "[" << item.first << "] = " << item.second << "  ";
-        os << endl;
-        return os;
-    }
+//    friend ostream &operator<<(ostream &os, EdgeHashTable const &h) {
+//        for (auto item: h.ht)
+//            os << "[" << item.first << "] = " << item.second << "  ";
+//        os << endl;
+//        return os;
+//    }
 
     void clear()
     {
         ht.clear();
+    }
+
+    bool operator==(const EdgeHashTable edg_ht) const{
+        if(edg_ht.ht.size() != ht.size())
+            return false;
+        bool equal = true;
+        for(auto item: ht) {
+            equal &= edg_ht.contains(item.first.x(), item.first.y());
+        }
+        return equal;
+    }
+
+    bool operator!=(const EdgeHashTable &edg_ht) {
+        return !(*this == edg_ht);
     }
 
     h_table::const_iterator cbegin() const noexcept {
@@ -170,6 +188,19 @@ public:
 
     h_table::const_iterator cend() const noexcept {
         return ht.cend();
+    }
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & ht;
+    }
+
+    template<class Archive>
+    void load(Archive & ar, const unsigned int)
+    {
+        ar >> ht;
     }
 };
 

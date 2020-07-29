@@ -7,6 +7,9 @@
 
 #include <vector>
 #include "sdsl/k2_tree.hpp"
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/access.hpp>
 
 using namespace std;
 using etype = sdsl::idx_type;
@@ -57,15 +60,30 @@ public:
     etype y() const {
         return y_;
     }
-    friend ostream &operator<<(ostream &os, Edge const &e) {
-        os << "(" << e.x() << ", " << e.y() << ")";
-        return os;
-    }
+//    friend ostream &operator<<(ostream &os, Edge const &e) {
+//        os << "(" << e.x() << ", " << e.y() << ")";
+//        return os;
+//    }
     bool operator==(const Edge &rhs) const {
         return x() == rhs.x() && y() == rhs.y();
     }
     bool operator!=(const Edge &rhs) const {
         return !(*this == rhs);
+    }
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int)
+    {
+        ar & x_;
+        ar & y_;
+    }
+
+    template<class Archive>
+    void load(Archive & ar, const unsigned int)
+    {
+        ar >> x_;
+        ar >> y_;
     }
 };
 
