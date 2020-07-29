@@ -51,7 +51,7 @@ namespace dynamic_ktree {
     public:
         DKtree() {}
         DKtree(uint n_vertices) : n_vertices(n_vertices) {
-            C0 = Container_0(n_vertices, &n_total_edges);
+            C0 = Container_0(n_vertices);
             max_r = 0;
             for (size_t i = 0; i < R; i++) {
                 k_collection[i] = nullptr;
@@ -76,7 +76,7 @@ namespace dynamic_ktree {
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
-                C0.insert(x, y);
+                C0.insert(x, y, n_total_edges);
                 n_total_edges++;
                 return;
             }

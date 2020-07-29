@@ -302,6 +302,19 @@ TEST(dktreeIterate, neighbour_iterator_star) {
     }
 }
 
+TEST(dktreeSerialize, conatiner0Serialize){
+    dynamic_ktree::Container_0 con(5);
+    con.insert(1,2, 0);
+
+    std::stringstream ss;
+
+    con.serialize(ss);
+    dynamic_ktree::Container_0 unserialized = dynamic_ktree::Container_0();
+    unserialized.load(ss);
+
+    ASSERT_EQ(unserialized, con);
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

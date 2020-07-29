@@ -1,4 +1,5 @@
 #include "../include/dktree/EdgeHashTable.hpp"
+#include <boost/archive/text_oarchive.hpp>
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -55,6 +56,22 @@ TEST(edgeHashTableErase, clear)
     ASSERT_EQ(ht.size(), 3);
     ht.clear();
     ASSERT_EQ(ht.size(), 0);
+}
+
+TEST(edgeHashTableSerialization, SerializaAndLoad)
+{
+    EdgeHashTable unserializedHt;
+
+    std::stringstream ss;
+    {
+        boost::archive::text_oarchive oa(ss);
+
+    vector<edge> elements = {edge(1, 2), edge(3, 5), edge(0, 1)};
+    EdgeHashTable ht(elements);
+        oa << ht;
+    }
+
+//    ASSERT_EQ(ht, unserializedHt);
 }
 
 int main(int argc, char **argv)

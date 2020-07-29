@@ -15,11 +15,10 @@ namespace dynamic_ktree {
         etype n_elements;
         etype max_edges;
         size_t  n_vertices;
-        const uint *n_edges;
     public:
         Container_0() {}
 
-        Container_0(size_t n_vertices, const uint *n_edges) : n_vertices(n_vertices), n_edges(n_edges){
+        Container_0(size_t n_vertices) : n_vertices(n_vertices) {
             max_edges = MAXSZ(n_vertices, 0);
             elements.resize(max_edges);
             elements_nodes.resize(max_edges);
@@ -56,10 +55,10 @@ namespace dynamic_ktree {
             return adj_map.find(x) != adj_map.end();
         }
 
-        void insert(etype x, etype y) {
+        void insert(etype x, etype y, uint n_edges) {
             if (!edge_lst.contains(x, y)) {
                 if(n_elements >= elements.size()) {
-                    resize(MAXSZ(max(n_vertices, *n_edges), 0));
+                    resize(MAXSZ(max(n_vertices, n_edges), 0));
                 }
                 etype i = edge_free[n_elements++];
                 elements_nodes[i] = tuple<etype, etype>(x,y);
@@ -117,6 +116,47 @@ namespace dynamic_ktree {
                 edge_free[i] = i;
             }
             max_edges = new_max_edges;
+        }
+
+        void serialize(std::ostream &out) {
+            edge_lst.serialize(out);
+
+            sdsl::write_member(adj_map, out);
+//            sdsl::write_member(elements, out);
+//            sdsl::write_member(elements_nodes, out);
+//            sdsl::write_member(edge_free, out);
+//            sdsl::write_member(n_elements, out);
+//            sdsl::write_member(max_edges, out);
+//            sdsl::write_member(n_vertices, out);
+        }
+
+        void load(std::istream &in) {
+            edge_lst.load(in);
+
+            sdsl::read_member(adj_map, in);
+//            sdsl::read_member(elements, in);
+//            sdsl::read_member(elements_nodes, in);
+//            sdsl::read_member(edge_free, in);
+//            sdsl::read_member(n_elements, in);
+//            sdsl::read_member(max_edges, in);
+//            sdsl::read_member(n_vertices, in);
+        }
+
+        bool operator==(const Container_0 &rhs) const {
+            bool eval = true;
+            eval &= edge_lst == rhs.edge_lst;
+            eval &= adj_map == rhs.adj_map;
+            eval &= elements == rhs.elements;
+            eval &= elements_nodes == rhs.elements_nodes;
+            eval &= edge_free == rhs.edge_free;
+            eval &= n_elements == rhs.n_elements;
+            eval &= max_edges == rhs.max_edges;
+            eval &= n_vertices == rhs.n_vertices;
+            return  eval;
+        }
+
+        bool operator!=(const Container_0 &rhs) const {
+            return !(*this == rhs);
         }
 
         vector<tuple<etype, etype>>::const_iterator edge_begin() const { return elements_nodes.begin(); }
