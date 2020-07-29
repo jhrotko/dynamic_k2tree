@@ -134,8 +134,8 @@ public:
 
         uint num_triangles = 0;
         for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); edge_it++) {
-            etype v1 = get<0>(edge_it->first); //FIXME: improve interface of the Edge.
-            etype v2 = get<1>(edge_it->first);
+            etype v1 = edge_it->first.x();
+            etype v2 = edge_it->first.y();
             if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))
                 continue;
 

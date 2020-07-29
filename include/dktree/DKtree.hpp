@@ -1,6 +1,5 @@
 #ifndef __D_K_TREE__
 #define __D_K_TREE__
-#define R 8
 
 #include <array>
 #include <memory>
@@ -21,6 +20,8 @@ using namespace k2_tree_ns;
 
 
 namespace dynamic_ktree {
+    #define R 8
+
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
@@ -94,8 +95,13 @@ namespace dynamic_ktree {
             max_r = max(i, max_r);
 
             //Add new link...
-            C0.elements_nodes.push_back(tuple<idx_type, idx_type>(x, y));
-            shared_ptr<k_tree> tmp = make_shared<k_tree>(C0.elements_nodes, n_vertices);
+            C0.elements_nodes.push_back(Edge(x, y));
+            vector<tuple<etype, etype>> converted;
+            for(auto element: C0.elements_nodes) {
+                converted.push_back(tuple<etype, etype>(element.x(), element.y()));
+            }
+
+            shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {

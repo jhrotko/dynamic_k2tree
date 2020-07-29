@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
-#include "../include/dktree/DKtree.hpp"
 #include <iostream>
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
+#include "../include/dktree/DKtree.hpp"
 #include "sdsl/k2_tree.hpp"
 
 using d_tree = dynamic_ktree::DKtree<2, bit_vector>;
@@ -302,17 +306,25 @@ TEST(dktreeIterate, neighbour_iterator_star) {
     }
 }
 
-TEST(dktreeSerialize, conatiner0Serialize){
-    dynamic_ktree::Container_0 con(5);
-    con.insert(1,2, 0);
-
+TEST(Container0SerializationTest, SerializaAndLoad)
+{
     std::stringstream ss;
+    boost::archive::text_oarchive oa(ss);
 
-    con.serialize(ss);
-    dynamic_ktree::Container_0 unserialized = dynamic_ktree::Container_0();
-    unserialized.load(ss);
+    dynamic_ktree::Container_0 serialize_c0(1000);
+    serialize_c0.insert(0, 1, 0);
+    serialize_c0.insert(6, 3, 1);
+    serialize_c0.insert(9, 8, 2);
+    serialize_c0.insert(4, 2, 3);
+    serialize_c0.insert(0, 0, 4);
+    serialize_c0.insert(5, 3, 5);
+    oa << serialize_c0;
 
-    ASSERT_EQ(unserialized, con);
+    dynamic_ktree::Container_0 load_c0;
+    boost::archive::text_iarchive iar(ss); //exception
+    iar >> load_c0;
+
+    ASSERT_EQ(serialize_c0, load_c0);
 }
 
 int main(int argc, char **argv) {
