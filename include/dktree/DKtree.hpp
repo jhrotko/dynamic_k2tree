@@ -247,7 +247,7 @@ namespace dynamic_ktree {
             oa << *this;
 
             int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
-            if (status < 0 && errno != EEXIST) throw "Could not create folder";
+            if (status < 0 && errno != EEXIST) throw "Could not create dir";
 
             for (size_t l = 0; l <= max_r; l++)
                 if (k_collection[l] != nullptr) {
@@ -258,7 +258,7 @@ namespace dynamic_ktree {
                 }
         }
 
-        void load(std::istream &in, string project_dir="./") {
+        void load(std::istream &in, string project_dir="./", bool clear=true) {
             boost::archive::text_iarchive ar(in);
             ar >> *this;
 
@@ -279,6 +279,8 @@ namespace dynamic_ktree {
                 }
             }
 
+            if(clear)
+                clean_serialize(project_dir);
         }
 
         bool operator==(const DKtree<k, t_bv, t_rank, l_rank> &rhs) const {
