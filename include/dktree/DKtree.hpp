@@ -14,6 +14,12 @@
 #include "DKtreeNeighbourIterator.hpp"
 #include "../graph/Graph.hpp"
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <sys/stat.h>
+#include <experimental/filesystem>
+#include <cstdio>
+
 using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
@@ -213,6 +219,92 @@ namespace dynamic_ktree {
         {
             it_neighbour_end = it_neighbour_begin.end();
             return it_neighbour_end;
+        }
+
+        friend class boost::serialization::access;
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int)
+        {
+            ar & max_r;
+            ar & n_vertices;
+            ar & n_total_edges;
+
+            ar & C0;
+        }
+
+        template<class Archive>
+        void load(Archive & ar, const unsigned int)
+        {
+            ar >> max_r;
+            ar >> n_vertices;
+            ar >> n_total_edges;
+
+            ar >> C0;
+        }
+
+        void serialize(std::ostream &out, string project_dir="./") {
+            boost::archive::text_oarchive oa(out);
+            oa << *this;
+
+            int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
+            if (status < 0 && errno != EEXIST) throw "Could not create folder";
+
+            for (size_t l = 0; l <= max_r; l++)
+                if (k_collection[l] != nullptr) {
+                    char filename[10];
+                    sprintf (filename, "/%lu.kt", l);
+                    std::ofstream ktree_files(project_dir.append(filename));
+                    k_collection[l]->serialize(ktree_files);
+                }
+        }
+
+        void load(std::istream &in, string project_dir="./") {
+            boost::archive::text_iarchive ar(in);
+            ar >> *this;
+
+            for (size_t l = 0; l <= max_r; l++) {
+                char filename[10];
+                string aux = project_dir;
+                aux.append("dktree_serialize");
+                sprintf (filename, "/%lu.kt", l);
+
+                ifstream load_file(aux.append(filename).c_str());
+                if(load_file.good()) {
+                    k_tree new_ktree;
+                    new_ktree.load(load_file);
+
+                    shared_ptr<k_tree> tmp = make_shared<k_tree>(new_ktree);
+                    k_collection[l] = tmp;
+                    load_file.close();
+                }
+            }
+
+        }
+
+        bool operator==(const DKtree<k, t_bv, t_rank, l_rank> &rhs) const {
+            bool eval = true;
+            eval &= max_r == rhs.max_r;
+            eval &= n_vertices == rhs.n_vertices;
+            eval &= n_total_edges == rhs.n_total_edges;
+            eval &= C0 == rhs.C0;
+
+            for (size_t l = 0; l <= max_r; l++) {
+                if(k_collection[l] != nullptr && rhs.k_collection[l] != nullptr)
+                    eval &= k_collection[l]->equal(*rhs.k_collection[l]);
+                else if(k_collection[l] == nullptr && rhs.k_collection[l] != nullptr)
+                    eval = false;
+                else if(k_collection[l] != nullptr && rhs.k_collection[l] == nullptr)
+                    eval = false;
+            }
+
+            return eval;
+        }
+
+        void clean_serialize(string project_dir="./") {
+            project_dir.append("dktree_serialize");
+
+            for (auto & entry : std::experimental::filesystem::directory_iterator(project_dir))
+                std::experimental::filesystem::remove(entry.path());
         }
     };
 }

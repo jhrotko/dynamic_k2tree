@@ -306,7 +306,7 @@ TEST(dktreeIterate, neighbour_iterator_star) {
     }
 }
 
-TEST(Container0SerializationTest, SerializaAndLoad)
+TEST(SerializationTest, Container0SerializaAndLoad)
 {
     std::stringstream ss;
     boost::archive::text_oarchive oa(ss);
@@ -325,6 +325,28 @@ TEST(Container0SerializationTest, SerializaAndLoad)
     iar >> load_c0;
 
     ASSERT_EQ(serialize_c0, load_c0);
+}
+
+TEST(SerializationTest, DKtreeSerializaAndLoad)
+{
+    std::stringstream ss;
+
+    d_tree serialize_dktree(50);
+    serialize_dktree.add_edge(0, 1);
+    serialize_dktree.add_edge(6, 3);
+    serialize_dktree.add_edge(9, 8);
+    serialize_dktree.add_edge(4, 2);
+    serialize_dktree.add_edge(0, 0);
+    serialize_dktree.add_edge(5, 3);
+
+    serialize_dktree.serialize(ss);
+
+    d_tree load_dktree;
+    load_dktree.load(ss);
+
+    serialize_dktree.clean_serialize();
+    ASSERT_EQ(serialize_dktree, load_dktree);
+
 }
 
 int main(int argc, char **argv) {
