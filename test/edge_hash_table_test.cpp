@@ -1,10 +1,10 @@
 #include "../include/dktree/EdgeHashTable.hpp"
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
-
 #include <gtest/gtest.h>
 
 using namespace std;
+using edge = tuple<etype, etype>;
 
 TEST(edgeHashTableInsert, createHashTable)
 {

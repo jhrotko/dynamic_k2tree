@@ -11,6 +11,10 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/access.hpp>
 
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/access.hpp>
+
 using namespace std;
 using etype = sdsl::idx_type;
 
@@ -73,7 +77,7 @@ public:
 
     friend class boost::serialization::access;
     template<class Archive>
-    void serialize(Archive &ar, const unsigned int)
+    void serialize(Archive & ar, const unsigned int)
     {
         ar & x_;
         ar & y_;

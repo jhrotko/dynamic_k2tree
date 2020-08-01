@@ -1,6 +1,5 @@
 #ifndef __D_K_TREE__
 #define __D_K_TREE__
-#define R 8
 
 #include <array>
 #include <memory>
@@ -15,12 +14,20 @@
 #include "DKtreeNeighbourIterator.hpp"
 #include "../graph/Graph.hpp"
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <sys/stat.h>
+#include <experimental/filesystem>
+#include <cstdio>
+
 using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
 
 
 namespace dynamic_ktree {
+    #define R 8
+
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
@@ -36,17 +43,6 @@ namespace dynamic_ktree {
         using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
         using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
         using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it>;
-
-    public:
-        DKtree() {}
-        DKtree(uint n_vertices) : n_vertices(n_vertices) {
-            C0 = Container_0(n_vertices);
-            max_r = 0;
-            for (size_t i = 0; i < R; i++) {
-                k_collection[i] = nullptr;
-            }
-        }
-
     private:
         uint max_r = 0;
         uint n_vertices = 0;
@@ -58,7 +54,17 @@ namespace dynamic_ktree {
         dktree_edge_it it_edge_begin, it_end;
         dktree_node_it it_node_begin, it_node_end;
         dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
+
     public:
+        DKtree() {}
+        DKtree(uint n_vertices) : n_vertices(n_vertices) {
+            C0 = Container_0(n_vertices);
+            max_r = 0;
+            for (size_t i = 0; i < R; i++) {
+                k_collection[i] = nullptr;
+            }
+        }
+
         virtual size_t get_number_edges() const {
             return n_total_edges;
         }
@@ -77,9 +83,7 @@ namespace dynamic_ktree {
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
-                if(C0.max_size() < max_size)
-                    C0.resize(max_size);
-                C0.insert(x, y);
+                C0.insert(x, y, n_total_edges);
                 n_total_edges++;
                 return;
             }
@@ -96,18 +100,15 @@ namespace dynamic_ktree {
                 throw logic_error("Error: collection too big...");
             max_r = max(i, max_r);
 
-            //Load edges in C0...
-            vector<tuple<idx_type, idx_type>> free_edges;
-            for (uint j = 0; j < C0.size(); j++) {
-                const tuple<idx_type, idx_type> e(C0.elements[j].x(), C0.elements[j].y());
-                free_edges.push_back(e);
-            }
             //Add new link...
-            const tuple<idx_type, idx_type> e(x, y);
-            free_edges.push_back(e);
+            C0.elements_nodes.push_back(Edge(x, y));
+            vector<tuple<etype, etype>> converted;
+            for(auto element: C0.elements_nodes) {
+                converted.push_back(tuple<etype, etype>(element.x(), element.y()));
+            }
 
-            C0.clean(n_vertices);
-            shared_ptr<k_tree> tmp = make_shared<k_tree>(free_edges, n_vertices);
+            shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
+            C0.clean();
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
                     tmp->unionOp(*k_collection[j]);
@@ -218,6 +219,94 @@ namespace dynamic_ktree {
         {
             it_neighbour_end = it_neighbour_begin.end();
             return it_neighbour_end;
+        }
+
+        friend class boost::serialization::access;
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int)
+        {
+            ar & max_r;
+            ar & n_vertices;
+            ar & n_total_edges;
+
+            ar & C0;
+        }
+
+        template<class Archive>
+        void load(Archive & ar, const unsigned int)
+        {
+            ar >> max_r;
+            ar >> n_vertices;
+            ar >> n_total_edges;
+
+            ar >> C0;
+        }
+
+        void serialize(std::ostream &out, string project_dir="./") {
+            boost::archive::text_oarchive oa(out);
+            oa << *this;
+
+            int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
+            if (status < 0 && errno != EEXIST) throw "Could not create dir";
+
+            for (size_t l = 0; l <= max_r; l++)
+                if (k_collection[l] != nullptr) {
+                    char filename[10];
+                    sprintf (filename, "/%lu.kt", l);
+                    std::ofstream ktree_files(project_dir.append(filename));
+                    k_collection[l]->serialize(ktree_files);
+                }
+        }
+
+        void load(std::istream &in, string project_dir="./", bool clear=true) {
+            boost::archive::text_iarchive ar(in);
+            ar >> *this;
+
+            for (size_t l = 0; l <= max_r; l++) {
+                char filename[10];
+                string aux = project_dir;
+                aux.append("dktree_serialize");
+                sprintf (filename, "/%lu.kt", l);
+
+                ifstream load_file(aux.append(filename).c_str());
+                if(load_file.good()) {
+                    k_tree new_ktree;
+                    new_ktree.load(load_file);
+
+                    shared_ptr<k_tree> tmp = make_shared<k_tree>(new_ktree);
+                    k_collection[l] = tmp;
+                    load_file.close();
+                }
+            }
+
+            if(clear)
+                clean_serialize(project_dir);
+        }
+
+        bool operator==(const DKtree<k, t_bv, t_rank, l_rank> &rhs) const {
+            bool eval = true;
+            eval &= max_r == rhs.max_r;
+            eval &= n_vertices == rhs.n_vertices;
+            eval &= n_total_edges == rhs.n_total_edges;
+            eval &= C0 == rhs.C0;
+
+            for (size_t l = 0; l <= max_r; l++) {
+                if(k_collection[l] != nullptr && rhs.k_collection[l] != nullptr)
+                    eval &= k_collection[l]->equal(*rhs.k_collection[l]);
+                else if(k_collection[l] == nullptr && rhs.k_collection[l] != nullptr)
+                    eval = false;
+                else if(k_collection[l] != nullptr && rhs.k_collection[l] == nullptr)
+                    eval = false;
+            }
+
+            return eval;
+        }
+
+        void clean_serialize(string project_dir="./") {
+            project_dir.append("dktree_serialize");
+
+            for (auto & entry : std::experimental::filesystem::directory_iterator(project_dir))
+                std::experimental::filesystem::remove(entry.path());
         }
     };
 }
