@@ -14,15 +14,15 @@ template<class Graph>
 class Algorithm {
     using uint = unsigned int;
 public:
-    static vector<etype> bfs(Graph &g, uint root) {
+    static vector<etype> bfs(Graph &g, etype root) {
         vector<etype> path;
-        map<uint, bool> visited;
-        deque<uint> queue;
+        map<etype, bool> visited;
+        deque<etype> queue;
         queue.push_back(root);
         visited[root] = true;
 
         while (!queue.empty()) {
-            uint current_node = queue.front();
+            etype current_node = queue.front();
             queue.pop_front();
             path.push_back(current_node);
 

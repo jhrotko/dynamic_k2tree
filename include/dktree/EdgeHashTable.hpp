@@ -15,21 +15,14 @@
 #include <boost/serialization/access.hpp>
 
 #include <boost/serialization/unordered_map.hpp>
-
 using namespace std;
-
 
 class NodeEdge {
 private:
-    Edge _edge;
     etype _next, _prev;
     bool _next_set, _prev_set;
 public:
     NodeEdge() : _next_set(false), _prev_set(false) {}
-
-    NodeEdge(etype x, etype y) : _next_set(false), _prev_set(false) {
-        _edge = Edge(x,y);
-    }
 
     etype next() const {
         return _next;
@@ -57,28 +50,42 @@ public:
         return _prev_set;
     }
 
-    etype x() const {
-        return _edge.x();
-    }
-
-    etype y() const {
-        return _edge.y();
-    }
-
     bool operator==(const NodeEdge &rhs) const
     {
-        return x() == rhs.x() && y() == rhs.y() && _next == rhs._next && _prev == rhs._prev;
+        bool eval = _next_set == rhs._next_set && _prev_set == rhs._prev_set;
+
+        if(eval) {
+            if(_next_set)
+                eval &= _next == rhs._next;
+            if(_prev_set)
+                eval &= _prev == rhs._prev;
+        }
+        return  eval;
     }
+
     bool operator!=(const NodeEdge &rhs) const
     {
         return !(*this == rhs);
     }
-//    friend ostream &operator<<(ostream &os, NodeEdge const &node) {
-//        string next_string = node._next_set? node._next + "<- ": "";
-//        string prev_string = node._prev_set? " ->" + node._prev :  "";
-//        os << "[" << next_string << node._edge << prev_string << "]" << endl;
-//        return os;
-//    }
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & _next_set;
+        ar & _prev_set;
+        ar & _next;
+        ar & _prev;
+    }
+
+    template<class Archive>
+    void load(Archive & ar, const unsigned int)
+    {
+        ar >> _next_set;
+        ar >> _prev_set;
+        ar >> _next;
+        ar >> _prev;
+    }
 };
 
 class EdgeHashTable {
@@ -109,16 +116,15 @@ private:
     class Comparator {
     public:
         bool operator()(Edge const &e1, Edge const &e2) const {
-            return e1.x() == e2.x() && e1.y() == e2.y();
+            return e1 == e2;
         }
     };
 
-    typedef unordered_map<Edge, unsigned int, Hash, Comparator> h_table;
-
 protected:
+    using h_table = unordered_map<Edge, unsigned int, Hash, Comparator>;
     h_table ht;
 public:
-
+//    friend class boost::serialization::access;
     EdgeHashTable() = default;
 
     EdgeHashTable(vector<Edge> new_elements) {
@@ -156,31 +162,11 @@ public:
         return ht[edge];
     }
 
-//    friend ostream &operator<<(ostream &os, EdgeHashTable const &h) {
-//        for (auto item: h.ht)
-//            os << "[" << item.first << "] = " << item.second << "  ";
-//        os << endl;
-//        return os;
-//    }
-
     void clear()
     {
         ht.clear();
     }
 
-    bool operator==(const EdgeHashTable edg_ht) const{
-        if(edg_ht.ht.size() != ht.size())
-            return false;
-        bool equal = true;
-        for(auto item: ht) {
-            equal &= edg_ht.contains(item.first.x(), item.first.y());
-        }
-        return equal;
-    }
-
-    bool operator!=(const EdgeHashTable &edg_ht) {
-        return !(*this == edg_ht);
-    }
 
     h_table::const_iterator cbegin() const noexcept {
         return ht.cbegin();
@@ -188,6 +174,14 @@ public:
 
     h_table::const_iterator cend() const noexcept {
         return ht.cend();
+    }
+
+    bool operator==(const EdgeHashTable &rhs) const {
+        return rhs.ht == ht;
+    }
+
+    bool operator!=(const EdgeHashTable &edg_ht) {
+        return !(*this == edg_ht);
     }
 
     friend class boost::serialization::access;

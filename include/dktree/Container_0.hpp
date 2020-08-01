@@ -1,42 +1,50 @@
-//
-// Created by joana on 04/06/20.
-//
-
 #ifndef IMPLEMENTATION_CONTAINER_0_HPP
 #define IMPLEMENTATION_CONTAINER_0_HPP
 
 #include "EdgeHashTable.hpp"
-#include "AdjacencyList.hpp"
 #include "utils.hpp"
+
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/access.hpp>
+
+#include <boost/serialization/unordered_map.hpp>
+#include <boost/serialization/vector.hpp>
 
 namespace dynamic_ktree {
 
     class Container_0 {
     private:
-        etype n_elements;
-        etype max_edges;
+        etype n_elements, max_edges;
+        size_t n_vertices;
+
     public:
         Container_0() {}
 
-        Container_0(size_t n_vertices) {
+        Container_0(size_t n_vertices) : n_vertices(n_vertices) {
             max_edges = MAXSZ(n_vertices, 0);
             elements.resize(max_edges);
+            elements_nodes.resize(max_edges);
             n_elements = 0;
 
             edge_free.resize(max_edges);
             for (etype i = 0; i < max_edges; i++)
                 edge_free[i] = i;
 
-            adj_lst = AdjacencyList(max_edges << 1);
+            adj_map.reserve(max_edges << 1);
             clean_free_lst();
         }
 
-        void clean(size_t n_vertices) {
+        void clean() {
             edge_lst.clear();
             clean_free_lst();
-            adj_lst.clear();
+            adj_map.clear();
+
             elements.clear();
             elements.resize(max_edges);
+            elements_nodes.clear();
+            elements_nodes.resize(max_edges);
+
             n_elements = 0;
         }
 
@@ -45,32 +53,40 @@ namespace dynamic_ktree {
                 edge_free[i] = i;
         }
 
-        void insert(etype x, etype y) {
+        bool adj_contains(etype x) {
+            return adj_map.find(x) != adj_map.end();
+        }
+
+        void insert(etype x, etype y, uint n_edges) {
             if (!edge_lst.contains(x, y)) {
-                NodeEdge newNode(x, y);
-                if (!adj_lst[x].end() && adj_lst[x].next() < elements.size()) {
-                    newNode.next(adj_lst[x].next());
-                    elements[adj_lst[x].next()].prev(n_elements);
-                    adj_lst.insert(x, n_elements);
+                if(n_elements >= elements.size()) {
+                    resize(MAXSZ(max(n_vertices, n_edges), 0));
                 }
-                edge_lst.insert(x, y, n_elements);
-//                cout << n_elements << endl;
-//                cout << elements.size() << endl;
-//                assert(n_elements < elements.size());
-                elements[n_elements] = newNode;
-                n_elements++;
+                etype i = edge_free[n_elements++];
+                elements_nodes[i] = Edge(x,y);
+                if(!adj_contains(x))
+                    adj_map[x] = i;
+                else {
+                    elements[i].next(adj_map[x]);
+                    elements[adj_map[x]].prev(i);
+                    adj_map[x] = i;
+                }
+
+                edge_lst.insert(elements_nodes[i].x(), elements_nodes[i].y(), i);
             }
         }
 
         bool erase(etype x, etype y) {
             unsigned int nodeIndex = edge_lst.find(x, y);
             if (nodeIndex != UINT_MAX) {
+                edge_lst.erase(elements_nodes[nodeIndex].x(), elements_nodes[nodeIndex].y());
+
                 if (elements[nodeIndex].has_next())
                     elements[elements[nodeIndex].next()].prev(elements[nodeIndex].prev());
                 if (elements[nodeIndex].has_prev())
                     elements[elements[nodeIndex].prev()].next(elements[nodeIndex].next());
                 else
-                    adj_lst.insert(x, elements[nodeIndex].next());
+                    adj_map[elements_nodes[nodeIndex].x()] = elements[nodeIndex].next();
 
                 n_elements--;
                 edge_free[n_elements] = nodeIndex;
@@ -80,10 +96,10 @@ namespace dynamic_ktree {
         }
 
         void list_neighbours(etype x, vector<etype> &neighbours) {
-            Node node_adj = adj_lst[x];
-            if (!node_adj.end() && !elements.empty())
-                for (; !node_adj.end(); node_adj.next(elements[node_adj.next()].next()))
-                    neighbours.push_back(elements[node_adj.next()].y());
+            if (adj_contains(x) && !elements.empty())
+                for (auto neigh_it = adj_map.find(x); neigh_it != adj_map.end();  neigh_it = adj_map.find(elements[adj_map[neigh_it->first]].next())) {
+                    neighbours.push_back(elements_nodes[neigh_it->second].y());
+                }
         }
 
         size_t size() const {
@@ -96,6 +112,7 @@ namespace dynamic_ktree {
 
         void resize(etype new_max_edges) {
             elements.resize(new_max_edges);
+            elements_nodes.resize(new_max_edges);
             edge_free.resize(new_max_edges);
             for(etype i = max_edges; i < new_max_edges; i++) {
                 edge_free[i] = i;
@@ -103,16 +120,71 @@ namespace dynamic_ktree {
             max_edges = new_max_edges;
         }
 
-        vector<NodeEdge>::const_iterator edge_begin() const { return elements.begin(); }
-        vector<NodeEdge>::const_iterator edge_end() const { return elements.end(); }
+        bool operator==(const Container_0 &rhs) const {
+            bool eval = true;
+            eval &= n_elements == rhs.n_elements;
+            eval &= max_edges == rhs.max_edges;
+            eval &= n_vertices == rhs.n_vertices;
 
-        vector<Node>::const_iterator node_begin() const { return adj_lst.vertices.begin(); }
-        vector<Node>::const_iterator node_end() const { return adj_lst.vertices.end(); }
+            eval &= edge_lst == rhs.edge_lst;
+            eval &= adj_map == rhs.adj_map;
+
+            eval &= elements == rhs.elements;
+            eval &= elements_nodes.size() == rhs.elements_nodes.size();
+            for(unsigned int i = 0; i < n_elements; i++)
+                eval &= elements_nodes[i] == rhs.elements_nodes[i];
+            eval &= edge_free == rhs.edge_free;
+
+            return  eval;
+        }
+
+        bool operator!=(const Container_0 &rhs) const {
+            return !(*this == rhs);
+        }
+
+        vector<Edge>::const_iterator edge_begin() const { return elements_nodes.begin(); }
+        vector<Edge>::const_iterator edge_end() const { return elements_nodes.end(); }
+
+        unordered_map<etype, etype>::const_iterator node_begin() const { return adj_map.begin(); }
+        unordered_map<etype, etype>::const_iterator node_end() const { return adj_map.end(); }
+
+        friend class boost::serialization::access;
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int)
+        {
+            ar & n_elements;
+            ar & n_vertices;
+            ar & max_edges;
+
+            ar & edge_free;
+            ar & elements_nodes;
+            ar & elements;
+            ar & adj_map;
+            ar & edge_lst;
+        }
+
+        template<class Archive>
+        void load(Archive & ar, const unsigned int)
+        {
+            ar >> n_elements;
+            ar >> n_vertices;
+            ar >> max_edges;
+
+            ar >> edge_free;
+            ar >> elements_nodes;
+            ar >> elements;
+            ar >> adj_map;
+            ar >> edge_lst;
+        }
+
 
         EdgeHashTable edge_lst;
-        vector <NodeEdge> elements;
+        unordered_map<etype, etype> adj_map; // x -> next
+
+        vector <NodeEdge> elements; // next and prev
+        vector<Edge> elements_nodes; //x and y
+
         vector <etype> edge_free;
-        AdjacencyList adj_lst;
     };
 }
 #endif //IMPLEMENTATION_CONTAINER_0_HPP

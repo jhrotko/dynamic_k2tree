@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
- 
+
 # Locate GTest
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
@@ -13,7 +13,7 @@ add_executable(heavyTest heavy_test.cpp)
 
 target_link_libraries(edgeHashTableTests ${GTEST_LIBRARIES} pthread sdsl boost_serialization)
 target_link_libraries(adjacencyListTest ${GTEST_LIBRARIES} pthread sdsl)
-target_link_libraries(dk2treeTest ${GTEST_LIBRARIES} pthread sdsl)
+target_link_libraries(dk2treeTest ${GTEST_LIBRARIES} pthread sdsl boost_serialization stdc++fs)
 target_link_libraries(algorithmTest ${GTEST_LIBRARIES} pthread sdsl)
 target_link_libraries(heavyTest ${GTEST_LIBRARIES} pthread sdsl)
 

@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
-#include "../include/dktree/DKtree.hpp"
 #include <iostream>
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
+#include "../include/dktree/DKtree.hpp"
 #include "sdsl/k2_tree.hpp"
 
 using d_tree = dynamic_ktree::DKtree<2, bit_vector>;
@@ -300,6 +304,48 @@ TEST(dktreeIterate, neighbour_iterator_star) {
         ASSERT_TRUE(std::find(list_neighbours_star.begin(), list_neighbours_star.end(), e)
                     != list_neighbours_star.end());
     }
+}
+
+TEST(SerializationTest, Container0SerializaAndLoad)
+{
+    std::stringstream ss;
+    boost::archive::text_oarchive oa(ss);
+
+    dynamic_ktree::Container_0 serialize_c0(1000);
+    serialize_c0.insert(0, 1, 0);
+    serialize_c0.insert(6, 3, 1);
+    serialize_c0.insert(9, 8, 2);
+    serialize_c0.insert(4, 2, 3);
+    serialize_c0.insert(0, 0, 4);
+    serialize_c0.insert(5, 3, 5);
+    oa << serialize_c0;
+
+    dynamic_ktree::Container_0 load_c0;
+    boost::archive::text_iarchive iar(ss); //exception
+    iar >> load_c0;
+
+    ASSERT_EQ(serialize_c0, load_c0);
+}
+
+TEST(SerializationTest, DKtreeSerializaAndLoad)
+{
+    std::stringstream ss;
+
+    d_tree serialize_dktree(50);
+    serialize_dktree.add_edge(0, 1);
+    serialize_dktree.add_edge(6, 3);
+    serialize_dktree.add_edge(9, 8);
+    serialize_dktree.add_edge(4, 2);
+    serialize_dktree.add_edge(0, 0);
+    serialize_dktree.add_edge(5, 3);
+
+    serialize_dktree.serialize(ss);
+
+    d_tree load_dktree;
+    load_dktree.load(ss);
+
+    ASSERT_EQ(serialize_dktree, load_dktree);
+
 }
 
 int main(int argc, char **argv) {

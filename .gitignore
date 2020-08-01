@@ -2,7 +2,6 @@
 .vscode
 .idea
 
-
 test/*
 !test/*.cpp
 !test/CMakeLists.txt
