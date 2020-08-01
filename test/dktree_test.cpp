@@ -344,7 +344,6 @@ TEST(SerializationTest, DKtreeSerializaAndLoad)
     d_tree load_dktree;
     load_dktree.load(ss);
 
-    serialize_dktree.clean_serialize();
     ASSERT_EQ(serialize_dktree, load_dktree);
 
 }
