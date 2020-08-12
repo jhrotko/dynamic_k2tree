@@ -135,7 +135,6 @@ namespace dynamic_ktree {
 
         virtual void del_edge(etype x, etype y) {
             if (contains(x, y)) {
-
                 if (C0.erase(x, y)) n_total_edges--;
                 else {
                     uint n_total_marked = 0;
