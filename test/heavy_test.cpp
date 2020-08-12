@@ -55,6 +55,7 @@ TEST(ReadTest, ReadFromDataset) {
 
         dynamic_ktree::DKtree<2> graph;
         graph.load(ss);
+        clock_t start = clock();
         while (getline (test_case_delete, line))
         {
             split(line, substrings, delims);
@@ -65,6 +66,8 @@ TEST(ReadTest, ReadFromDataset) {
                 graph.del_edge(x,y);
             }
         }
+        clock_t end = clock();
+        cout << "TIME " << end-start << endl;
         test_case_delete.close();
     } else  {
         cout << "Unable to open file";
