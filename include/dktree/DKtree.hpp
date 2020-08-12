@@ -134,31 +134,40 @@ namespace dynamic_ktree {
         }
 
         virtual void del_edge(etype x, etype y) {
-            if (contains(x, y)) {
-                if (C0.erase(x, y)) n_total_edges--;
-                else {
-                    uint n_total_marked = 0;
-                    for (size_t l = 0; l <= max_r; l++) {
-                        if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
-                            n_total_edges--;
+            if (C0.erase(x, y)) n_total_edges--;
+            else {
+                uint n_total_marked = 0;
+                for (size_t l = 0; l <= max_r; l++) {
+                    if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
+                        n_total_edges--;
 
-                            uint k_marked_edges = k_collection[l]->get_marked_edges();
-                            n_total_marked += k_marked_edges;
+                        uint k_marked_edges = k_collection[l]->get_marked_edges();
+                        n_total_marked += k_marked_edges;
 
-                            if (k_marked_edges == k_collection[l]->get_number_edges()) {
-                                n_total_marked -= k_marked_edges;
-                                k_collection[l].reset();
+                        if (k_marked_edges == k_collection[l]->get_number_edges()) {
+                            n_total_marked -= k_marked_edges;
+                            k_collection[l].reset();
+                        }
+                    }
+                }
+
+                if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
+                    /* Rebuild data structure... */
+                    array<shared_ptr<k_tree>, R> old_collection = k_collection;
+                    for (size_t i = 0; i < R; i++) {
+                        k_collection[i] = nullptr;
+                    }
+
+                    n_total_edges = C0.size();
+                    for (size_t i = 0; i <= max_r; i++) {
+                        if (old_collection[i] != nullptr) {
+                            for (auto it = old_collection[i]->edge_begin(); it != old_collection[i]->edge_end(); it++) {
+                                add_edge(it.x(), it.y());
                             }
+                            old_collection[i].reset();
                         }
                     }
-
-                    if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
-                        /* Rebuild data structure... */
-                        max_r = 0;
-                        for (size_t i = 0; i < R; i++) {
-                            k_collection[i] = make_shared<k_tree>();
-                        }
-                    }
+                    max_r = 0;
                 }
             }
         }
