@@ -17,7 +17,7 @@ add_executable(heavyTest heavy_test.cpp)
 target_link_libraries(edgeHashTableTests ${GTEST_LIBRARIES} pthread sdsl boost_serialization)
 target_link_libraries(dk2treeTest ${GTEST_LIBRARIES} pthread sdsl boost_serialization stdc++fs)
 target_link_libraries(algorithmTest ${GTEST_LIBRARIES} pthread sdsl)
-target_link_libraries(heavyTest ${GTEST_LIBRARIES} pthread sdsl)
+target_link_libraries(heavyTest ${GTEST_LIBRARIES} pthread sdsl boost_serialization stdc++fs)
 #target_link_libraries(LinkedListTest ${GTEST_LIBRARIES} pthread)
 
 add_test(NAME t1 COMMAND edgeHashTableTests)
