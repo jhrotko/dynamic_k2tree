@@ -20,21 +20,19 @@
 #include <experimental/filesystem>
 #include <cstdio>
 
-#include <ctime>
-
 using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
 
 
 namespace dynamic_ktree {
-    #define R 8
+#define R 8
 
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
             typename l_rank = typename t_bv::rank_1_type>
-    class DKtree: public Graph<
+    class DKtree : public Graph<
             DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>,
             DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>,
             DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
@@ -59,6 +57,7 @@ namespace dynamic_ktree {
 
     public:
         DKtree() {}
+
         DKtree(uint n_vertices) : n_vertices(n_vertices) {
             C0 = Container_0(n_vertices);
             max_r = 0;
@@ -79,17 +78,12 @@ namespace dynamic_ktree {
             return max_r;
         }
 
-        virtual void add_edge(etype x, etype y)
-        {
-//            cout << "ADDING " << x << " " << y << endl;
+        virtual void add_edge(etype x, etype y) {
             if (contains(x, y))
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
-//                clock_t start_C0 = clock();
                 C0.insert(x, y, n_total_edges);
-//                clock_t end_C0 = clock();
-//                cout << "ADD IN C0 TIME: " << (end_C0 - start_C0) << endl << endl;
                 n_total_edges++;
                 return;
             }
@@ -106,37 +100,29 @@ namespace dynamic_ktree {
                 throw logic_error("Error: collection too big...");
             max_r = max(i, max_r);
 
-//            clock_t start_copy_C0 = clock();
+
             //Add new link...
             C0.elements_nodes.push_back(Edge(x, y));
             vector<tuple<etype, etype>> converted;
-            for(auto element: C0.elements_nodes) {
+            for (auto element: C0.elements_nodes) {
                 converted.push_back(tuple<etype, etype>(element.x(), element.y()));
             }
-//            clock_t end_copy_C0 = clock();
-//            cout << "COPY TIME: " << (end_copy_C0 - start_copy_C0) << endl << endl;
 
             shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();
 
-
-
-//            clock_t start_ALL_UNION = clock();
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
                     tmp->unionOp(*k_collection[j]);
                     k_collection[j].reset();
                 }
             }
-//            clock_t end_ALL_UNION = clock();
-//            cout << "ADD K COLLECTION TIME: " << (end_ALL_UNION - start_ALL_UNION) << endl << endl;
 
             k_collection[i] = tmp;
             n_total_edges++;
         }
 
-        virtual bool contains(etype x, etype y)
-        {
+        virtual bool contains(etype x, etype y) {
             if (C0.edge_lst.contains(x, y))
                 return true;
 
@@ -147,38 +133,38 @@ namespace dynamic_ktree {
             return false;
         }
 
-        virtual void del_edge(etype x, etype y)
-        {
-            if (C0.erase(x, y)) n_total_edges--;
-            else {
-                uint n_total_marked = 0;
-                for (size_t l = 0; l <= max_r; l++) {
-                    if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
-                        n_total_edges--;
+        virtual void del_edge(etype x, etype y) {
+            if (contains(x, y)) {
 
-                        uint k_marked_edges = k_collection[l]->get_marked_edges();
-                        n_total_marked += k_marked_edges;
+                if (C0.erase(x, y)) n_total_edges--;
+                else {
+                    uint n_total_marked = 0;
+                    for (size_t l = 0; l <= max_r; l++) {
+                        if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
+                            n_total_edges--;
 
-                        if (k_marked_edges == k_collection[l]->get_number_edges()) {
-                            n_total_marked -= k_marked_edges;
-                            delete &k_collection[l];
-                            k_collection[l] = nullptr;
+                            uint k_marked_edges = k_collection[l]->get_marked_edges();
+                            n_total_marked += k_marked_edges;
+
+                            if (k_marked_edges == k_collection[l]->get_number_edges()) {
+                                n_total_marked -= k_marked_edges;
+                                k_collection[l] = nullptr;
+                            }
                         }
                     }
-                }
 
-                if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
-                    /* Rebuild data structure... */
-                    max_r = 0;
-                    for (size_t i = 0; i < R; i++) {
-                        k_collection[i] = make_shared<k_tree>();
+                    if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
+                        /* Rebuild data structure... */
+                        max_r = 0;
+                        for (size_t i = 0; i < R; i++) {
+                            k_collection[i] = make_shared<k_tree>();
+                        }
                     }
                 }
             }
         }
 
-        virtual vector<etype> list_neighbour(etype x)
-        {
+        virtual vector<etype> list_neighbour(etype x) {
             vector<etype> neighbours;
             C0.list_neighbours(x, neighbours);
 
@@ -191,56 +177,48 @@ namespace dynamic_ktree {
         }
 
 
-        Container_0 first_container() const
-        {
+        Container_0 first_container() const {
             return C0;
         }
 
-        array<shared_ptr<k_tree>, R> k_collections() const
-        {
+        array<shared_ptr<k_tree>, R> k_collections() const {
             return k_collection;
         }
 
-        virtual dktree_edge_it &edge_begin()
-        {
+        virtual dktree_edge_it &edge_begin() {
             it_edge_begin = dktree_edge_it(this);
             return it_edge_begin;
         }
 
-        virtual dktree_edge_it &edge_end()
-        {
+        virtual dktree_edge_it &edge_end() {
             it_end = it_edge_begin.end();
             return it_end;
         }
 
-        virtual dktree_node_it &node_begin()
-        {
+        virtual dktree_node_it &node_begin() {
             it_node_begin = dktree_node_it(this);
             return it_node_begin;
         }
 
-        virtual dktree_node_it &node_end()
-        {
+        virtual dktree_node_it &node_end() {
             it_node_end = it_node_begin.end();
             return it_node_end;
         }
 
-        virtual dktree_neighbour_it &neighbour_begin(etype node)
-        {
+        virtual dktree_neighbour_it &neighbour_begin(etype node) {
             it_neighbour_begin = dktree_neighbour_it(this, node);
             return it_neighbour_begin;
         }
 
-        virtual dktree_neighbour_it &neighbour_end()
-        {
+        virtual dktree_neighbour_it &neighbour_end() {
             it_neighbour_end = it_neighbour_begin.end();
             return it_neighbour_end;
         }
 
         friend class boost::serialization::access;
+
         template<class Archive>
-        void serialize(Archive & ar, const unsigned int)
-        {
+        void serialize(Archive &ar, const unsigned int) {
             ar & max_r;
             ar & n_vertices;
             ar & n_total_edges;
@@ -249,8 +227,7 @@ namespace dynamic_ktree {
         }
 
         template<class Archive>
-        void load(Archive & ar, const unsigned int)
-        {
+        void load(Archive &ar, const unsigned int) {
             ar >> max_r;
             ar >> n_vertices;
             ar >> n_total_edges;
@@ -258,23 +235,25 @@ namespace dynamic_ktree {
             ar >> C0;
         }
 
-        void serialize(std::ostream &out, string project_dir="./") {
+        void serialize(std::ostream &out, string project_dir = "./") {
             boost::archive::text_oarchive oa(out);
             oa << *this;
 
             int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
             if (status < 0 && errno != EEXIST) throw "Could not create dir";
 
-            for (size_t l = 0; l <= max_r; l++)
+            for (size_t l = 0; l <= max_r; l++) {
                 if (k_collection[l] != nullptr) {
                     char filename[10];
-                    sprintf (filename, "/%lu.kt", l);
-                    std::ofstream ktree_files(project_dir.append(filename));
+                    sprintf(filename, "/%lu.kt", l);
+                    string project_dir_copy = project_dir;
+                    std::ofstream ktree_files(project_dir_copy.append(filename));
                     k_collection[l]->serialize(ktree_files);
                 }
+            }
         }
 
-        void load(std::istream &in, string project_dir="./", bool clear=true) {
+        void load(std::istream &in, string project_dir = "./", bool clear = true) {
             boost::archive::text_iarchive ar(in);
             ar >> *this;
 
@@ -282,10 +261,10 @@ namespace dynamic_ktree {
                 char filename[10];
                 string aux = project_dir;
                 aux.append("dktree_serialize");
-                sprintf (filename, "/%lu.kt", l);
+                sprintf(filename, "/%lu.kt", l);
 
                 ifstream load_file(aux.append(filename).c_str());
-                if(load_file.good()) {
+                if (load_file.good()) {
                     k_tree new_ktree;
                     new_ktree.load(load_file);
 
@@ -295,7 +274,7 @@ namespace dynamic_ktree {
                 }
             }
 
-            if(clear)
+            if (clear)
                 clean_serialize(project_dir);
         }
 
@@ -307,21 +286,21 @@ namespace dynamic_ktree {
             eval &= C0 == rhs.C0;
 
             for (size_t l = 0; l <= max_r; l++) {
-                if(k_collection[l] != nullptr && rhs.k_collection[l] != nullptr)
+                if (k_collection[l] != nullptr && rhs.k_collection[l] != nullptr)
                     eval &= k_collection[l]->equal(*rhs.k_collection[l]);
-                else if(k_collection[l] == nullptr && rhs.k_collection[l] != nullptr)
+                else if (k_collection[l] == nullptr && rhs.k_collection[l] != nullptr)
                     eval = false;
-                else if(k_collection[l] != nullptr && rhs.k_collection[l] == nullptr)
+                else if (k_collection[l] != nullptr && rhs.k_collection[l] == nullptr)
                     eval = false;
             }
 
             return eval;
         }
 
-        void clean_serialize(string project_dir="./") {
+        void clean_serialize(string project_dir = "./") {
             project_dir.append("dktree_serialize");
 
-            for (auto & entry : std::experimental::filesystem::directory_iterator(project_dir))
+            for (auto &entry : std::experimental::filesystem::directory_iterator(project_dir))
                 std::experimental::filesystem::remove(entry.path());
         }
     };
