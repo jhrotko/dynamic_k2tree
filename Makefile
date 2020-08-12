@@ -16,10 +16,6 @@ clean:
 	cd include/algorithm && rm *.hpp.gch
 	cd test && rm adjacencyListTest && rm dk2treeTest && rm edgeHashTableTests && rm algorithmTest
 
-tests_adj:
-	cd include/dktree && g++ $(CFLAGS) AdjacencyList.hpp utils.hpp
-	cd test && cmake CMakeLists.txt && make adjacencyListTest && ./adjacencyListTest
-
 tests_edge:
 	cd include/dktree && g++ $(CFLAGS) EdgeHashTable.hpp utils.hpp
 	cd test && cmake CMakeLists.txt && make edgeHashTableTests && ./edgeHashTableTests
@@ -31,12 +27,16 @@ tests_dktree:
 tests_dktree_all:
 	make dktree
 	cd test && cmake CMakeLists.txt && make
-	cd test && ./edgeHashTableTests && ./adjacencyListTest &&./dk2treeTest
+	cd test && ./edgeHashTableTests &&./dk2treeTest
 
 tests_algorithm:
 	make algorithm
 	cd test && cmake CMakeLists.txt && make algorithmTest && ./algorithmTest
 
+tests_heavy:
+	make dktree
+	cd test && cmake CMakeLists.txt && make
+	cd test && ./heavyTest > heavy_log.txt
 tests_all:
 	make tests_dktree_all
 	make tests_algorithm
