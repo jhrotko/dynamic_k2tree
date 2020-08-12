@@ -20,6 +20,8 @@
 #include <experimental/filesystem>
 #include <cstdio>
 
+#include <ctime>
+
 using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
@@ -79,11 +81,15 @@ namespace dynamic_ktree {
 
         virtual void add_edge(etype x, etype y)
         {
+//            cout << "ADDING " << x << " " << y << endl;
             if (contains(x, y))
                 return;
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
+//                clock_t start_C0 = clock();
                 C0.insert(x, y, n_total_edges);
+//                clock_t end_C0 = clock();
+//                cout << "ADD IN C0 TIME: " << (end_C0 - start_C0) << endl << endl;
                 n_total_edges++;
                 return;
             }
@@ -100,21 +106,31 @@ namespace dynamic_ktree {
                 throw logic_error("Error: collection too big...");
             max_r = max(i, max_r);
 
+//            clock_t start_copy_C0 = clock();
             //Add new link...
             C0.elements_nodes.push_back(Edge(x, y));
             vector<tuple<etype, etype>> converted;
             for(auto element: C0.elements_nodes) {
                 converted.push_back(tuple<etype, etype>(element.x(), element.y()));
             }
+//            clock_t end_copy_C0 = clock();
+//            cout << "COPY TIME: " << (end_copy_C0 - start_copy_C0) << endl << endl;
 
             shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();
+
+
+
+//            clock_t start_ALL_UNION = clock();
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
                     tmp->unionOp(*k_collection[j]);
                     k_collection[j].reset();
                 }
             }
+//            clock_t end_ALL_UNION = clock();
+//            cout << "ADD K COLLECTION TIME: " << (end_ALL_UNION - start_ALL_UNION) << endl << endl;
+
             k_collection[i] = tmp;
             n_total_edges++;
         }
