@@ -15,7 +15,6 @@ void split(const std::string &str, vector<string> &cont,
 
 TEST(ReadTest, ReadFromDataset) {
     unsigned int n_vertices = 50000;
-
     std::ostringstream path;
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
     ifstream test_case (path.str());
