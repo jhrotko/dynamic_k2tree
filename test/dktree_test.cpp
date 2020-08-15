@@ -138,6 +138,7 @@ TEST(dktreeIterate, edge_iterate) {
 
     //increment operation
     auto it = tree.edge_begin();
+
     ASSERT_EQ(it.x(), 7);
     ASSERT_EQ(it.y(), 0);
     it++;
@@ -147,17 +148,14 @@ TEST(dktreeIterate, edge_iterate) {
     ASSERT_EQ(it.x(), 1);
     ASSERT_EQ(it.y(), 2);
     it++;
+    ASSERT_EQ(it.x(), 3);
+    ASSERT_EQ(it.y(), 1);
+    it++;
     ASSERT_EQ(it.x(), 1);
     ASSERT_EQ(it.y(), 4);
     it++;
     ASSERT_EQ(it.x(), 3);
-    ASSERT_EQ(it.y(), 1);
-    it++;
-    ASSERT_EQ(it.x(), 3);
     ASSERT_EQ(it.y(), 4);
-    it++;
-    ASSERT_EQ(it.x(), 3);
-    ASSERT_EQ(it.y(), 9);
     it++;
     ASSERT_EQ(it.x(), 5);
     ASSERT_EQ(it.y(), 0);
@@ -167,6 +165,9 @@ TEST(dktreeIterate, edge_iterate) {
     it++;
     ASSERT_EQ(it.x(), 6);
     ASSERT_EQ(it.y(), 0);
+    it++;
+    ASSERT_EQ(it.x(), 3);
+    ASSERT_EQ(it.y(), 9);
 
     it++;
     ASSERT_TRUE(it == tree.edge_end());
