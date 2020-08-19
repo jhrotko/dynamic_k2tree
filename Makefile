@@ -14,7 +14,10 @@ all:
 clean:
 	cd include/dktree && rm *.hpp.gch
 	cd include/algorithm && rm *.hpp.gch
-	cd test && rm adjacencyListTest && rm dk2treeTest && rm edgeHashTableTests && rm algorithmTest
+	cd test && rm heavyTest
+	cd test && rm edgeHashTableTests
+	cd test && rm algorithmTest
+	cd test && rm dk2treeTest
 
 tests_edge:
 	cd include/dktree && g++ $(CFLAGS) EdgeHashTable.hpp utils.hpp
