@@ -48,6 +48,7 @@ namespace dynamic_ktree {
             for (etype i = 0; i < max_edges; i++) {
                 edge_free[i] = i;
             }
+            marked = 0;
         }
 
         bool adj_contains(etype x) {
@@ -63,7 +64,7 @@ namespace dynamic_ktree {
                 if (n_elements >= elements.size()) {
                     resize(MAXSZ(max(n_vertices, n_edges), 0));
                 }
-                etype i = edge_free[n_elements++];
+                etype i = edge_free[n_elements];
                 elements_nodes[i] = Edge(x, y);
                 if (!adj_contains(x))
                     adj_map[x] = i;
@@ -72,25 +73,27 @@ namespace dynamic_ktree {
                     elements[adj_map[x]].prev(i);
                     adj_map[x] = i;
                 }
-
+                n_elements++;
                 edge_lst.insert(elements_nodes[i].x(), elements_nodes[i].y(), i);
             }
         }
 
         bool erase(etype x, etype y) {
+//            if(x == 27519 && y == 49974)
+
             unsigned int nodeIndex = edge_lst.find(x, y);
             if (nodeIndex != UINT_MAX) {
-                edge_lst.erase(elements_nodes[nodeIndex].x(), elements_nodes[nodeIndex].y());
+                edge_lst.erase(x, y);
 
-                if (elements[nodeIndex].has_next())
+                if (elements[nodeIndex].has_next()) {
                     elements[elements[nodeIndex].next()].prev(elements[nodeIndex].prev());
-                else
                     adj_map[elements_nodes[nodeIndex].x()] = elements[nodeIndex].next();
+                }
                 if (elements[nodeIndex].has_prev())
                     elements[elements[nodeIndex].prev()].next(elements[nodeIndex].next());
 
-                n_elements--;
-                edge_free[n_elements] = nodeIndex;
+                edge_free[nodeIndex] = -1;
+                marked++;
                 return true;
             }
             return false;
@@ -104,7 +107,11 @@ namespace dynamic_ktree {
                 }
         }
 
-        uint64_t size() const {
+        etype size() const {
+            return n_elements == 0? 0: n_elements-marked;
+        }
+
+        etype size_non_marked() {
             return n_elements;
         }
 
@@ -189,7 +196,8 @@ namespace dynamic_ktree {
         vector<NodeEdge> elements; // next and prev
         vector<Edge> elements_nodes; //x and y
 
-        vector<etype> edge_free;
+        vector<int16_t> edge_free;
+        etype marked = 0;
     };
 }
 #endif //IMPLEMENTATION_CONTAINER_0_HPP
