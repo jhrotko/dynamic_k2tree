@@ -35,8 +35,7 @@ TEST(ReadTest, ReadFromDataset) {
                 graph.add_edge(x, y);
             }
         }
-//        graph.contains(27519, 49974);
-//        graph.serialize(ss);
+        graph.serialize(ss);
         test_case.close();
     } else  {
         cout << "Unable to open file";
@@ -53,9 +52,9 @@ TEST(ReadTest, ReadFromDataset) {
         vector<std::string> substrings;
         const std::string delims = " ";
 
-//        dynamic_ktree::DKtree<2> graph_loaded;
-//        graph_loaded.load(ss);
-//        ASSERT_EQ(graph, graph_loaded);
+        dynamic_ktree::DKtree<2> graph_loaded;
+        graph_loaded.load(ss);
+        ASSERT_EQ(graph, graph_loaded);
         clock_t start = clock();
         uint64_t total = graph.get_number_edges();
         uint64_t removed = 0;
@@ -68,15 +67,15 @@ TEST(ReadTest, ReadFromDataset) {
             if(substrings[0] == "d") {
 //            if(substrings[0] == "a") {
                 removed++;
-                graph.del_edge(x,y);
+                graph_loaded.del_edge(x,y);
             }
         }
         clock_t end = clock();
         cout << "TOTAL TIME " << (float)(end-start) / CLOCKS_PER_SEC << endl;
-        cout << "Total edges: " << graph.get_number_edges() << endl;
+        cout << "Total edges: " << graph_loaded.get_number_edges() << endl;
         cout << "Supposly: " << total-removed << endl;
         test_case_delete.close();
-        ASSERT_EQ(graph.get_number_edges(), total-removed);
+        ASSERT_EQ(graph_loaded.get_number_edges(), total-removed);
 //        ASSERT_EQ(graph.get_number_edges(), 555705);
     } else  {
         cout << "Unable to open file";
