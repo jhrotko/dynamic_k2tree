@@ -110,9 +110,10 @@ namespace dynamic_ktree {
 
             //Add new link...
             vector<tuple<etype, etype>> converted;
-            for (uint64_t j = 0; j < C0.size(); j++) {
-                converted.push_back(tuple<etype, etype>(C0.elements_nodes[C0.edge_free[j]].x(),
-                                                        C0.elements_nodes[C0.edge_free[j]].y()));
+            for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
+                if(C0.edge_free[j] != -1)
+                    converted.push_back(tuple<etype, etype>(C0.elements_nodes[C0.edge_free[j]].x(),
+                                                            C0.elements_nodes[C0.edge_free[j]].y()));
             }
             converted.push_back(tuple<etype, etype>(x, y));
 
@@ -142,6 +143,7 @@ namespace dynamic_ktree {
         }
 
         virtual void del_edge(etype x, etype y) {
+            uint64_t  old_n_edges = n_total_edges;
             if (C0.erase(x, y)) {
                 n_total_edges--;
                 return;
@@ -149,7 +151,7 @@ namespace dynamic_ktree {
             else {
                 uint64_t n_total_marked = 0;
                 bool coco = true;
-                for (size_t l = 0; l <= max_r; l++) {
+                for (size_t l = 0; l < R; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                         n_total_edges--;
                         coco = false;
@@ -165,10 +167,12 @@ namespace dynamic_ktree {
                         break;
                     }
                 }
-//                assert(!coco);
+                assert(!coco);
+                /* Rebuild data structure... */
                 if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
-//                    cout << "start" << endl;
-                    /* Rebuild data structure... */
+
+                    cout << "start" << endl;
+
                     const size_t old_max_r = max_r;
                     array<shared_ptr<k_tree>, R> old_collection;
                     max_r = 0;
@@ -178,14 +182,14 @@ namespace dynamic_ktree {
                             k_collection[i].reset();
                         }
                     }
-//                    cout << "before:" << n_total_edges << endl;
+                    cout << "before:" << n_total_edges << endl;
                     n_total_edges = C0.size();
-//                    cout << "after:" << n_total_edges << endl;
+                    cout << "after:" << n_total_edges << endl;
 
                     for (size_t j = 0; j <= old_max_r; j++) {
                         if (old_collection[j] != nullptr) {
-//                            cout << "HM " << old_collection[j]->get_number_edges() << endl;
-//                            cout << "l:" << j << endl;
+                            cout << "HM " << old_collection[j]->get_number_edges() << endl;
+                            cout << "l:" << j << endl;
 
                             old_collection[j]->edge_it(
                                     [this](uint64_t i, uint64_t j) -> void {
@@ -193,9 +197,10 @@ namespace dynamic_ktree {
                                     });
                         }
                     }
-//                    cout << "end" << endl;
+                    cout << "end" << endl;
                 }
             }
+//            assert(n_total_edges == old_n_edges-1);
         }
 
         virtual vector<etype> list_neighbour(etype x) {
