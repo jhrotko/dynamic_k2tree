@@ -67,13 +67,6 @@ namespace dynamic_ktree {
         }
 
         virtual uint64_t get_number_edges() const {
-//            size_t  total = C0.size();
-//
-//            for (uint i = 0; i <= max_r; i++) {
-//                if(k_collection[i] != nullptr)
-//                    total += k_collection[i]->get_number_edges();
-//            }
-//            assert(n_total_edges == total);
             return n_total_edges;
         }
 
@@ -143,36 +136,28 @@ namespace dynamic_ktree {
         }
 
         virtual void del_edge(etype x, etype y) {
-            uint64_t  old_n_edges = n_total_edges;
             if (C0.erase(x, y)) {
                 n_total_edges--;
                 return;
             }
             else {
                 uint64_t n_total_marked = 0;
-                bool coco = true;
                 for (size_t l = 0; l < R; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                         n_total_edges--;
-                        coco = false;
 
                         uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
                         n_total_marked += k_marked_edges;
 
                         if (k_marked_edges == k_collection[l]->total_edges()) {
-//                            cout << "deleting " << l << endl;
                             n_total_marked -= k_marked_edges;
                             k_collection[l].reset();
                         }
                         break;
                     }
                 }
-                assert(!coco);
                 /* Rebuild data structure... */
                 if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
-
-                    cout << "start" << endl;
-
                     const size_t old_max_r = max_r;
                     array<shared_ptr<k_tree>, R> old_collection;
                     max_r = 0;
@@ -182,25 +167,18 @@ namespace dynamic_ktree {
                             k_collection[i].reset();
                         }
                     }
-                    cout << "before:" << n_total_edges << endl;
-                    n_total_edges = C0.size();
-                    cout << "after:" << n_total_edges << endl;
 
+                    n_total_edges = C0.size();
                     for (size_t j = 0; j <= old_max_r; j++) {
                         if (old_collection[j] != nullptr) {
-                            cout << "HM " << old_collection[j]->get_number_edges() << endl;
-                            cout << "l:" << j << endl;
-
                             old_collection[j]->edge_it(
                                     [this](uint64_t i, uint64_t j) -> void {
                                         this->add_edge(i, j);
                                     });
                         }
                     }
-                    cout << "end" << endl;
                 }
             }
-//            assert(n_total_edges == old_n_edges-1);
         }
 
         virtual vector<etype> list_neighbour(etype x) {
