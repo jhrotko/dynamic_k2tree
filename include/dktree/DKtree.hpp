@@ -45,8 +45,8 @@ namespace dynamic_ktree {
         using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it>;
     private:
         uint max_r = 0;
-        uint n_vertices = 0;
-        uint n_total_edges = 0;
+        uint64_t n_vertices = 0;
+        uint64_t n_total_edges = 0;
 
         Container_0 C0;
         array<shared_ptr<k_tree>, R> k_collection;
@@ -66,11 +66,18 @@ namespace dynamic_ktree {
             }
         }
 
-        virtual size_t get_number_edges() const {
+        virtual uint64_t get_number_edges() const {
+//            size_t  total = C0.size();
+//
+//            for (uint i = 0; i <= max_r; i++) {
+//                if(k_collection[i] != nullptr)
+//                    total += k_collection[i]->get_number_edges();
+//            }
+//            assert(n_total_edges == total);
             return n_total_edges;
         }
 
-        virtual size_t get_number_nodes() const {
+        virtual uint64_t get_number_nodes() const {
             return n_vertices;
         }
 
@@ -81,6 +88,7 @@ namespace dynamic_ktree {
         virtual void add_edge(etype x, etype y) {
             if (contains(x, y))
                 return;
+
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
             if (C0.size() < max_size) {
                 C0.insert(x, y, n_total_edges);
@@ -91,7 +99,7 @@ namespace dynamic_ktree {
             size_t i;
             for (i = 0; i < R; i++) {
                 if (k_collection[i] != nullptr)
-                    max_size += k_collection[i]->get_number_edges();
+                    max_size += k_collection[i]->total_edges();
                 if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
                     break;
             }
@@ -100,13 +108,13 @@ namespace dynamic_ktree {
                 throw logic_error("Error: collection too big...");
             max_r = max(i, max_r);
 
-
             //Add new link...
-            C0.elements_nodes.push_back(Edge(x, y));
             vector<tuple<etype, etype>> converted;
-            for (auto element: C0.elements_nodes) {
-                converted.push_back(tuple<etype, etype>(element.x(), element.y()));
+            for (uint64_t j = 0; j < C0.size(); j++) {
+                converted.push_back(tuple<etype, etype>(C0.elements_nodes[C0.edge_free[j]].x(),
+                                                        C0.elements_nodes[C0.edge_free[j]].y()));
             }
+            converted.push_back(tuple<etype, etype>(x, y));
 
             shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();
@@ -123,51 +131,69 @@ namespace dynamic_ktree {
         }
 
         virtual bool contains(etype x, etype y) {
-            if (C0.edge_lst.contains(x, y))
+            if (C0.contains(x, y))
                 return true;
 
             // check in other containers
-            for (size_t i = 0; i <= max_r; i++)
+            for (size_t i = 0; i < R; i++)
                 if (k_collection[i] != nullptr && k_collection[i]->adj(x, y))
                     return true;
             return false;
         }
 
         virtual void del_edge(etype x, etype y) {
-            if (C0.erase(x, y)) n_total_edges--;
+            if (C0.erase(x, y)) {
+                n_total_edges--;
+                return;
+            }
             else {
-                uint n_total_marked = 0;
+                uint64_t n_total_marked = 0;
+                bool coco = true;
                 for (size_t l = 0; l <= max_r; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                         n_total_edges--;
+                        coco = false;
 
-                        uint k_marked_edges = k_collection[l]->get_marked_edges();
+                        uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
                         n_total_marked += k_marked_edges;
 
-                        if (k_marked_edges == k_collection[l]->get_number_edges()) {
+                        if (k_marked_edges == k_collection[l]->total_edges()) {
+//                            cout << "deleting " << l << endl;
                             n_total_marked -= k_marked_edges;
                             k_collection[l].reset();
                         }
+                        break;
                     }
                 }
-
+//                assert(!coco);
                 if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
+//                    cout << "start" << endl;
                     /* Rebuild data structure... */
-                    array<shared_ptr<k_tree>, R> old_collection = k_collection;
-                    for (size_t i = 0; i < R; i++) {
-                        k_collection[i] = nullptr;
-                    }
-
-                    n_total_edges = C0.size();
-                    for (size_t i = 0; i <= max_r; i++) {
-                        if (old_collection[i] != nullptr) {
-                            for (auto it = old_collection[i]->edge_begin(); it != old_collection[i]->edge_end(); it++) {
-                                add_edge(it.x(), it.y());
-                            }
-                            old_collection[i].reset();
+                    const size_t old_max_r = max_r;
+                    array<shared_ptr<k_tree>, R> old_collection;
+                    max_r = 0;
+                    for (size_t i = 0; i <= old_max_r; i++) {
+                        if (k_collection[i] != nullptr) {
+                            old_collection[i] = k_collection[i];
+                            k_collection[i].reset();
                         }
                     }
-                    max_r = 0;
+//                    cout << "before:" << n_total_edges << endl;
+                    n_total_edges = C0.size();
+//                    cout << "after:" << n_total_edges << endl;
+
+                    for (size_t j = 0; j <= old_max_r; j++) {
+                        if (old_collection[j] != nullptr) {
+//                            cout << "HM " << old_collection[j]->get_number_edges() << endl;
+//                            cout << "l:" << j << endl;
+
+                            old_collection[j]->edge_it(
+                                    [this](uint64_t i, uint64_t j) -> void {
+                                        this->add_edge(i, j);
+                                    });
+                        }
+                    }
+//                    cout << "end" << endl;
                 }
             }
         }
