@@ -55,9 +55,11 @@ TEST(ReadTest, ReadFromDataset) {
         dynamic_ktree::DKtree<2> graph_loaded;
         graph_loaded.load(ss);
         ASSERT_EQ(graph, graph_loaded);
-        clock_t start = clock();
         uint64_t total = graph.get_number_edges();
         uint64_t removed = 0;
+
+        cout << "DELETE" << endl;
+        clock_t start = clock();
         while (getline (test_case_delete, line))
         {
             split(line, substrings, delims);
@@ -83,60 +85,6 @@ TEST(ReadTest, ReadFromDataset) {
     }
 }
 
-
-TEST(k2_tree_test_marked, edge_it) {
-    vector<vector<int>> mat({{1, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 1, 0, 0, 0, 0, 0},
-                             {0, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 0, 1, 0, 0, 0, 0}});
-
-    auto tree_a = k2_tree<2>(mat);
-    tree_a.erase(0,0);
-    tree_a.erase(7, 3);
-
-    vector<vector<int>> mat2({{0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 1, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 1, 0, 0, 0}});
-
-    auto tree_b = k2_tree<2>(mat2);
-    tree_b.erase(7,4);
-    tree_a.unionOp(tree_b);
-
-    std::vector<unsigned> expected_t = {1,0,1,1, 1,0,0,0, 0,1,0,1, 1,0,1,0};
-    std::vector<unsigned> expected_l = {0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0, 0,0,0,0};
-
-    ASSERT_EQ(expected_t.size(), tree_a.t().size());
-    ASSERT_EQ(expected_l.size(), tree_a.l().size());
-    for (unsigned i = 0; i < expected_t.size(); i++){
-
-        ASSERT_EQ(expected_t[i], tree_a.t().get_int(i, 1));
-    }
-    for (unsigned i = 0; i < expected_l.size(); i++) {
-        cout << "i:" << i << endl;
-        ASSERT_EQ(expected_l[i], tree_a.l().get_int(i, 1));
-    }
-}
-
-TEST(k2_tree_test_msarked, edges_it) {
-    vector<vector<int>> mat({{1, 0, 0, 0, 1},
-                             {0, 0, 0, 0, 0},
-                             {0, 0, 1, 1, 0},
-                             {0, 0, 0, 0, 0},
-                             {0, 0, 1, 0, 1}});
-
-    k2_tree<2> tree = k2_tree<2>(mat);
-    k2_tree<2> t = tree;
-    tree.edge_it([t] (uint64_t i, uint64_t j)-> void { ASSERT_TRUE(t.adj(i,j)); });
-}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
