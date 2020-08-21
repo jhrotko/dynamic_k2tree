@@ -12,7 +12,7 @@ void split(const std::string &str, vector<string> &cont,
 
 TEST(ReadTest, ReadFromDataset) {
     std::stringstream ss;
-    unsigned int n_vertices = 50000;
+    unsigned int n_vertices = 5000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
@@ -43,8 +43,8 @@ TEST(ReadTest, ReadFromDataset) {
     }
 
     std::ostringstream path_delete;
-    path_delete << "datasets/" << n_vertices << "/" << n_vertices << "-deletions.tsv";
-//    path_delete << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+//    path_delete << "datasets/" << n_vertices << "/" << n_vertices << "-deletions.tsv";
+    path_delete << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
     ifstream test_case_delete (path_delete.str());
 
     if (test_case_delete.is_open()) {
@@ -66,8 +66,8 @@ TEST(ReadTest, ReadFromDataset) {
 
             etype x = (etype) stoi(substrings[1]);
             etype y = (etype) stoi(substrings[2]);
-            if(substrings[0] == "d") {
-//            if(substrings[0] == "a") {
+//            if(substrings[0] == "d") {
+            if(substrings[0] == "a") {
                 removed++;
                 graph_loaded.del_edge(x,y);
             }

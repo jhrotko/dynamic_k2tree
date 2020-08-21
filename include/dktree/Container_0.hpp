@@ -59,7 +59,7 @@ namespace dynamic_ktree {
             return edge_lst.contains(x, y);
         }
 
-        void insert(etype x, etype y, uint n_edges) {
+        void insert(etype x, etype y, uint64_t n_edges) {
             if (!edge_lst.contains(x, y)) {
                 if (n_elements >= elements.size()) {
                     resize(MAXSZ(max(n_vertices, n_edges), 0));
@@ -79,8 +79,6 @@ namespace dynamic_ktree {
         }
 
         bool erase(etype x, etype y) {
-//            if(x == 27519 && y == 49974)
-
             unsigned int nodeIndex = edge_lst.find(x, y);
             if (nodeIndex != UINT_MAX) {
                 edge_lst.erase(x, y);
