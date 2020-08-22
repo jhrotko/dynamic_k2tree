@@ -50,6 +50,14 @@ public:
         return _prev_set;
     }
 
+    void remove_prev() {
+        _prev_set = false;
+    }
+
+    void remove_next() {
+        _next_set = false;
+    }
+
     bool operator==(const NodeEdge &rhs) const
     {
         bool eval = _next_set == rhs._next_set && _prev_set == rhs._prev_set;
@@ -92,7 +100,7 @@ class EdgeHashTable {
 private:
     class Hash {
     public:
-        unsigned int operator()(Edge const &e) const {
+        unsigned int operator()(const Edge &e) const {
             unsigned long key = edge_to_uint64(e);
             key = (~key) + (key << 18);
             key = key ^ (key >> 31);
@@ -104,7 +112,7 @@ private:
             return (unsigned int) key;
         }
 
-        unsigned long edge_to_uint64(Edge const &e) const {
+        unsigned long edge_to_uint64(const Edge &e) const {
             unsigned long concat_edge = e.x();
             concat_edge <<= 32;
             concat_edge |= e.y();
@@ -137,16 +145,16 @@ public:
     }
 
     // Returns the index of the index where the Edge is.
-    // Returns UINT_MAX in case it cannot find
-    unsigned int find(etype x, etype y) const {
+    // Returns -1 in case it cannot find
+    int64_t find(etype x, etype y) const {
         h_table::const_iterator iterator = ht.find(Edge(x, y));
         if (iterator == ht.end())
-            return UINT_MAX;
+            return -1;
         return iterator->second;
     }
 
     bool contains(etype x, etype y) const {
-        return find(x,y) != UINT_MAX;
+        return find(x,y) != -1;
     }
 
     void erase(etype x, etype y)
