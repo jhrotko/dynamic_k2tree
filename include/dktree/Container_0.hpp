@@ -15,7 +15,7 @@ namespace dynamic_ktree {
 
     class Container_0 {
     private:
-        etype n_elements, max_edges;
+        uint64_t n_elements, max_edges;
         uint64_t n_vertices;
 
     public:
@@ -35,20 +35,18 @@ namespace dynamic_ktree {
 
         void clean() {
             n_elements = 0;
+            marked = 0;
 
-            edge_lst.clear();
-            adj_map.clear();
+            edge_lst = EdgeHashTable();
+            adj_map = unordered_map<etype, etype>(max_edges*2);
 
-            elements.clear();
-            elements.resize(max_edges);
-            elements_nodes.clear();
-            elements_nodes.resize(max_edges);
-            edge_free.clear();
-            edge_free.resize(max_edges);
+            elements = vector<NodeEdge>(max_edges);
+            elements_nodes = vector<Edge>(max_edges);
+            edge_free = vector<int64_t>(max_edges);
+
             for (etype i = 0; i < max_edges; i++) {
                 edge_free[i] = i;
             }
-            marked = 0;
         }
 
         bool adj_contains(etype x) {
@@ -65,7 +63,10 @@ namespace dynamic_ktree {
                     resize(MAXSZ(max(n_vertices, n_edges), 0));
                 }
                 etype i = edge_free[n_elements];
+                n_elements++;
                 elements_nodes[i] = Edge(x, y);
+                edge_lst.insert(x, y, i);
+
                 if (!adj_contains(x))
                     adj_map[x] = i;
                 else {
@@ -73,23 +74,28 @@ namespace dynamic_ktree {
                     elements[adj_map[x]].prev(i);
                     adj_map[x] = i;
                 }
-                n_elements++;
-                edge_lst.insert(elements_nodes[i].x(), elements_nodes[i].y(), i);
             }
         }
 
         bool erase(etype x, etype y) {
-            unsigned int nodeIndex = edge_lst.find(x, y);
-            if (nodeIndex != UINT_MAX) {
+            int64_t nodeIndex = edge_lst.find(x, y);
+            if (nodeIndex != -1) {
                 edge_lst.erase(x, y);
 
-                if (elements[nodeIndex].has_next()) {
-                    elements[elements[nodeIndex].next()].prev(elements[nodeIndex].prev());
-                    adj_map[elements_nodes[nodeIndex].x()] = elements[nodeIndex].next();
+                if(!elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { // empty
+                    adj_map.erase(x);
                 }
-                if (elements[nodeIndex].has_prev())
-                    elements[elements[nodeIndex].prev()].next(elements[nodeIndex].next());
+                if (!elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) { //last
+                    elements[elements[nodeIndex].prev()].remove_next();
+                }
+                else if (elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { //first
+                    elements[elements[nodeIndex].next()].remove_prev();
+                    adj_map[x] = elements[nodeIndex].next();
 
+                } else if(elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()){
+                    elements[elements[nodeIndex].next()].prev(elements[nodeIndex].prev());
+                    elements[elements[nodeIndex].prev()].next(elements[nodeIndex].next());
+                }
                 edge_free[nodeIndex] = -1;
                 marked++;
                 return true;
@@ -117,7 +123,7 @@ namespace dynamic_ktree {
             return max_edges;
         }
 
-        void resize(etype new_max_edges) {
+        void resize(uint64_t new_max_edges) {
             if (new_max_edges > max_edges) {
                 elements.resize(new_max_edges);
                 elements_nodes.resize(new_max_edges);
@@ -126,6 +132,7 @@ namespace dynamic_ktree {
                     edge_free[i] = i;
                 }
                 max_edges = new_max_edges;
+
             }
         }
 
@@ -194,7 +201,7 @@ namespace dynamic_ktree {
         vector<NodeEdge> elements; // next and prev
         vector<Edge> elements_nodes; //x and y
 
-        vector<int16_t> edge_free;
+        vector<int64_t> edge_free;
         etype marked = 0;
     };
 }

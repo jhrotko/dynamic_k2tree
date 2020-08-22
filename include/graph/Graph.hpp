@@ -57,7 +57,11 @@ private:
     etype x_, y_;
 public:
     Edge() {}
-    Edge(etype x, etype y) : x_(x), y_(y) {}
+    Edge(etype x, etype y) {
+        x_ = x;
+        y_ = y;
+    }
+
     etype x() const {
         return x_;
     }

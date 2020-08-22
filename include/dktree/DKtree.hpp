@@ -83,7 +83,7 @@ namespace dynamic_ktree {
                 return;
 
             size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
-            if (C0.size() < max_size) {
+            if (C0.size_non_marked() < max_size) {
                 C0.insert(x, y, n_total_edges);
                 n_total_edges++;
                 return;
@@ -103,12 +103,18 @@ namespace dynamic_ktree {
 
             //Add new link...
             vector<tuple<etype, etype>> converted;
+//            converted.reserve(C0.size()+1); TEST ME!
+//            vector<tuple<etype, etype>> converted(C0.size()+1);
             for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
-                if(C0.edge_free[j] != -1)
-                    converted.push_back(tuple<etype, etype>(C0.elements_nodes[C0.edge_free[j]].x(),
-                                                            C0.elements_nodes[C0.edge_free[j]].y()));
+                if(C0.edge_free[j] != -1) {
+                    Edge converted_edge = C0.elements_nodes[C0.edge_free[j]];
+
+                    converted.emplace_back(tuple<etype , etype>(converted_edge.x(), converted_edge.y()));
+//                    assert(converted_edge.x() != 0 && converted_edge.y() != 0);
+                }
             }
-            converted.push_back(tuple<etype, etype>(x, y));
+
+            converted.emplace_back(tuple<etype, etype>(x, y));
 
             shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();

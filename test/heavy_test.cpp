@@ -12,7 +12,7 @@ void split(const std::string &str, vector<string> &cont,
 
 TEST(ReadTest, ReadFromDataset) {
     std::stringstream ss;
-    unsigned int n_vertices = 5000;
+    unsigned int n_vertices = 500000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";

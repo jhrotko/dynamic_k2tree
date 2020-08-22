@@ -39,7 +39,7 @@ tests_algorithm:
 tests_heavy:
 	make dktree
 	cd test && cmake CMakeLists.txt && make
-	cd test && ./heavyTest > heavy_log.txt
+	cd test && ./heavyTest
 tests_all:
 	make tests_dktree_all
 	make tests_algorithm
