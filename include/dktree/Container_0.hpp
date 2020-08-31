@@ -85,7 +85,7 @@ namespace dynamic_ktree {
                 if(!elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { // empty
                     adj_map.erase(x);
                 }
-                if (!elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) { //last
+                else if (!elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) { //last
                     elements[elements[nodeIndex].prev()].remove_next();
                 }
                 else if (elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { //first
@@ -167,7 +167,6 @@ namespace dynamic_ktree {
         unordered_map<etype, etype>::const_iterator node_end() const { return adj_map.end(); }
 
         friend class boost::serialization::access;
-
         template<class Archive>
         void serialize(Archive &ar, const unsigned int) {
             ar & n_elements;

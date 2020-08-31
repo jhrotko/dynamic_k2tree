@@ -34,14 +34,14 @@ namespace dynamic_ktree {
             typename l_rank = typename t_bv::rank_1_type>
     class DKtree : public Graph<
             DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>,
-            DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>,
+            DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>,  k2_tree<k, t_bv, t_rank, l_rank>>,
             DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
         using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
         using k_tree_edge_it = edge_iterator<k_tree>;
         using k_tree_neighbour_it = neighbour_iterator<k_tree>;
 
         using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
-        using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
+        using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>,  k2_tree<k, t_bv, t_rank, l_rank>>;
         using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it>;
     private:
         uint max_r = 0;
@@ -103,14 +103,13 @@ namespace dynamic_ktree {
 
             //Add new link...
             vector<tuple<etype, etype>> converted;
-//            converted.reserve(C0.size()+1); TEST ME!
-//            vector<tuple<etype, etype>> converted(C0.size()+1);
+//            converted.reserve(C0.size()+1);
             for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
                 if(C0.edge_free[j] != -1) {
-                    Edge converted_edge = C0.elements_nodes[C0.edge_free[j]];
+                    etype  converted_x = C0.elements_nodes[C0.edge_free[j]].x();
+                    etype  converted_y = C0.elements_nodes[C0.edge_free[j]].y();
 
-                    converted.emplace_back(tuple<etype , etype>(converted_edge.x(), converted_edge.y()));
-//                    assert(converted_edge.x() != 0 && converted_edge.y() != 0);
+                    converted.emplace_back(tuple<etype , etype>(converted_x, converted_y));
                 }
             }
 
@@ -320,6 +319,7 @@ namespace dynamic_ktree {
             return eval;
         }
 
+    private:
         void clean_serialize(string project_dir = "./") {
             project_dir.append("dktree_serialize");
 
