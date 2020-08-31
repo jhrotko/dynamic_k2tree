@@ -24,7 +24,7 @@ TEST(ReadTest, ReadFromDataset) {
         std::string line;
         vector<std::string> substrings;
         const std::string delims = " ";
-
+        clock_t total_add = 0;
         while (getline (test_case, line))
         {
             split(line, substrings, delims);
@@ -32,9 +32,12 @@ TEST(ReadTest, ReadFromDataset) {
             etype x = (etype) stoi(substrings[1]);
             etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
+                clock_t  start = clock();
                 graph.add_edge(x, y);
+                total_add += clock() - start;
             }
         }
+        cout << "TOTAL TIME ADD: " << (float)(total_add) / CLOCKS_PER_SEC << endl;
         graph.serialize(ss);
         test_case.close();
     } else  {
@@ -59,7 +62,7 @@ TEST(ReadTest, ReadFromDataset) {
         uint64_t removed = 0;
 
         cout << "DELETE" << endl;
-        clock_t start = clock();
+        clock_t total_delete = 0;
         while (getline (test_case_delete, line))
         {
             split(line, substrings, delims);
@@ -69,11 +72,12 @@ TEST(ReadTest, ReadFromDataset) {
 //            if(substrings[0] == "d") {
             if(substrings[0] == "a") {
                 removed++;
+                clock_t start = clock();
                 graph_loaded.del_edge(x,y);
+                total_delete += clock() - start;
             }
         }
-        clock_t end = clock();
-        cout << "TOTAL TIME " << (float)(end-start) / CLOCKS_PER_SEC << endl;
+        cout << "TOTAL TIME DELETE: " << (float)(total_delete) / CLOCKS_PER_SEC << endl;
         cout << "Total edges: " << graph_loaded.get_number_edges() << endl;
         cout << "Supposly: " << total-removed << endl;
         test_case_delete.close();

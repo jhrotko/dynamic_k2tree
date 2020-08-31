@@ -194,9 +194,9 @@ TEST(dktreeIterate, node_iterate) {
     tree.add_edge(1, 0);
 
     auto node_it = tree.node_begin();
-    ASSERT_EQ(*node_it, 0);
-    node_it++;
     ASSERT_EQ(*node_it, 1);
+    node_it++;
+    ASSERT_EQ(*node_it, 0);
     node_it++;
     ASSERT_EQ(*node_it, 2);
     node_it++;
