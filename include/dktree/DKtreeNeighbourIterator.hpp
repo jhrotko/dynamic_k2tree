@@ -84,8 +84,10 @@ public:
             _c0_index++;
             if (_c0_index < (int) C0_neighbours.size())
                 _ptr = C0_neighbours[_c0_index];
-            else
+            else {
                 _c0_index = -1;
+                return operator++();
+            }
         } else {
             if (_curr_ktree == -1) {
                 for (_curr_ktree = 0; _curr_ktree <= tree->get_max_r(); _curr_ktree++) {
@@ -94,8 +96,11 @@ public:
                         curr_ktree->neighbour_begin(node) != curr_ktree->neighbour_end()) {
                         _curr_neigh_it = curr_ktree->neighbour_begin(node);
                         _ptr = *_curr_neigh_it;
+                        return *this;
                     }
                 }
+                end();
+                return *this;
             } else {
                 _curr_neigh_it++;
 

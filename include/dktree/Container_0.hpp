@@ -104,11 +104,19 @@ namespace dynamic_ktree {
         }
 
         void list_neighbours(etype x, vector<etype> &neighbours) {
-            if (adj_contains(x) && !elements.empty())
-                for (auto neigh_it = adj_map.find(x);
-                     neigh_it != adj_map.end(); neigh_it = adj_map.find(elements[adj_map[neigh_it->first]].next())) {
-                    neighbours.push_back(elements_nodes[neigh_it->second].y());
+            if (adj_contains(x) && !elements.empty()) {
+                bool done = false;
+                size_t k = adj_map[x];
+                while(!done) {
+                    neighbours.push_back(elements_nodes[k].y());
+
+                    if(elements[k].has_next()) {
+                        k = elements[k].next();
+                    } else {
+                        done = true;
+                    }
                 }
+            }
         }
 
         etype size() const {
