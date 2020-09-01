@@ -5,6 +5,7 @@
 #include <boost/archive/text_iarchive.hpp>
 
 #include "../include/dktree/DKtree.hpp"
+#include "../include/dktree/Container_0.hpp"
 #include "sdsl/k2_tree.hpp"
 
 using d_tree = dynamic_ktree::DKtree<2, bit_vector>;
@@ -98,6 +99,22 @@ TEST(dktreeDelete, deleteItem) {
 
     tree.del_edge(2, 3);
     ASSERT_EQ(tree.get_number_edges(), 0);
+}
+
+TEST(Container_0, listNeighbours) {
+    dynamic_ktree::Container_0 C(1000);
+
+    C.insert(0,1, 0);
+    C.insert(0,2, 1);
+    C.insert(0,3, 2);
+    C.insert(0,10, 3);
+    C.insert(0,8, 4);
+
+    vector<uint64_t> neigh;
+    C.list_neighbours(0, neigh);
+    vector<uint64_t> expected = {8,10,3,2,1};
+
+    ASSERT_EQ(expected, neigh);
 }
 
 TEST(dktreeDelete, listNeighbours) {
