@@ -144,6 +144,9 @@ public:
         ht[Edge(x, y)] = index;
     }
 
+    void reserve(uint size) {
+        ht.reserve(size);
+    }
     // Returns the index of the index where the Edge is.
     // Returns -1 in case it cannot find
     int64_t find(etype x, etype y) const {
@@ -174,7 +177,6 @@ public:
     {
         ht.clear();
     }
-
 
     h_table::const_iterator cbegin() const noexcept {
         return ht.cbegin();
