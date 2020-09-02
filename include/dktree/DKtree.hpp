@@ -210,11 +210,11 @@ namespace dynamic_ktree {
 
         virtual dktree_edge_it &edge_begin() {
             it_edge_begin = dktree_edge_it(this);
+            it_end = it_edge_begin.end();
             return it_edge_begin;
         }
 
         virtual dktree_edge_it &edge_end() {
-            it_end = it_edge_begin.end();
             return it_end;
         }
 

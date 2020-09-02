@@ -24,6 +24,7 @@ namespace dynamic_ktree {
         Container_0(size_t n_vertices) : n_vertices(n_vertices) {
             max_edges = MAXSZ(n_vertices, 0);
 
+            edge_lst.reserve(max_edges);
             elements.resize(max_edges);
             elements_nodes.resize(max_edges);
             edge_free.resize(max_edges);
@@ -38,6 +39,7 @@ namespace dynamic_ktree {
             marked = 0;
 
             edge_lst = EdgeHashTable();
+            edge_lst.reserve(max_edges);
             adj_map = unordered_map<etype, etype>(max_edges*2);
 
             elements = vector<NodeEdge>(max_edges);

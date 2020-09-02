@@ -191,6 +191,15 @@ namespace {
         float coefficient = Algorithm<TypeParam>::clustering_coefficient(star_graph);
         ASSERT_TRUE(coefficient == 0.0125f);
     }
+
+//    TYPED_TEST(Algorithm_Test, pageRank) {
+//        TypeParam simple_graph(2);
+//        simple_graph.add_edge(0,1);
+//
+//        vector<float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+//        vector<float> expected = {1.0/3.0, 2.0/3.0};
+//        ASSERT_EQ(expected, pr_simple);
+//    }
 }
 
 int main(int argc, char **argv) {
