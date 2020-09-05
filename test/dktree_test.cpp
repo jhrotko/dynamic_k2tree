@@ -117,6 +117,31 @@ TEST(Container_0, listNeighbours) {
     ASSERT_EQ(expected, neigh);
 }
 
+
+TEST(neighbour_iterator, C0) {
+    dynamic_ktree::Container_0 C(1000);
+
+    C.insert(0,1, 0);
+    C.insert(0,2, 1);
+    C.insert(0,3, 2);
+    C.insert(0,10, 3);
+    C.insert(0,8, 4);
+
+    auto neigh_it = C.neighbour_begin(0);
+
+    ASSERT_EQ(*neigh_it, 8);
+    neigh_it++;
+    ASSERT_EQ(*neigh_it, 10);
+    neigh_it++;
+    ASSERT_EQ(*neigh_it, 3);
+    neigh_it++;
+    ASSERT_EQ(*neigh_it, 2);
+    neigh_it++;
+    ASSERT_EQ(*neigh_it, 1);
+    neigh_it++;
+    ASSERT_EQ(neigh_it, C.neighbour_end());
+}
+
 TEST(dktreeDelete, listNeighbours) {
     d_tree tree(5);
     tree.add_edge(1, 2);
