@@ -11,6 +11,8 @@
 #include <boost/serialization/unordered_map.hpp>
 #include <boost/serialization/vector.hpp>
 
+#include "Container_0_neigh_iterator.hpp"
+
 namespace dynamic_ktree {
 
     class Container_0 {
@@ -51,7 +53,7 @@ namespace dynamic_ktree {
             }
         }
 
-        bool adj_contains(etype x) {
+        bool adj_contains(etype x) const {
             return adj_map.find(x) != adj_map.end();
         }
 
@@ -176,8 +178,14 @@ namespace dynamic_ktree {
 
         unordered_map<etype, etype>::const_iterator node_end() const { return adj_map.end(); }
 
-        friend class boost::serialization::access;
+        Container_0_neigh_iterator<Container_0> neighbour_begin(etype x) {
+            return Container_0_neigh_iterator<Container_0>(this, x);
+        }
 
+        Container_0_neigh_iterator<Container_0> neighbour_end() {
+            return Container_0_neigh_iterator<Container_0>().end();
+        }
+        friend class boost::serialization::access;
         template<class Archive>
         void serialize(Archive &ar, const unsigned int) {
             ar & n_elements;
