@@ -98,11 +98,13 @@ TEST(performance, test) {
 
     for(int i = 0; i < banana; i++)
         for(int j = 0; j < banana; j++)
-            d.add_edge(i,j);
+            if(i != j)
+                d.add_edge(i,j);
 
     clock_t start = clock();
-    Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(d);
+    cout << Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(d) << endl;
     clock_t end = clock();
+    cout << Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy_hash(d) << endl;
     cout << "TIME: " << (float)(end-start)/CLOCKS_PER_SEC << endl;
 }
 

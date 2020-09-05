@@ -89,7 +89,7 @@ public:
                 end();
                 return *this;
             } else {
-                ++(_k_collection_it);
+                _k_collection_it++;
 
                 if (tree->is_last_neigh_it(_k_collection_it, _curr_ktree)) {
                     ++_curr_ktree;
