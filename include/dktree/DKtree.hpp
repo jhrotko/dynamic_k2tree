@@ -9,6 +9,7 @@
 
 #include <sdsl/k2_tree.hpp>
 #include "Container_0.hpp"
+#include "Container_0_neigh_iterator.hpp"
 #include "DKtreeEdgeIterator.hpp"
 #include "DKtreeNodeIterator.hpp"
 #include "DKtreeNeighbourIterator.hpp"
@@ -35,14 +36,14 @@ namespace dynamic_ktree {
     class DKtree : public Graph<
             DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>,
             DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>,
-            DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>> {
+            DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank, l_rank>>, Container_0, Container_0_neigh_iterator<Container_0>>> {
         using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
         using k_tree_edge_it = edge_iterator<k_tree>;
         using k_tree_neighbour_it = neighbour_iterator<k_tree>;
 
         using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
         using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
-        using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it>;
+        using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it, Container_0, Container_0_neigh_iterator<Container_0>>;
     private:
         uint max_r = 0;
         uint64_t n_vertices = 0;
@@ -64,6 +65,7 @@ namespace dynamic_ktree {
             for (size_t i = 0; i < R; i++) {
                 k_collection[i] = nullptr;
             }
+            it_neighbour_end = dktree_neighbour_it().end();
         }
 
         virtual uint64_t get_number_edges() const {
@@ -220,21 +222,32 @@ namespace dynamic_ktree {
 
         virtual dktree_node_it &node_begin() {
             it_node_begin = dktree_node_it(this);
+            it_node_end = it_node_begin.end();
             return it_node_begin;
         }
 
         virtual dktree_node_it &node_end() {
-            it_node_end = it_node_begin.end();
             return it_node_end;
         }
 
         virtual dktree_neighbour_it &neighbour_begin(etype node) {
-            it_neighbour_begin = dktree_neighbour_it(this, node);
+            it_neighbour_begin = dktree_neighbour_it(this, &C0, node);
             return it_neighbour_begin;
         }
 
+        bool is_last_neigh_it(k_tree_neighbour_it &it, size_t i) const{
+            return it == k_collection[i]->neighbour_end();
+        }
+
+        bool is_invalid_tree(size_t i) const {
+            return k_collection[i] == nullptr;
+        }
+
+        k_tree_neighbour_it get_neighbour_begin(size_t i, etype node) const {
+            return k_collection[i]->neighbour_begin(node);
+        }
+
         virtual dktree_neighbour_it &neighbour_end() {
-            it_neighbour_end = it_neighbour_begin.end();
             return it_neighbour_end;
         }
 

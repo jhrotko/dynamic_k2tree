@@ -13,7 +13,7 @@ void split(const std::string &str, vector<string> &cont,
 
 TEST(ReadTest, ReadFromDataset) {
     std::stringstream ss;
-    unsigned int n_vertices = 50000;
+    unsigned int n_vertices = 5000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
@@ -39,7 +39,8 @@ TEST(ReadTest, ReadFromDataset) {
 //        graph.serialize(ss);
         cout << "what" << endl;
         clock_t start = clock();
-        Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy_hash(graph);
+        Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(graph);
+//        Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy_hash(graph);
         clock_t end = clock();
         cout << "TOTAL TIME " << (float)(end-start) / CLOCKS_PER_SEC << endl;
 
@@ -92,15 +93,17 @@ TEST(ReadTest, ReadFromDataset) {
 }
 
 TEST(performance, test) {
-    dynamic_ktree::DKtree<2> d(50);
+    std::size_t  banana = 50;
+    dynamic_ktree::DKtree<2> d(banana);
 
-    for(int i = 0; i < 50; i++)
-        for(int j = 0; j < 50; j++)
+    for(int i = 0; i < banana; i++)
+        for(int j = 0; j < banana; j++)
             d.add_edge(i,j);
 
-
-    for(auto item = d.edge_begin(); item != d.edge_end(); ++item)
-        cout << "lol" << endl;
+    clock_t start = clock();
+    Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(d);
+    clock_t end = clock();
+    cout << "TIME: " << (float)(end-start)/CLOCKS_PER_SEC << endl;
 }
 
 
