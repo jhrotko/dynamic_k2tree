@@ -81,10 +81,11 @@ public:
         for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) {
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
-
-            for (auto u = adj_node[v1].cbegin(); u != adj_node[v1].cend(); ++u) {
-                if (edges_table.find(*u, v2) != -1)
-                    num_triangles++;
+            if (v1 != v2) {
+                for (auto u: adj_node[v2]) {
+                    if (u != v1 && u != v2 && edges_table.contains(u, v1))
+                        num_triangles++;
+                }
             }
         }
         return num_triangles;
@@ -95,12 +96,11 @@ public:
         for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
-            for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); neigh_v2_it++) {
-                etype v3 = *neigh_v2_it;
-                if (v3 != v1) {
-                    for (auto neigh_it = g.neighbour_begin(v3); neigh_it != g.neighbour_end(); neigh_it++) {
-                        etype v1_maybe = *neigh_it;
-                        if (v1 == v1_maybe) total_triangles++;
+            if (v1 != v2) {
+                for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
+                    etype v3 = *neigh_v2_it;
+                    for (auto neigh_it = g.neighbour_begin(v3); neigh_it != g.neighbour_end(); ++neigh_it) {
+                        if (v1 == *neigh_it) total_triangles++;
                     }
                 }
             }
@@ -113,7 +113,7 @@ public:
         // at its ends as the key
         EdgeHashTable edges_table;
         uint index = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) {
             edges_table.insert(edge_it.x(), edge_it.y(), index++);
         }
 
@@ -121,7 +121,7 @@ public:
         // in time proportional to the number of those nodes
         unordered_map<etype, vector<etype>> adj_node;
         map<etype, etype> degree_node;
-        for (auto node_it = g.node_begin(); node_it != g.node_end(); node_it++) {
+        for (auto node_it = g.node_begin(); node_it != g.node_end(); ++node_it) {
             etype node = *node_it;
             if (g.list_neighbour(node).size() == 0) continue;
             adj_node[node] = g.list_neighbour(node);
@@ -131,7 +131,7 @@ public:
         }
 
         uint num_triangles = 0;
-        for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); edge_it++) {
+        for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); ++edge_it) {
             etype v1 = edge_it->first.x();
             etype v2 = edge_it->first.y();
             if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))
@@ -139,7 +139,7 @@ public:
 
             else if (!is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2])
                      && minor_degree(v1, degree_node[v1], v2, degree_node[v2])) {
-                for (auto u = adj_node[v1].cbegin(); u != adj_node[v1].cend(); u++) {
+                for (auto u = adj_node[v1].cbegin(); u != adj_node[v1].cend(); ++u) {
                     if (edges_table.contains(*u, v2) && minor_degree(v1, degree_node[v1], *u, degree_node[*u]))
                         num_triangles++;
                 }
@@ -151,23 +151,25 @@ public:
 
     static float clustering_coefficient(Graph &g) {
         float total_edges = g.get_number_edges();
-        return count_triangles(g)/(total_edges*(total_edges-1));
+        return count_triangles(g) / (total_edges * (total_edges - 1));
     }
 
-    static vector<float> pageRank(Graph &g, double convergence=0.00001, uint max_iterations=10000, float alpha=0.85) {
+    static vector<float>
+    pageRank(Graph &g, double convergence = 0.00001, uint max_iterations = 10000, float alpha = 0.85) {
         uint num_rows = g.get_number_nodes();
 
         vector<uint> num_outgoing(num_rows);
-        for(auto node_it = g.node_begin(); node_it != g.node_end(); node_it++) {
+        for (auto node_it = g.node_begin(); node_it != g.node_end(); node_it++) {
             num_outgoing[*node_it] = g.list_neighbour(*node_it).size();
         }
 
         uint num_iterations = 0;
-        vector<float> pr(num_rows); pr[0] = 1;
+        vector<float> pr(num_rows);
+        pr[0] = 1;
         vector<float> old_pr;
         double diff = 1;
 
-        while(diff > convergence && num_iterations < max_iterations) {
+        while (diff > convergence && num_iterations < max_iterations) {
             double sum_pr = 0;
             double dangling_pr = 0;
 
@@ -202,13 +204,13 @@ public:
                 uint64_t adj_node = 0;
                 for (auto ci = g.neighbour_begin(i); ci != g.neighbour_end();) {
                     /* The current element of the H vector */
-                    float h_v = (num_outgoing[adj_node])? 1.0f / num_outgoing[adj_node]: 0.0f;
+                    float h_v = (num_outgoing[adj_node]) ? 1.0f / num_outgoing[adj_node] : 0.0f;
                     h += h_v * old_pr[adj_node];
 
                     cout << "ci: " << *ci << endl;
-                    if(adj_node < *ci) {
+                    if (adj_node < *ci) {
                         adj_node++;
-                    } else if(adj_node == *ci) {
+                    } else if (adj_node == *ci) {
                         adj_node++;
                         ci++;
                     } else {
