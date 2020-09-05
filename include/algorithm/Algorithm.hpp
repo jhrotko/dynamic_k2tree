@@ -83,7 +83,7 @@ public:
             etype v2 = edge_it.y();
 
             for (auto u = adj_node[v1].cbegin(); u != adj_node[v1].cend(); ++u) {
-                if (edges_table.find(*u, v2) != -1)
+                if (edges_table.contains(*u, v2))
                     num_triangles++;
             }
         }
@@ -92,13 +92,14 @@ public:
 
     static unsigned int count_triangles_dummy(Graph &g) {
         unsigned int total_triangles = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) {
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
-            for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); neigh_v2_it++) {
+            auto end = g.neighbour_end();
+            for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != end; ++neigh_v2_it) {
                 etype v3 = *neigh_v2_it;
                 if (v3 != v1) {
-                    for (auto neigh_it = g.neighbour_begin(v3); neigh_it != g.neighbour_end(); neigh_it++) {
+                    for (auto neigh_it = g.neighbour_begin(v3); neigh_it != end; ++neigh_it) {
                         etype v1_maybe = *neigh_it;
                         if (v1 == v1_maybe) total_triangles++;
                     }
@@ -154,7 +155,7 @@ public:
         return count_triangles(g)/(total_edges*(total_edges-1));
     }
 
-    static vector<float> pageRank(Graph &g, double convergence=0.00001, uint max_iterations=10000, float alpha=0.85) {
+    static vector<float> pageRank(Graph &g, uint max_iterations=100, float alpha=0.85, double convergence=0.0001) {
         uint num_rows = g.get_number_nodes();
 
         vector<uint> num_outgoing(num_rows);
@@ -171,7 +172,7 @@ public:
             double sum_pr = 0;
             double dangling_pr = 0;
 
-            for (size_t k = 0; k < pr.size(); k++) {
+            for (size_t k = 0; k < pr.size(); ++k) {
                 double cpr = pr[k];
                 sum_pr += cpr;
                 if (num_outgoing[k] == 0) {
@@ -183,7 +184,7 @@ public:
                 old_pr = pr;
             } else {
                 /* Normalize so that we start with sum equal to one */
-                for (size_t i = 0; i < pr.size(); i++) {
+                for (size_t i = 0; i < pr.size(); ++i) {
                     old_pr[i] = pr[i] / sum_pr;
                 }
             }
@@ -204,8 +205,6 @@ public:
                     /* The current element of the H vector */
                     float h_v = (num_outgoing[adj_node])? 1.0f / num_outgoing[adj_node]: 0.0f;
                     h += h_v * old_pr[adj_node];
-
-                    cout << "ci: " << *ci << endl;
                     if(adj_node < *ci) {
                         adj_node++;
                     } else if(adj_node == *ci) {
@@ -226,7 +225,13 @@ public:
         return pr;
     }
 
-private:
+//    static vector<float> pageRank2(Graph &graph, uint max_iterations=100, float alpha=0.85, double convergence=0.0001) {
+//        const uint N = graph.get_number_nodes();
+//        //TODO: Implement inbound (reverse_neighbour)
+//    }
+
+
+        private:
 
     static bool is_heavy_hitter(Graph &g, uint node_degree) {
         return node_degree >= sqrt(g.get_number_edges());

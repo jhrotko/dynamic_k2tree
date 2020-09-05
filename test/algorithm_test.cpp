@@ -47,9 +47,21 @@ namespace {
         }
     };
 
+    template<class G>
+    class PageRank_Test : public ::testing::Test{
+    protected:
+        G *graph_;
+        PageRank_Test() {}
+        virtual ~PageRank_Test() {}
+        virtual void TearDown() {
+            delete graph_;
+        }
+    };
+
     typedef ::testing::Types<DKtree<2, bit_vector>> graph_implementations;
 
     TYPED_TEST_CASE(Algorithm_Test, graph_implementations);
+    TYPED_TEST_CASE(PageRank_Test, graph_implementations);
 
     TYPED_TEST(Algorithm_Test, BFS) {
         vector<long unsigned int> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
@@ -192,14 +204,29 @@ namespace {
         ASSERT_TRUE(coefficient == 0.0125f);
     }
 
-//    TYPED_TEST(Algorithm_Test, pageRank) {
-//        TypeParam simple_graph(2);
-//        simple_graph.add_edge(0,1);
-//
-//        vector<float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
-//        vector<float> expected = {1.0/3.0, 2.0/3.0};
-//        ASSERT_EQ(expected, pr_simple);
-//    }
+    TYPED_TEST(PageRank_Test, simple) {
+        TypeParam simple_graph(2);
+        simple_graph.add_edge(0,1);
+
+        vector<float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph, 3);
+        vector<float> expected = {(float)0.5, (float)0.5};
+        ASSERT_EQ(expected, pr_simple);
+    }
+
+    TYPED_TEST(PageRank_Test, pageRank) {
+        TypeParam simple_graph(4);
+        simple_graph.add_edge(0,1);
+        simple_graph.add_edge(0,2);
+        simple_graph.add_edge(1,3);
+        simple_graph.add_edge(2,0);
+        simple_graph.add_edge(2,1);
+        simple_graph.add_edge(2,3);
+        simple_graph.add_edge(3,2);
+
+        vector<float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph, 3);
+        vector<float> expected = {(float)1.5/12, (float)2/12, (float)4.5/12, (float)4/12};
+        ASSERT_EQ(expected, pr_simple);
+    }
 }
 
 int main(int argc, char **argv) {
