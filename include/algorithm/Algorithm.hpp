@@ -154,78 +154,69 @@ public:
         return count_triangles(g) / (total_edges * (total_edges - 1));
     }
 
-    static vector<float>
-    pageRank(Graph &g, double convergence = 0.00001, uint max_iterations = 10000, float alpha = 0.85) {
-        uint num_rows = g.get_number_nodes();
+    static unordered_map<uint, float>
+    pageRank(Graph &g, float convergence = 1.0e-6, uint max_iterations = 100, float alpha = 0.85f) {
+        float N = g.get_number_nodes();
 
-        vector<uint> num_outgoing(num_rows);
-        for (auto node_it = g.node_begin(); node_it != g.node_end(); node_it++) {
-            num_outgoing[*node_it] = g.list_neighbour(*node_it).size();
+        vector<vector<uint64_t >> outgoing_link(N);
+        vector<vector<uint64_t >> ingoing_link(N);
+        for(size_t j = 0; j < N; j++) {
+            vector<uint64_t> neigh = g.list_neighbour(j);
+            outgoing_link[j] = neigh;
+            for(size_t i = 0; i < N; i++) {
+                neigh = g.list_neighbour(i);
+                if(j != i && find(neigh.begin(), neigh.end(), j) != neigh.end())
+                    ingoing_link[j].push_back(i);
+            }
         }
 
-        uint num_iterations = 0;
-        vector<float> pr(num_rows);
-        pr[0] = 1;
-        vector<float> old_pr;
-        double diff = 1;
+        unordered_map<uint, uint> dangling_nodes;
+        for(size_t i = 0; i < N; ++i )
+            if(outgoing_link[i].empty())
+                dangling_nodes[i] = 1;
 
-        while (diff > convergence && num_iterations < max_iterations) {
-            double sum_pr = 0;
-            double dangling_pr = 0;
+        vector<float> pr(N);
+        pr.assign(N, 1.0f/N);
+        vector<float> old_pr(N);
 
-            for (size_t k = 0; k < pr.size(); k++) {
-                double cpr = pr[k];
-                sum_pr += cpr;
-                if (num_outgoing[k] == 0) {
-                    dangling_pr += cpr;
-                }
+        uint64_t step = 0;
+        float diff = 1;
+        float dangling_sum; // sum of current pagerank vector elements for dangling
+        while (diff > convergence && step < max_iterations) {
+            dangling_sum = 0;
+            old_pr = pr;
+
+            for(auto k: dangling_nodes) {
+                dangling_sum += old_pr[k.first];
             }
 
-            if (num_iterations == 0) {
-                old_pr = pr;
-            } else {
-                /* Normalize so that we start with sum equal to one */
-                for (size_t i = 0; i < pr.size(); i++) {
-                    old_pr[i] = pr[i] / sum_pr;
-                }
-            }
-
-            sum_pr = 1;
-            /* An element of the A x I vector; all elements are identical */
-            float one_Av = alpha * dangling_pr / num_rows;
-            /* An element of the 1 x I vector; all elements are identical */
-            float one_Iv = (1 - alpha) * sum_pr / num_rows;
+            float one_Av = alpha * dangling_sum / (float)N;
+            float one_Iv = (1.0f-alpha) * (1.0f/N);
 
             /* The difference to be checked for convergence */
             diff = 0;
-            for (size_t i = 0; i < num_rows; i++) {
+            for (size_t i = 0; i < N; i++) {
                 /* The corresponding element of the H multiplication */
-                float h = 0.0;
-                uint64_t adj_node = 0;
-                for (auto ci = g.neighbour_begin(i); ci != g.neighbour_end();) {
+                float h = 0.0f;
+                for (uint64_t ci: ingoing_link[i]) {
                     /* The current element of the H vector */
-                    float h_v = (num_outgoing[adj_node]) ? 1.0f / num_outgoing[adj_node] : 0.0f;
-                    h += h_v * old_pr[adj_node];
-
-                    cout << "ci: " << *ci << endl;
-                    if (adj_node < *ci) {
-                        adj_node++;
-                    } else if (adj_node == *ci) {
-                        adj_node++;
-                        ci++;
-                    } else {
-                        adj_node = *ci;
-                        ci++;
-                    }
+                    float h_v = !outgoing_link[ci].empty() ? 1.0f/outgoing_link[ci].size() : 0.0f;
+                    h += h_v * old_pr[ci];
                 }
                 h *= alpha;
+
                 pr[i] = h + one_Av + one_Iv;
                 diff += fabs(pr[i] - old_pr[i]);
             }
-            num_iterations++;
+            step++;
         }
 
-        return pr;
+        unordered_map<uint , float> res;
+        for (size_t i = 0; i < N; i++) {
+            if(dangling_nodes.find(i) == dangling_nodes.end())
+                res[i] = pr[i];
+        }
+        return res;
     }
 
 private:
