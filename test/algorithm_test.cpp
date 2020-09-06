@@ -192,14 +192,34 @@ namespace {
         ASSERT_TRUE(coefficient == 0.0125f);
     }
 
-//    TYPED_TEST(Algorithm_Test, pageRank) {
-//        TypeParam simple_graph(2);
-//        simple_graph.add_edge(0,1);
-//
-//        vector<float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
-//        vector<float> expected = {1.0/3.0, 2.0/3.0};
-//        ASSERT_EQ(expected, pr_simple);
-//    }
+    TYPED_TEST(Algorithm_Test, pageRank_1) {
+        TypeParam simple_graph(2);
+        simple_graph.add_edge(0,1);
+        simple_graph.add_edge(1,0);
+
+        unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        unordered_map<uint, float> expected;
+        expected[0] = .5f;
+        expected[1] = .5f;
+        ASSERT_EQ(expected, pr_simple);
+    }
+
+    TYPED_TEST(Algorithm_Test, pageRank_2) {
+        TypeParam simple_graph(5);
+        simple_graph.add_edge(0,1);
+        simple_graph.add_edge(1,0);
+        simple_graph.add_edge(2,1);
+        simple_graph.add_edge(4,0);
+
+        unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        unordered_map<uint, float> expected;
+        expected[0] = 0.32456160227748465;
+        expected[1] = 0.32456160227748465;
+        expected[2] = 0.17543839772251535;
+        expected[4] = 0.17543839772251535;
+        ASSERT_EQ(expected, pr_simple);
+    }
+
 }
 
 int main(int argc, char **argv) {

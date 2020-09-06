@@ -102,9 +102,8 @@ TEST(performance, test) {
                 d.add_edge(i,j);
 
     clock_t start = clock();
-    cout << Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(d) << endl;
+    Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(d);
     clock_t end = clock();
-    cout << Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy_hash(d) << endl;
     cout << "TIME: " << (float)(end-start)/CLOCKS_PER_SEC << endl;
 }
 
