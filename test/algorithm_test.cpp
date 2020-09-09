@@ -213,6 +213,27 @@ namespace {
 
         unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
         unordered_map<uint, float> expected;
+        expected[0] = 0.4625f;
+        expected[1] = 0.4625f;
+        expected[2] = 0.03750f;
+        expected[4] = 0.03750f;
+        ASSERT_EQ(expected, pr_simple);
+    }
+
+    TYPED_TEST(Algorithm_Test, pageRank_3) {
+        TypeParam simple_graph(6);
+        simple_graph.add_edge(1,2);
+        simple_graph.add_edge(1,3);
+        simple_graph.add_edge(2,3);
+        simple_graph.add_edge(2,4);
+        simple_graph.add_edge(2,5);
+        simple_graph.add_edge(3,2);
+        simple_graph.add_edge(4,1);
+        simple_graph.add_edge(5,2);
+
+
+        unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        unordered_map<uint, float> expected;
         expected[0] = 0.32456160227748465;
         expected[1] = 0.32456160227748465;
         expected[2] = 0.17543839772251535;
