@@ -8,7 +8,7 @@
 #include <memory>
 #include <sdsl/k2_tree.hpp>
 
-#include "Container_0.hpp"
+#include "Container0.hpp"
 #include "../graph/Graph.hpp"
 #include "utils.hpp"
 
@@ -206,7 +206,7 @@ namespace dynamic_ktree {
 
         //container
         const dk_tree *_tree;
-        Container_0 _c0;
+        Container0 _c0;
         array<shared_ptr<k2tree>, R> _kcollection;
         const idx_type MAX_SIZE_EDGE = 9999999;
 

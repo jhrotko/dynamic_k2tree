@@ -5,7 +5,7 @@
 #include <boost/archive/text_iarchive.hpp>
 
 #include "../include/dktree/DKtree.hpp"
-#include "../include/dktree/Container_0.hpp"
+#include "../include/dktree/Container0.hpp"
 #include "sdsl/k2_tree.hpp"
 
 using d_tree = dynamic_ktree::DKtree<2, bit_vector>;
@@ -102,7 +102,7 @@ TEST(dktreeDelete, deleteItem) {
 }
 
 TEST(Container_0, listNeighbours) {
-    dynamic_ktree::Container_0 C(1000);
+    dynamic_ktree::Container0 C(1000);
 
     C.insert(0,1, 0);
     C.insert(0,2, 1);
@@ -119,7 +119,7 @@ TEST(Container_0, listNeighbours) {
 
 
 TEST(neighbour_iterator, C0) {
-    dynamic_ktree::Container_0 C(1000);
+    dynamic_ktree::Container0 C(1000);
 
     C.insert(0,1, 0);
     C.insert(0,2, 1);
@@ -354,7 +354,7 @@ TEST(SerializationTest, Container0SerializaAndLoad)
     std::stringstream ss;
     boost::archive::text_oarchive oa(ss);
 
-    dynamic_ktree::Container_0 serialize_c0(1000);
+    dynamic_ktree::Container0 serialize_c0(1000);
     serialize_c0.insert(0, 1, 0);
     serialize_c0.insert(6, 3, 1);
     serialize_c0.insert(9, 8, 2);
@@ -363,7 +363,7 @@ TEST(SerializationTest, Container0SerializaAndLoad)
     serialize_c0.insert(5, 3, 5);
     oa << serialize_c0;
 
-    dynamic_ktree::Container_0 load_c0;
+    dynamic_ktree::Container0 load_c0;
     boost::archive::text_iarchive iar(ss); //exception
     iar >> load_c0;
 

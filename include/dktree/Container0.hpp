@@ -11,19 +11,19 @@
 #include <boost/serialization/unordered_map.hpp>
 #include <boost/serialization/vector.hpp>
 
-#include "Container_0_neigh_iterator.hpp"
+#include "Container0NeighIterator.hpp"
 
 namespace dynamic_ktree {
 
-    class Container_0 {
+    class Container0 {
     private:
         uint64_t n_elements, max_edges;
         uint64_t n_vertices;
 
     public:
-        Container_0() {}
+        Container0() {}
 
-        Container_0(size_t n_vertices) : n_vertices(n_vertices) {
+        Container0(size_t n_vertices) : n_vertices(n_vertices) {
             max_edges = MAXSZ(n_vertices, 0);
 
             edge_lst.reserve(max_edges);
@@ -148,7 +148,7 @@ namespace dynamic_ktree {
             }
         }
 
-        bool operator==(const Container_0 &rhs) const {
+        bool operator==(const Container0 &rhs) const {
             bool eval = true;
             eval &= n_elements == rhs.n_elements;
             eval &= max_edges == rhs.max_edges;
@@ -166,7 +166,7 @@ namespace dynamic_ktree {
             return eval;
         }
 
-        bool operator!=(const Container_0 &rhs) const {
+        bool operator!=(const Container0 &rhs) const {
             return !(*this == rhs);
         }
 
@@ -178,12 +178,12 @@ namespace dynamic_ktree {
 
         unordered_map<etype, etype>::const_iterator node_end() const { return adj_map.end(); }
 
-        Container_0_neigh_iterator<Container_0> neighbour_begin(etype x) {
-            return Container_0_neigh_iterator<Container_0>(this, x);
+        Container0NeighIterator<Container0> neighbour_begin(etype x) {
+            return Container0NeighIterator<Container0>(this, x);
         }
 
-        Container_0_neigh_iterator<Container_0> neighbour_end() {
-            return Container_0_neigh_iterator<Container_0>().end();
+        Container0NeighIterator<Container0> neighbour_end() {
+            return Container0NeighIterator<Container0>().end();
         }
         friend class boost::serialization::access;
         template<class Archive>

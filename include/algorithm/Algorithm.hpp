@@ -154,10 +154,10 @@ public:
         return count_triangles(g) / (total_edges * (total_edges - 1));
     }
 
-    static unordered_map<uint, float>
-    pageRank(Graph &g, float convergence = 1.0e-6f, uint max_iterations = 100, float alpha = 0.85f) {
-        float N = g.get_number_nodes();
-        float total_nodes = 0;
+    static unordered_map<uint, double>
+    pageRank(Graph &g, double convergence = 1.0e-6f, uint max_iterations = 100, double alpha = 0.85f) {
+        double N = (double)g.get_number_nodes();
+        double total_nodes = 0.0f;
 
         vector<vector<uint64_t >> outgoing_link(N);
         for(size_t i = 0; i < N; i++) {
@@ -171,53 +171,39 @@ public:
             if(outgoing_link[i].empty())
                 dangling_nodes.push_back(i);
 
-        vector<float> pr(N);
+        vector<double> pr(N);
         pr.assign(N, 1.0f/total_nodes);
-        vector<float> old_pr(N);
+        vector<double> old_pr(N);
 
         uint64_t step = 0;
-        float diff = 1;
-        float dangling_sum; // sum of current pagerank vector elements for dangling
+        double dangling_sum; // sum of current pagerank vector elements for dangling
         while (step < max_iterations) {
             old_pr = pr;
             pr.assign(N, 0);
 
             dangling_sum = 0.0f;
-//            cout << "dangling_nodes: ";
-//            for(auto k: dangling_nodes) {
-//                cout << k << ", ";
-//                dangling_sum += old_pr[k];
-//            }
-//            cout << endl;
-//            dangling_sum *= alpha;
+            for(auto k: dangling_nodes) {
+                dangling_sum += old_pr[k];
+            }
+            dangling_sum *= alpha;
 
             for (size_t i = 0; i < N; i++) {
-                cout << "node: " << i << endl;
                 /* The corresponding element of the H multiplication */
                 for (uint64_t neigh: outgoing_link[i]) {
-                    cout << "  neighbour: " << neigh << endl;
 
                     /* The current element of the H vector */
-                    float k = !outgoing_link[i].empty() ? 1.0f / outgoing_link[i].size() : 0.0f;
-                    cout << "  BEFORE pr[" << neigh << "]: " << pr[neigh] << endl;
-                    cout << "  old_pr: " << old_pr[i] << endl;
-                    cout << "  k: " << k << endl;
+                    double k = !outgoing_link[i].empty() ? 1.0f / outgoing_link[i].size() : 0.0f;
                     pr[neigh] += alpha * old_pr[i] * k;
-                    cout << "  AFTER pr[" << neigh << "]: " << pr[neigh] << endl;
                 }
 
-                cout << "BEFORE pr[" << i << "]: " << pr[i] << endl;
-                cout << "1/N: " << (1.0f/total_nodes) << endl;
-                cout << "dangling_sum: " << dangling_sum << endl;
-                pr[i] += dangling_sum * (1.0f/total_nodes) + (1.0f-alpha)*(1.0f/total_nodes);
-                cout << "AFTER pr[" << i << "]: " << pr[i] << endl;
+                pr[i] += dangling_sum * (1.0f/N) + (1.0f-alpha)*(1.0f/N);
                 //Check Convergence
-                float err = 0.0f;
+                double err = 0.0f;
                 for(size_t i = 0; i < N; i++) {
                     err += abs(pr[i] - old_pr[i]);
                 }
                 if(err < N*convergence) {
-                    unordered_map<uint , float> res;
+                    unordered_map<uint , double> res;
                     for (size_t i = 0; i < N; i++) {
                         res[i] = pr[i];
                     }
@@ -225,10 +211,9 @@ public:
                 }
             }
             step++;
-            cout << "step:" << step << endl;
         }
 
-        unordered_map<uint , float> res;
+        unordered_map<uint , double> res;
         for (size_t i = 0; i < N; i++) {
             res[i] = pr[i];
         }
