@@ -197,8 +197,8 @@ namespace {
         simple_graph.add_edge(0,1);
         simple_graph.add_edge(1,0);
 
-        unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
-        unordered_map<uint, float> expected;
+        unordered_map<uint, double> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        unordered_map<uint, double> expected;
         expected[0] = .5f;
         expected[1] = .5f;
         ASSERT_EQ(expected, pr_simple);
@@ -211,13 +211,16 @@ namespace {
         simple_graph.add_edge(2,1);
         simple_graph.add_edge(4,0);
 
-        unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
-        unordered_map<uint, float> expected;
-        expected[0] = 0.4625f;
-        expected[1] = 0.4625f;
-        expected[2] = 0.03750f;
-        expected[4] = 0.03750f;
-        ASSERT_EQ(expected, pr_simple);
+        unordered_map<uint, double> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        unordered_map<uint, double> expected;
+        expected[0] = 0.4625;
+        expected[1] = 0.4625;
+        expected[2] = 0.03750;
+        expected[3] = 0.03750;
+        expected[4] = 0.03750;
+
+        for(size_t i = 0; i < 6; i++)
+            ASSERT_NEAR(expected[i], pr_simple[i], 0.1);
     }
 
     TYPED_TEST(Algorithm_Test, pageRank_3) {
@@ -232,13 +235,17 @@ namespace {
         simple_graph.add_edge(5,2);
 
 
-        unordered_map<uint, float> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
-        unordered_map<uint, float> expected;
-        expected[0] = 0.32456160227748465;
-        expected[1] = 0.32456160227748465;
-        expected[2] = 0.17543839772251535;
-        expected[4] = 0.17543839772251535;
-        ASSERT_EQ(expected, pr_simple);
+        unordered_map<uint, double> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        unordered_map<uint, double> expected;
+        expected[0] = 0.0291262;
+        expected[1] = 0.142472;
+        expected[2] = 0.367838;
+        expected[3] = 0.193899;
+        expected[4] = 0.133348;
+        expected[5] = 0.133348;
+        for (int i = 0; i < 6; ++i) {
+            ASSERT_NEAR(expected[i], pr_simple[i], 0.00001);
+        }
     }
 
 }
