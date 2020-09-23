@@ -99,9 +99,8 @@ public:
             if (v1 != v2) {
                 for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
                     etype v3 = *neigh_v2_it;
-                    for (auto neigh_it = g.neighbour_begin(v3); neigh_it != g.neighbour_end(); ++neigh_it) {
-                        if (v1 == *neigh_it) total_triangles++;
-                    }
+                    if (g.contains(v3, v1))
+                        total_triangles++;
                 }
             }
         }
