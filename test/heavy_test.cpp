@@ -13,11 +13,11 @@ void split(const std::string &str, vector<string> &cont,
 
 TEST(ReadTest, ReadFromDataset) {
     std::stringstream ss;
-    unsigned int n_vertices = 5000;
+    unsigned int n_vertices = 10000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-
+//    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case (path.str());
     dynamic_ktree::DKtree<2> graph(n_vertices);
 
@@ -40,7 +40,7 @@ TEST(ReadTest, ReadFromDataset) {
         cout << "what" << endl;
         clock_t start = clock();
         Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(graph);
-//        Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy_hash(graph);
+//        auto res = Algorithm<dynamic_ktree::DKtree<2>>::bfs(graph, 1);
         clock_t end = clock();
         cout << "TOTAL TIME " << (float)(end-start) / CLOCKS_PER_SEC << endl;
 

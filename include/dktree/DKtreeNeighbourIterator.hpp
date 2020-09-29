@@ -61,7 +61,7 @@ public:
     virtual DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator, Container_0, Container_0_it> &
     operator++(int) {
         if (_ptr != -1)
-            operator++(); // pre-increment
+            operator++();
         return *this;
     }
 
@@ -89,7 +89,7 @@ public:
                 end();
                 return *this;
             } else {
-                _k_collection_it++;
+                ++_k_collection_it;
 
                 if (tree->is_last_neigh_it(_k_collection_it, _curr_ktree)) {
                     ++_curr_ktree;
@@ -118,7 +118,7 @@ public:
         return *this;
     }
 
-    DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator, Container_0, Container_0_it> end() {
+    DKtreeNeighbourIterator<dktree, ktree, k2_tree_neighbour_iterator, Container_0, Container_0_it> &end() {
         _ptr = -1;
         _c0_index = -1;
         return *this;
