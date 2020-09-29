@@ -97,9 +97,14 @@ public:
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
             if (v1 != v2) {
-                for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
-                    etype v3 = *neigh_v2_it;
-                    if (g.contains(v3, v1))
+//                for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
+//                    etype v3 = *neigh_v2_it;
+//                    if (g.contains(v3, v1))
+//                        total_triangles++;
+//                }
+                auto neighbours = g.list_neighbour(v2);
+                for(auto n: neighbours) {
+                    if(g.contains(n, v1))
                         total_triangles++;
                 }
             }
@@ -159,14 +164,14 @@ public:
         double total_nodes = 0.0f;
 
         vector<vector<uint64_t >> outgoing_link(N);
-        for(size_t i = 0; i < N; i++) {
+        for(size_t i = 0; i < N; i++) {  //O(V*sqrt(E))
             outgoing_link[i] = g.list_neighbour(i);
             if(!outgoing_link[i].empty())
                 total_nodes++;
         }
 
         vector<uint> dangling_nodes;
-        for(size_t i = 0; i < N; ++i )
+        for(size_t i = 0; i < N; ++i )  //O(V)
             if(outgoing_link[i].empty())
                 dangling_nodes.push_back(i);
 
