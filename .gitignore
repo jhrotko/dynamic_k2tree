@@ -5,3 +5,9 @@
 test/*
 !test/*.cpp
 !test/CMakeLists.txt
+
+evaluation/*
+!evaluation/Makefile
+!evaluation/*.cpp
+
+datasets/*
