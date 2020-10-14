@@ -3,7 +3,8 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include <sdsl/k2_tree.hpp>
+//#include <sdsl/k2_tree.hpp>
+#include "../include/dktree/DKtree.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
            const std::string &delims = " ") {
@@ -20,7 +21,10 @@ int main(int argc, char *argv[]) {
     path << argv[1];
 
     std::ifstream test_case(path.str());
-    std::vector<std::tuple<uint64_t, uint64_t>> edges;
+//    std::vector<std::tuple<uint64_t, uint64_t>> edges;
+    unsigned int n_vertices = atoi(argv[2]);
+
+    dynamic_ktree::DKtree<2> graph(n_vertices);
     if (test_case.is_open()) {
         std::string line;
         vector<std::string> substrings;
@@ -32,15 +36,15 @@ int main(int argc, char *argv[]) {
             uint64_t x = (uint64_t) stoi(substrings[1]);
             uint64_t y = (uint64_t) stoi(substrings[2]);
             if (substrings[0] == "a") {
-                edges.emplace_back(x,y);
+//                edges.emplace_back(x,y);
+                graph.add_edge(x,y);
             }
         }
     }
-    unsigned int n_vertices = atoi(argv[2]);
-    sdsl::k2_tree<2> ktree_test(edges, n_vertices);
+//    sdsl::k2_tree<2> ktree_test(edges, n_vertices);
 
-    std::ofstream ss(argv[3]);
-    ktree_test.serialize(ss);
-    ss.close();
+//    std::ofstream ss(argv[3]);
+//    ktree_test.serialize(ss);
+//    ss.close();
     return 0;
 }

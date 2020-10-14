@@ -1,0 +1,1226 @@
+desc: (none)
+cmd: ./create ../datasets/dmgen/prepared_datasets/dmgen/100000 100000 bla
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=2317739
+mem_heap_B=72704
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=2441046
+mem_heap_B=73217
+mem_heap_extra_B=31
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=2446630
+mem_heap_B=73266
+mem_heap_extra_B=54
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=2457708
+mem_heap_B=73818
+mem_heap_extra_B=70
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=2459237
+mem_heap_B=82010
+mem_heap_extra_B=78
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=2461011
+mem_heap_B=82010
+mem_heap_extra_B=78
+mem_stacks_B=0
+heap_tree=detailed
+n3: 82010 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n0: 1114 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=7
+#-----------
+time=2462498
+mem_heap_B=82025
+mem_heap_extra_B=63
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=2464062
+mem_heap_B=83113
+mem_heap_extra_B=95
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=2465626
+mem_heap_B=84201
+mem_heap_extra_B=127
+mem_stacks_B=0
+heap_tree=detailed
+n4: 84201 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 1920 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 1920 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 1920 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 1920 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 1920 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 1920 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 1920 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 1920 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 1920 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 1920 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 1920 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 1920 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n0: 1385 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=10
+#-----------
+time=2467190
+mem_heap_B=85289
+mem_heap_extra_B=159
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=2468132
+mem_heap_B=86313
+mem_heap_extra_B=183
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=2469295
+mem_heap_B=86377
+mem_heap_extra_B=191
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=2470859
+mem_heap_B=87465
+mem_heap_extra_B=223
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=2472423
+mem_heap_B=88553
+mem_heap_extra_B=255
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=2473205
+mem_heap_B=89097
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=2473987
+mem_heap_B=89641
+mem_heap_extra_B=287
+mem_stacks_B=0
+heap_tree=detailed
+n5: 89641 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 6720 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 6720 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6720 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6720 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6720 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6720 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6720 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6720 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6720 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 6720 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 2880 0x114433: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 2880 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n0: 1065 in 3 places, all below massif's threshold (1.00%)
+ n1: 960 0x12E1D4: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 960 0x12B42F: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node*> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 960 0x1279FC: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 960 0x122EC8: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 960 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 960 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 960 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 960 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 960 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n0: 960 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=17
+#-----------
+time=2474929
+mem_heap_B=90665
+mem_heap_extra_B=311
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=2475737
+mem_heap_B=90729
+mem_heap_extra_B=319
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=2476518
+mem_heap_B=91753
+mem_heap_extra_B=343
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=2477332
+mem_heap_B=92297
+mem_heap_extra_B=359
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=2478131
+mem_heap_B=92297
+mem_heap_extra_B=359
+mem_stacks_B=0
+heap_tree=detailed
+n6: 92297 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 7680 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 7680 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 7680 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 7680 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 7680 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 7680 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 7680 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 7680 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 7680 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 7680 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x114433: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 1440 0x12FADB: __gnu_cxx::new_allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 1440 0x12E276: std::allocator_traits<std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::allocate(std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 1440 0x12B4DA: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 1440 0x127CB3: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_create_nodes(sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2**, sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n2: 1440 0x123329: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 960 0x1230CC: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 960 0x11D9A4: std::deque<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 960 0x118829: sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::neighbour_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n0: 960 in 2 places, all below massif's threshold (1.00%)
+      n0: 480 in 1 place, below massif's threshold (1.00%)
+ n0: 1257 in 4 places, all below massif's threshold (1.00%)
+ n1: 1024 0x12E1D4: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 1024 0x12B42F: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node*> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 1024 0x1279FC: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 1024 0x122EC8: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 1024 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 1024 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 1024 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 1024 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 1024 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n0: 1024 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=22
+#-----------
+time=2479458
+mem_heap_B=92841
+mem_heap_extra_B=375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=2480272
+mem_heap_B=93385
+mem_heap_extra_B=391
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=2481202
+mem_heap_B=92841
+mem_heap_extra_B=375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=2482392
+mem_heap_B=98929
+mem_heap_extra_B=391
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=2489040
+mem_heap_B=116305
+mem_heap_extra_B=399
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=2524552
+mem_heap_B=127889
+mem_heap_extra_B=407
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=2557153
+mem_heap_B=133681
+mem_heap_extra_B=415
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=2582760
+mem_heap_B=145625
+mem_heap_extra_B=431
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=2601602
+mem_heap_B=145689
+mem_heap_extra_B=439
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=2602383
+mem_heap_B=146713
+mem_heap_extra_B=463
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=2603197
+mem_heap_B=147257
+mem_heap_extra_B=479
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=2603996
+mem_heap_B=147257
+mem_heap_extra_B=479
+mem_stacks_B=0
+heap_tree=peak
+n9: 147257 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 18032 0x12D288: __gnu_cxx::new_allocator<std::__detail::_Hash_node_base*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n2: 18032 0x12A805: std::allocator_traits<std::allocator<std::__detail::_Hash_node_base*> >::allocate(std::allocator<std::__detail::_Hash_node_base*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11944 0x126B6F: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<unsigned long const, unsigned long>, false> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11944 0x121947: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11944 0x126915: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11944 0x121708: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11944 0x11C132: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 11944 0x1173A4: std::__detail::_Rehash_base<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 11944 0x1130E1: std::unordered_map<unsigned long, unsigned long, std::hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 11944 0x1108BE: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 11944 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 11944 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6088 0x12CE99: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<Edge const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6088 0x12A423: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6088 0x126261: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6088 0x120DAC: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6088 0x11B802: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6088 0x1165DC: std::__detail::_Rehash_base<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6088 0x112CBB: std::unordered_map<Edge, unsigned int, EdgeHashTable::Hash, EdgeHashTable::Comparator, std::allocator<std::pair<Edge const, unsigned int> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 6088 0x11033B: EdgeHashTable::reserve(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 6088 0x110805: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n1: 6088 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+             n0: 6088 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 17376 0x1266BB: __gnu_cxx::new_allocator<NodeEdge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 17376 0x121462: std::allocator_traits<std::allocator<NodeEdge> >::allocate(std::allocator<NodeEdge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 17376 0x11BCBA: std::_Vector_base<NodeEdge, std::allocator<NodeEdge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 17376 0x116B21: std::vector<NodeEdge, std::allocator<NodeEdge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 17376 0x112F3F: std::vector<NodeEdge, std::allocator<NodeEdge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 17376 0x110823: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 17376 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 17376 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 11584 0x1267A8: __gnu_cxx::new_allocator<Edge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 11584 0x121550: std::allocator_traits<std::allocator<Edge> >::allocate(std::allocator<Edge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11584 0x11BE56: std::_Vector_base<Edge, std::allocator<Edge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11584 0x116DFE: std::vector<Edge, std::allocator<Edge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11584 0x112FD5: std::vector<Edge, std::allocator<Edge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11584 0x110841: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11584 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 11584 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 7680 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 7680 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 7680 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 7680 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 7680 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 7680 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 7680 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 7680 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 7680 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 7680 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x114433: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 5792 0x1268A4: __gnu_cxx::new_allocator<long>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 5792 0x12163E: std::allocator_traits<std::allocator<long> >::allocate(std::allocator<long>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 5792 0x11BFF2: std::_Vector_base<long, std::allocator<long> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 5792 0x1170C4: std::vector<long, std::allocator<long> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 5792 0x113061: std::vector<long, std::allocator<long> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 5792 0x11085F: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 5792 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 5792 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 3360 0x12FADB: __gnu_cxx::new_allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 3360 0x12E276: std::allocator_traits<std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::allocate(std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 3360 0x12B4DA: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 3360 0x127CB3: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_create_nodes(sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2**, sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n2: 3360 0x123329: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 1920 0x1230CC: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 1920 0x11D9A4: std::deque<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 1920 0x118829: sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::neighbour_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n0: 1920 in 2 places, all below massif's threshold (1.00%)
+      n0: 1440 in 1 place, below massif's threshold (1.00%)
+ n0: 2537 in 5 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=34
+#-----------
+time=2604127
+mem_heap_B=146713
+mem_heap_extra_B=463
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=2605862
+mem_heap_B=146233
+mem_heap_extra_B=455
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=2606442
+mem_heap_B=145625
+mem_heap_extra_B=431
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=2622445
+mem_heap_B=145801
+mem_heap_extra_B=439
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=2626524
+mem_heap_B=145832
+mem_heap_extra_B=448
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=2626841
+mem_heap_B=145865
+mem_heap_extra_B=447
+mem_stacks_B=0
+heap_tree=detailed
+n9: 145865 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 18032 0x12D288: __gnu_cxx::new_allocator<std::__detail::_Hash_node_base*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n2: 18032 0x12A805: std::allocator_traits<std::allocator<std::__detail::_Hash_node_base*> >::allocate(std::allocator<std::__detail::_Hash_node_base*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11944 0x126B6F: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<unsigned long const, unsigned long>, false> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11944 0x121947: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11944 0x126915: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11944 0x121708: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11944 0x11C132: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 11944 0x1173A4: std::__detail::_Rehash_base<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 11944 0x1130E1: std::unordered_map<unsigned long, unsigned long, std::hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 11944 0x1108BE: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 11944 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 11944 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6088 0x12CE99: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<Edge const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6088 0x12A423: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6088 0x126261: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6088 0x120DAC: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6088 0x11B802: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6088 0x1165DC: std::__detail::_Rehash_base<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6088 0x112CBB: std::unordered_map<Edge, unsigned int, EdgeHashTable::Hash, EdgeHashTable::Comparator, std::allocator<std::pair<Edge const, unsigned int> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 6088 0x11033B: EdgeHashTable::reserve(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 6088 0x110805: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n1: 6088 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+             n0: 6088 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 17376 0x1266BB: __gnu_cxx::new_allocator<NodeEdge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 17376 0x121462: std::allocator_traits<std::allocator<NodeEdge> >::allocate(std::allocator<NodeEdge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 17376 0x11BCBA: std::_Vector_base<NodeEdge, std::allocator<NodeEdge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 17376 0x116B21: std::vector<NodeEdge, std::allocator<NodeEdge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 17376 0x112F3F: std::vector<NodeEdge, std::allocator<NodeEdge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 17376 0x110823: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 17376 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 17376 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 11584 0x1267A8: __gnu_cxx::new_allocator<Edge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 11584 0x121550: std::allocator_traits<std::allocator<Edge> >::allocate(std::allocator<Edge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11584 0x11BE56: std::_Vector_base<Edge, std::allocator<Edge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11584 0x116DFE: std::vector<Edge, std::allocator<Edge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11584 0x112FD5: std::vector<Edge, std::allocator<Edge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11584 0x110841: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11584 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 11584 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 7680 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 7680 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 7680 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 7680 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 7680 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 7680 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 7680 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 7680 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 7680 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 7680 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x114433: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 5792 0x1268A4: __gnu_cxx::new_allocator<long>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 5792 0x12163E: std::allocator_traits<std::allocator<long> >::allocate(std::allocator<long>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 5792 0x11BFF2: std::_Vector_base<long, std::allocator<long> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 5792 0x1170C4: std::vector<long, std::allocator<long> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 5792 0x113061: std::vector<long, std::allocator<long> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 5792 0x11085F: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 5792 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 5792 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n0: 2585 in 6 places, all below massif's threshold (1.00%)
+ n1: 1920 0x12FADB: __gnu_cxx::new_allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 1920 0x12E276: std::allocator_traits<std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::allocate(std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 1920 0x12B4DA: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 1920 0x127CB3: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_create_nodes(sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2**, sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 1920 0x123329: std::_Deque_base<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2, std::allocator<sdsl::neighbour_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::tree_node2> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n0: 1920 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=40
+#-----------
+time=2630762
+mem_heap_B=145953
+mem_heap_extra_B=463
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=2630846
+mem_heap_B=145889
+mem_heap_extra_B=455
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=2632480
+mem_heap_B=145977
+mem_heap_extra_B=471
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=2683524
+mem_heap_B=145889
+mem_heap_extra_B=455
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=2686652
+mem_heap_B=145801
+mem_heap_extra_B=439
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=2689132
+mem_heap_B=145625
+mem_heap_extra_B=431
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=2689919
+mem_heap_B=145145
+mem_heap_extra_B=423
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=2690831
+mem_heap_B=144057
+mem_heap_extra_B=391
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=2692013
+mem_heap_B=142969
+mem_heap_extra_B=359
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=2693556
+mem_heap_B=141817
+mem_heap_extra_B=319
+mem_stacks_B=0
+heap_tree=detailed
+n8: 141817 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 18032 0x12D288: __gnu_cxx::new_allocator<std::__detail::_Hash_node_base*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n2: 18032 0x12A805: std::allocator_traits<std::allocator<std::__detail::_Hash_node_base*> >::allocate(std::allocator<std::__detail::_Hash_node_base*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11944 0x126B6F: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<unsigned long const, unsigned long>, false> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11944 0x121947: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11944 0x126915: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11944 0x121708: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11944 0x11C132: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 11944 0x1173A4: std::__detail::_Rehash_base<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 11944 0x1130E1: std::unordered_map<unsigned long, unsigned long, std::hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 11944 0x1108BE: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 11944 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 11944 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6088 0x12CE99: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<Edge const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6088 0x12A423: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6088 0x126261: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6088 0x120DAC: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6088 0x11B802: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6088 0x1165DC: std::__detail::_Rehash_base<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6088 0x112CBB: std::unordered_map<Edge, unsigned int, EdgeHashTable::Hash, EdgeHashTable::Comparator, std::allocator<std::pair<Edge const, unsigned int> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 6088 0x11033B: EdgeHashTable::reserve(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 6088 0x110805: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n1: 6088 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+             n0: 6088 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 17376 0x1266BB: __gnu_cxx::new_allocator<NodeEdge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 17376 0x121462: std::allocator_traits<std::allocator<NodeEdge> >::allocate(std::allocator<NodeEdge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 17376 0x11BCBA: std::_Vector_base<NodeEdge, std::allocator<NodeEdge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 17376 0x116B21: std::vector<NodeEdge, std::allocator<NodeEdge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 17376 0x112F3F: std::vector<NodeEdge, std::allocator<NodeEdge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 17376 0x110823: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 17376 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 17376 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 11584 0x1267A8: __gnu_cxx::new_allocator<Edge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 11584 0x121550: std::allocator_traits<std::allocator<Edge> >::allocate(std::allocator<Edge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11584 0x11BE56: std::_Vector_base<Edge, std::allocator<Edge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11584 0x116DFE: std::vector<Edge, std::allocator<Edge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11584 0x112FD5: std::vector<Edge, std::allocator<Edge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11584 0x110841: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11584 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 11584 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 6240 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 6240 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6240 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6240 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6240 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6240 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6240 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6240 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6240 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 6240 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 2400 0x114433: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 2400 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 5792 0x1268A4: __gnu_cxx::new_allocator<long>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 5792 0x12163E: std::allocator_traits<std::allocator<long> >::allocate(std::allocator<long>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 5792 0x11BFF2: std::_Vector_base<long, std::allocator<long> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 5792 0x1170C4: std::vector<long, std::allocator<long> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 5792 0x113061: std::vector<long, std::allocator<long> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 5792 0x11085F: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 5792 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 5792 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n0: 1897 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=50
+#-----------
+time=2694131
+mem_heap_B=141337
+mem_heap_extra_B=311
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=2694262
+mem_heap_B=141273
+mem_heap_extra_B=303
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=2694837
+mem_heap_B=140793
+mem_heap_extra_B=295
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=2694968
+mem_heap_B=140729
+mem_heap_extra_B=287
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=2695543
+mem_heap_B=140249
+mem_heap_extra_B=279
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=2695674
+mem_heap_B=140185
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=2696249
+mem_heap_B=139705
+mem_heap_extra_B=263
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=2696380
+mem_heap_B=139641
+mem_heap_extra_B=255
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=2696955
+mem_heap_B=139161
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=2697086
+mem_heap_B=139097
+mem_heap_extra_B=239
+mem_stacks_B=0
+heap_tree=detailed
+n8: 139097 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 18032 0x12D288: __gnu_cxx::new_allocator<std::__detail::_Hash_node_base*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n2: 18032 0x12A805: std::allocator_traits<std::allocator<std::__detail::_Hash_node_base*> >::allocate(std::allocator<std::__detail::_Hash_node_base*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11944 0x126B6F: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<unsigned long const, unsigned long>, false> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11944 0x121947: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11944 0x126915: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11944 0x121708: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11944 0x11C132: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 11944 0x1173A4: std::__detail::_Rehash_base<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 11944 0x1130E1: std::unordered_map<unsigned long, unsigned long, std::hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 11944 0x1108BE: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 11944 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 11944 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6088 0x12CE99: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<Edge const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6088 0x12A423: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6088 0x126261: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6088 0x120DAC: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6088 0x11B802: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6088 0x1165DC: std::__detail::_Rehash_base<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6088 0x112CBB: std::unordered_map<Edge, unsigned int, EdgeHashTable::Hash, EdgeHashTable::Comparator, std::allocator<std::pair<Edge const, unsigned int> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 6088 0x11033B: EdgeHashTable::reserve(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 6088 0x110805: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n1: 6088 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+             n0: 6088 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 17376 0x1266BB: __gnu_cxx::new_allocator<NodeEdge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 17376 0x121462: std::allocator_traits<std::allocator<NodeEdge> >::allocate(std::allocator<NodeEdge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 17376 0x11BCBA: std::_Vector_base<NodeEdge, std::allocator<NodeEdge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 17376 0x116B21: std::vector<NodeEdge, std::allocator<NodeEdge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 17376 0x112F3F: std::vector<NodeEdge, std::allocator<NodeEdge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 17376 0x110823: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 17376 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 17376 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 11584 0x1267A8: __gnu_cxx::new_allocator<Edge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 11584 0x121550: std::allocator_traits<std::allocator<Edge> >::allocate(std::allocator<Edge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11584 0x11BE56: std::_Vector_base<Edge, std::allocator<Edge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11584 0x116DFE: std::vector<Edge, std::allocator<Edge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11584 0x112FD5: std::vector<Edge, std::allocator<Edge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11584 0x110841: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11584 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 11584 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 5792 0x1268A4: __gnu_cxx::new_allocator<long>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 5792 0x12163E: std::allocator_traits<std::allocator<long> >::allocate(std::allocator<long>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 5792 0x11BFF2: std::_Vector_base<long, std::allocator<long> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 5792 0x1170C4: std::vector<long, std::allocator<long> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 5792 0x113061: std::vector<long, std::allocator<long> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 5792 0x11085F: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 5792 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 5792 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 3840 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 3840 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 3840 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 3840 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 3840 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 3840 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 3840 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 3840 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 3840 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 3840 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 3840 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 3840 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 1577 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=60
+#-----------
+time=2698774
+mem_heap_B=138617
+mem_heap_extra_B=231
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=2698905
+mem_heap_B=138553
+mem_heap_extra_B=223
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=2699480
+mem_heap_B=138073
+mem_heap_extra_B=215
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=2699611
+mem_heap_B=138009
+mem_heap_extra_B=207
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=2700186
+mem_heap_B=137529
+mem_heap_extra_B=199
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=2700317
+mem_heap_B=137465
+mem_heap_extra_B=191
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=2700892
+mem_heap_B=136985
+mem_heap_extra_B=183
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=2701023
+mem_heap_B=136921
+mem_heap_extra_B=175
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=2701598
+mem_heap_B=136441
+mem_heap_extra_B=167
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=2701729
+mem_heap_B=136377
+mem_heap_extra_B=159
+mem_stacks_B=0
+heap_tree=detailed
+n8: 136377 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 18032 0x12D288: __gnu_cxx::new_allocator<std::__detail::_Hash_node_base*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n2: 18032 0x12A805: std::allocator_traits<std::allocator<std::__detail::_Hash_node_base*> >::allocate(std::allocator<std::__detail::_Hash_node_base*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11944 0x126B6F: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<unsigned long const, unsigned long>, false> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11944 0x121947: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11944 0x126915: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11944 0x121708: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11944 0x11C132: std::_Hashtable<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 11944 0x1173A4: std::__detail::_Rehash_base<unsigned long, std::pair<unsigned long const, unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 11944 0x1130E1: std::unordered_map<unsigned long, unsigned long, std::hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<std::pair<unsigned long const, unsigned long> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 11944 0x1108BE: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 11944 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 11944 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6088 0x12CE99: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<Edge const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6088 0x12A423: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6088 0x126261: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6088 0x120DAC: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6088 0x11B802: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6088 0x1165DC: std::__detail::_Rehash_base<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6088 0x112CBB: std::unordered_map<Edge, unsigned int, EdgeHashTable::Hash, EdgeHashTable::Comparator, std::allocator<std::pair<Edge const, unsigned int> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 6088 0x11033B: EdgeHashTable::reserve(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 6088 0x110805: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n1: 6088 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+             n0: 6088 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 17376 0x1266BB: __gnu_cxx::new_allocator<NodeEdge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 17376 0x121462: std::allocator_traits<std::allocator<NodeEdge> >::allocate(std::allocator<NodeEdge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 17376 0x11BCBA: std::_Vector_base<NodeEdge, std::allocator<NodeEdge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 17376 0x116B21: std::vector<NodeEdge, std::allocator<NodeEdge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 17376 0x112F3F: std::vector<NodeEdge, std::allocator<NodeEdge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 17376 0x110823: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 17376 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 17376 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 11584 0x1267A8: __gnu_cxx::new_allocator<Edge>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 11584 0x121550: std::allocator_traits<std::allocator<Edge> >::allocate(std::allocator<Edge>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 11584 0x11BE56: std::_Vector_base<Edge, std::allocator<Edge> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 11584 0x116DFE: std::vector<Edge, std::allocator<Edge> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 11584 0x112FD5: std::vector<Edge, std::allocator<Edge> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 11584 0x110841: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 11584 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 11584 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 5792 0x1268A4: __gnu_cxx::new_allocator<long>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 5792 0x12163E: std::allocator_traits<std::allocator<long> >::allocate(std::allocator<long>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 5792 0x11BFF2: std::_Vector_base<long, std::allocator<long> >::_M_allocate(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 5792 0x1170C4: std::vector<long, std::allocator<long> >::_M_default_append(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 5792 0x113061: std::vector<long, std::allocator<long> >::resize(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 5792 0x11085F: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 5792 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n0: 5792 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 1440 0x12FA7B: __gnu_cxx::new_allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n1: 1440 0x12E1FE: std::allocator_traits<std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::allocate(std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 1440 0x12B45A: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_allocate_node() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 1440 0x127A79: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_create_nodes(sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node**) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 1440 0x122F21: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_M_initialize_map(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 1440 0x11D8F4: std::_Deque_base<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::_Deque_base() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 1440 0x118740: std::deque<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node, std::allocator<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_node> >::deque() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 1440 0x113C6E: sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >::edge_iterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 1440 0x113CBF: std::array<sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > >, 8ul>::array() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n2: 1440 0x113DDA: dynamic_ktree::DKtreeEdgeIterator<dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >, sdsl::edge_iterator<sdsl::k2_tree<(unsigned short)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> > > >::DKtreeEdgeIterator() (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 1440 0x11441E: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n0: 1440 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 1257 in 8 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=70
+#-----------
+time=2702304
+mem_heap_B=135897
+mem_heap_extra_B=151
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=2702435
+mem_heap_B=135833
+mem_heap_extra_B=143
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=2703010
+mem_heap_B=135353
+mem_heap_extra_B=135
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=2703141
+mem_heap_B=135289
+mem_heap_extra_B=127
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=2703716
+mem_heap_B=134809
+mem_heap_extra_B=119
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=2703847
+mem_heap_B=134745
+mem_heap_extra_B=111
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=2705160
+mem_heap_B=128953
+mem_heap_extra_B=103
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=2705346
+mem_heap_B=117369
+mem_heap_extra_B=95
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=2705535
+mem_heap_B=99993
+mem_heap_extra_B=87
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=2717780
+mem_heap_B=88049
+mem_heap_extra_B=71
+mem_stacks_B=0
+heap_tree=detailed
+n4: 88049 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2424: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010781: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x2: ???
+     n1: 72704 0x1FFF0000F1: ???
+      n1: 72704 0x1FFF0000FA: ???
+       n1: 72704 0x1FFF00012B: ???
+        n0: 72704 0x1FFF000132: ???
+ n1: 8192 0x4F22FE6: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F270F0: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F280DC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n0: 8192 0x10E155: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+ n1: 6088 0x12D288: __gnu_cxx::new_allocator<std::__detail::_Hash_node_base*>::allocate(unsigned long, void const*) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+  n2: 6088 0x12A805: std::allocator_traits<std::allocator<std::__detail::_Hash_node_base*> >::allocate(std::allocator<std::__detail::_Hash_node_base*>&, unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n1: 6088 0x12CE99: std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<Edge const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+    n1: 6088 0x12A423: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_allocate_buckets(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+     n1: 6088 0x126261: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash_aux(unsigned long, std::integral_constant<bool, true>) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+      n1: 6088 0x120DAC: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+       n1: 6088 0x11B802: std::_Hashtable<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::rehash(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+        n1: 6088 0x1165DC: std::__detail::_Rehash_base<Edge, std::pair<Edge const, unsigned int>, std::allocator<std::pair<Edge const, unsigned int> >, std::__detail::_Select1st, EdgeHashTable::Comparator, EdgeHashTable::Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, std::integral_constant<bool, true> >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+         n1: 6088 0x112CBB: std::unordered_map<Edge, unsigned int, EdgeHashTable::Hash, EdgeHashTable::Comparator, std::allocator<std::pair<Edge const, unsigned int> > >::reserve(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+          n1: 6088 0x11033B: EdgeHashTable::reserve(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+           n1: 6088 0x110805: dynamic_ktree::Container0::Container0(unsigned long) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+            n1: 6088 0x1144B4: dynamic_ktree::DKtree<(unsigned char)2, sdsl::int_vector<(unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1>, sdsl::rank_support_v<(unsigned char)1, (unsigned char)1> >::DKtree(unsigned int) (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+             n0: 6088 0x10E197: main (in /home/joana/Documents/Dissertação/code/implementation/fork-sdsl/dynamic_k2tree/evaluation/create)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 1065 in 12 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=80
+#-----------
+time=2724216
+mem_heap_B=81961
+mem_heap_extra_B=55
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=2727640
+mem_heap_B=73769
+mem_heap_extra_B=47
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=2730510
+mem_heap_B=73217
+mem_heap_extra_B=31
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=2733975
+mem_heap_B=72704
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=84
+#-----------
+time=2742878
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty

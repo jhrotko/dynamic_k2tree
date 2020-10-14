@@ -1,5 +1,5 @@
 create:
-	g++ -o create create_k2tree.cpp -L/usr/local/include/sdsl -lsdsl
+	g++ -o create -pg create_k2tree.cpp -L/usr/local/include/sdsl -lsdsl
 union:
 	g++ -o union union.cpp -L/usr/local/include/sdsl -lsdsl
 clean:
