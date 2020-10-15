@@ -50,13 +50,13 @@ namespace dynamic_ktree {
         uint64_t n_total_edges = 0;
 
         Container0 C0;
-        array<shared_ptr<k_tree>, R> k_collection;
 
         dktree_edge_it it_edge_begin, it_end;
         dktree_node_it it_node_begin, it_node_end;
         dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
 
     public:
+        array<shared_ptr<k_tree>, R> k_collection;
         DKtree() {}
 
         DKtree(uint n_vertices) : n_vertices(n_vertices) {
@@ -105,19 +105,13 @@ namespace dynamic_ktree {
 
             //Add new link...
             vector<tuple<etype, etype>> converted;
-//            converted.reserve(C0.size()+1); TEST ME!
-//            vector<tuple<etype, etype>> converted(C0.size()+1);
             for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
                 if(C0.edge_free[j] != -1) {
                     Edge converted_edge = C0.elements_nodes[C0.edge_free[j]];
-
                     converted.emplace_back(tuple<etype , etype>(converted_edge.x(), converted_edge.y()));
-//                    assert(converted_edge.x() != 0 && converted_edge.y() != 0);
                 }
             }
-
             converted.emplace_back(tuple<etype, etype>(x, y));
-
             shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();
 
@@ -243,7 +237,7 @@ namespace dynamic_ktree {
             return k_collection[i] == nullptr;
         }
 
-        k_tree_neighbour_it get_neighbour_begin(size_t i, etype node) const {
+        k_tree_neighbour_it &get_neighbour_begin(size_t i, etype node) const {
             return k_collection[i]->neighbour_begin(node);
         }
 

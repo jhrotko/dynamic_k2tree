@@ -104,15 +104,15 @@ TEST(dktreeDelete, deleteItem) {
 TEST(Container_0, listNeighbours) {
     dynamic_ktree::Container0 C(1000);
 
-    C.insert(0,1, 0);
-    C.insert(0,2, 1);
-    C.insert(0,3, 2);
-    C.insert(0,10, 3);
-    C.insert(0,8, 4);
+    C.insert(0, 1, 0);
+    C.insert(0, 2, 1);
+    C.insert(0, 3, 2);
+    C.insert(0, 10, 3);
+    C.insert(0, 8, 4);
 
     vector<uint64_t> neigh;
     C.list_neighbours(0, neigh);
-    vector<uint64_t> expected = {8,10,3,2,1};
+    vector<uint64_t> expected = {8, 10, 3, 2, 1};
 
     ASSERT_EQ(expected, neigh);
 }
@@ -121,11 +121,11 @@ TEST(Container_0, listNeighbours) {
 TEST(neighbour_iterator, C0) {
     dynamic_ktree::Container0 C(1000);
 
-    C.insert(0,1, 0);
-    C.insert(0,2, 1);
-    C.insert(0,3, 2);
-    C.insert(0,10, 3);
-    C.insert(0,8, 4);
+    C.insert(0, 1, 0);
+    C.insert(0, 2, 1);
+    C.insert(0, 3, 2);
+    C.insert(0, 10, 3);
+    C.insert(0, 8, 4);
 
     auto neigh_it = C.neighbour_begin(0);
 
@@ -349,8 +349,7 @@ TEST(dktreeIterate, neighbour_iterator_star) {
     }
 }
 
-TEST(SerializationTest, Container0SerializaAndLoad)
-{
+TEST(SerializationTest, Container0SerializaAndLoad) {
     std::stringstream ss;
     boost::archive::text_oarchive oa(ss);
 
@@ -370,8 +369,7 @@ TEST(SerializationTest, Container0SerializaAndLoad)
     ASSERT_EQ(serialize_c0, load_c0);
 }
 
-TEST(SerializationTest, DKtreeSerializaAndLoad)
-{
+TEST(SerializationTest, DKtreeSerializaAndLoad) {
     std::stringstream ss;
 
     d_tree serialize_dktree(50);
@@ -389,6 +387,28 @@ TEST(SerializationTest, DKtreeSerializaAndLoad)
 
     ASSERT_EQ(serialize_dktree, load_dktree);
 
+}
+
+TEST(neighbourTimes, letssee) {
+    k_tree tree({{0, 0, 0, 0, 0, 0, 0},
+                 {0, 0, 1, 1, 1, 1, 1},
+                 {0, 1, 0, 0, 1, 0, 0},
+                 {0, 1, 0, 0, 0, 1, 0},
+                 {0, 1, 1, 0, 0, 0, 0},
+                 {0, 1, 0, 1, 0, 0, 1},
+                 {0, 1, 0, 0, 0, 1, 0}});
+
+    clock_t start = clock();
+    for(auto it = tree.neighbour_begin(1); it != tree.neighbour_end(); ++it) {
+
+    }
+    clock_t end = clock();
+    cout << "Iterator time:" << (float) (end-start) / CLOCKS_PER_SEC << endl;
+
+    start = clock();
+    tree.neigh(1);
+    end = clock();
+    cout << "Neigh time:" << (float) (end-start) / CLOCKS_PER_SEC << endl;
 }
 
 int main(int argc, char **argv) {

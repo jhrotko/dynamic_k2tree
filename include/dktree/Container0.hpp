@@ -39,7 +39,7 @@ namespace dynamic_ktree {
         void clean() {
             n_elements = 0;
             marked = 0;
-
+            max_edges = MAXSZ(n_vertices, 0);
             edge_lst = EdgeHashTable();
             edge_lst.reserve(max_edges);
             adj_map = unordered_map<etype, etype>(max_edges*2);
