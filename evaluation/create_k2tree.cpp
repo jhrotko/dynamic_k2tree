@@ -4,7 +4,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
 //#include <sdsl/k2_tree.hpp>
-#include "../include/dktree/DKtree.hpp"
+//#include "../include/dktree/DKtree.hpp"
+#include "../include/dktree/DKtree_background.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
            const std::string &delims = " ") {
@@ -24,7 +25,7 @@ int main(int argc, char *argv[]) {
 //    std::vector<std::tuple<uint64_t, uint64_t>> edges;
     unsigned int n_vertices = atoi(argv[2]);
 
-    dynamic_ktree::DKtree<2> graph(n_vertices);
+    dynamic_ktree::DKtree_background<2> graph(n_vertices);
     if (test_case.is_open()) {
         std::string line;
         vector<std::string> substrings;

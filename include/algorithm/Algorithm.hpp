@@ -26,12 +26,15 @@ public:
             queue.pop_front();
             path.push_back(current_node);
 
-            vector<etype> neighbours = g.list_neighbour(current_node);
-            for (int neigh: neighbours)
+//            vector<etype> neighbours = g.list_neighbour(current_node);
+//            for (int neigh: neighbours) {
+            for (auto neigh_it = g.neighbour_begin(current_node); neigh_it != g.neighbour_end(); ++neigh_it) {
+                etype neigh = *neigh_it;
                 if (!visited[neigh]) {
                     queue.push_back(neigh);
                     visited[neigh] = true;
                 }
+            }
         }
         return path;
     }
@@ -91,21 +94,25 @@ public:
         return num_triangles;
     }
 
-    static unsigned int count_triangles_dummy(Graph &g) {
+    static unsigned int count_triangles_dummy(Graph &g, bool list=false) {
         unsigned int total_triangles = 0;
         for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
             if (v1 != v2) {
-//                for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
-//                    etype v3 = *neigh_v2_it;
-//                    if (g.contains(v3, v1))
-//                        total_triangles++;
-//                }
-                auto neighbours = g.list_neighbour(v2);
-                for(auto n: neighbours) {
-                    if(g.contains(n, v1))
-                        total_triangles++;
+                if (!list) {
+                    for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
+                        etype v3 = *neigh_v2_it;
+                        if (g.contains(v3, v1))
+                            total_triangles++;
+                    }
+                } else {
+
+                    auto neighbours = g.list_neighbour(v2);
+                    for (auto n: neighbours) {
+                        if (g.contains(n, v1))
+                            total_triangles++;
+                    }
                 }
             }
         }
@@ -160,23 +167,23 @@ public:
 
     static unordered_map<uint, double>
     pageRank(Graph &g, double convergence = 1.0e-6f, uint max_iterations = 100, double alpha = 0.85f) {
-        double N = (double)g.get_number_nodes();
+        double N = (double) g.get_number_nodes();
         double total_nodes = 0.0f;
 
         vector<vector<uint64_t >> outgoing_link(N);
-        for(size_t i = 0; i < N; i++) {  //O(V*sqrt(E))
+        for (size_t i = 0; i < N; i++) {  //O(V*sqrt(E))
             outgoing_link[i] = g.list_neighbour(i);
-            if(!outgoing_link[i].empty())
+            if (!outgoing_link[i].empty())
                 total_nodes++;
         }
 
         vector<uint> dangling_nodes;
-        for(size_t i = 0; i < N; ++i )  //O(V)
-            if(outgoing_link[i].empty())
+        for (size_t i = 0; i < N; ++i)  //O(V)
+            if (outgoing_link[i].empty())
                 dangling_nodes.push_back(i);
 
         vector<double> pr(N);
-        pr.assign(N, 1.0f/total_nodes);
+        pr.assign(N, 1.0f / total_nodes);
         vector<double> old_pr(N);
 
         uint64_t step = 0;
@@ -186,7 +193,7 @@ public:
             pr.assign(N, 0);
 
             dangling_sum = 0.0f;
-            for(auto k: dangling_nodes) {
+            for (auto k: dangling_nodes) {
                 dangling_sum += old_pr[k];
             }
             dangling_sum *= alpha;
@@ -200,24 +207,24 @@ public:
                     pr[neigh] += alpha * old_pr[i] * k;
                 }
 
-                pr[i] += dangling_sum * (1.0f/N) + (1.0f-alpha)*(1.0f/N);
+                pr[i] += dangling_sum * (1.0f / N) + (1.0f - alpha) * (1.0f / N);
                 //Check Convergence
                 double err = 0.0f;
-                for(size_t i = 0; i < N; i++) {
+                for (size_t i = 0; i < N; i++) {
                     err += abs(pr[i] - old_pr[i]);
                 }
-                if(err < N*convergence) {
-                    unordered_map<uint , double> res;
+                if (err < N * convergence) {
+                    unordered_map<uint, double> res;
                     for (size_t i = 0; i < N; i++) {
                         res[i] = pr[i];
                     }
-                    return  res;
+                    return res;
                 }
             }
             step++;
         }
 
-        unordered_map<uint , double> res;
+        unordered_map<uint, double> res;
         for (size_t i = 0; i < N; i++) {
             res[i] = pr[i];
         }
