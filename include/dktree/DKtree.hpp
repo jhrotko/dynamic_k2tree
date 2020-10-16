@@ -268,19 +268,22 @@ namespace dynamic_ktree {
         void serialize(std::ostream &out, string project_dir = "./") {
             boost::archive::text_oarchive oa(out);
             oa << *this;
-
             int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
             if (status < 0 && errno != EEXIST) throw "Could not create dir";
 
             for (size_t l = 0; l <= max_r; l++) {
                 if (k_collection[l] != nullptr) {
                     char filename[10];
-                    sprintf(filename, "/%lu.kt", l);
+                    sprintf(filename, "/%lu.kt", l+1);
                     string project_dir_copy = project_dir;
                     std::ofstream ktree_files(project_dir_copy.append(filename));
                     k_collection[l]->serialize(ktree_files);
                 }
             }
+            std::ofstream ss(project_dir.append("/0.kt"));
+            boost::archive::text_oarchive oas(ss);
+            oas << *this;
+            ss.close();
         }
 
         void load(std::istream &in, string project_dir = "./", bool clear = true) {
@@ -291,7 +294,7 @@ namespace dynamic_ktree {
                 char filename[10];
                 string aux = project_dir;
                 aux.append("dktree_serialize");
-                sprintf(filename, "/%lu.kt", l);
+                sprintf(filename, "/%lu.kt", l+1);
 
                 ifstream load_file(aux.append(filename).c_str());
                 if (load_file.good()) {
@@ -303,6 +306,10 @@ namespace dynamic_ktree {
                     load_file.close();
                 }
             }
+            string  aux = project_dir;
+            std::ifstream ifs(aux.append("dktree_serialize/0.kt"));
+            boost::archive::text_iarchive arf(ifs);
+            arf >> *this;
 
             if (clear)
                 clean_serialize(project_dir);
