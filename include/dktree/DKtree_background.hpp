@@ -106,7 +106,7 @@ namespace dynamic_ktree {
     }
 
     virtual void add_edge(etype x, etype y) {
-        cout << "Edge " << x << ", " << y << endl;
+//        cout << "Edge " << x << ", " << y << endl;
         if (!k_collection_background_empty && counter == 0) {
             k_collection_background_empty = true;
         }
@@ -119,7 +119,7 @@ namespace dynamic_ktree {
             n_total_edges++;
             return;
         } else if(!k_collection_background_empty && counter > 0) {
-            cout << "delaying... Inserting in C0 instead" << endl;
+//            cout << "delaying... Inserting in C0 instead" << endl;
             C0.resize(C0.max_size() + 20);
             C0.insert(x, y, n_total_edges);
             n_total_edges++;
@@ -156,7 +156,7 @@ namespace dynamic_ktree {
         k_collection_background_empty = false;
         background_union = std::move(std::thread([=]() {
             std::lock_guard<std::mutex> lock_guard(locked_mutex);
-            cout << "starting background" << endl;
+//            cout << "starting background" << endl;
             counter++;
             for (size_t j = 0; j <= i; j++) {
                 if (k_collection[j] != nullptr) {
@@ -169,7 +169,7 @@ namespace dynamic_ktree {
             }
             k_collection[i] = tmp;
             counter--;
-            cout << "finished background" << endl;
+//            cout << "finished background" << endl;
         }));
         background_union.detach();
     }
@@ -180,7 +180,7 @@ namespace dynamic_ktree {
 
         if (k_collection_background_empty) {
             // check in other containers
-            cout << "contains no background" << endl;
+//            cout << "contains no background" << endl;
             for (size_t i = 0; i <=max_r; i++)
                 if (k_collection[i] != nullptr && k_collection[i]->adj(x, y)) {
 
@@ -188,12 +188,12 @@ namespace dynamic_ktree {
                 }
 
         } else {
-            cout << "contains WITH background" << endl;
+//            cout << "contains WITH background" << endl;
             for (size_t i = 0; i <=max_r; i++)
                 if (k_collection_background[i] != nullptr && k_collection_background[i]->adj(x, y))
                     return true;
         }
-        cout << "contains finish" << endl;
+//        cout << "contains finish" << endl;
         return false;
     }
 
