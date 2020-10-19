@@ -8,7 +8,11 @@ test/*
 
 evaluation/union_op/create
 evaluation/union_op/union
-evaluation/*.png
-evaluation/*10*
+evaluation/union_op/*.png
+evaluation/union_op/10*
+
+evaluation/background/add_background
+evaluation/background/*.png
+evaluation/background/10*
 
 datasets/*
