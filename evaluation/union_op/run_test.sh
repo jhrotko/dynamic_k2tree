@@ -1,5 +1,5 @@
 #!/bin/bash
-DATASETDIR="../datasets/dmgen/prepared_datasets/dmgen"
+DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 UNION_FILE="time_union.txt"
 UNION_DATA="time_union.data"
 
