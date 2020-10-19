@@ -1,9 +1,9 @@
 create:
-	g++ -o create create_k2tree.cpp -L/usr/local/include/sdsl -lsdsl -pthread
+	g++ -o create create_k2tree.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
 union:
 	g++ -o union union.cpp -L/usr/local/include/sdsl -lsdsl
 clean:
-	rm create || rm union || exit
+	rm create && rm union
 memory:
 	valgrind --tool=massif ./create ../datasets/dmgen/prepared_datasets/dmgen/10000/10000.tsv 10000 bla
 	echo "ms_print massif.out... > analize.txt"
