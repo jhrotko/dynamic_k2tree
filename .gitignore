@@ -6,9 +6,9 @@ test/*
 !test/*.cpp
 !test/CMakeLists.txt
 
-evaluation/create
-evaluation/union
+evaluation/union_op/create
+evaluation/union_op/union
 evaluation/*.png
-evaluation/10*
+evaluation/*10*
 
 datasets/*
