@@ -3,7 +3,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include "../../include/dktree/DKtree_background.hpp"
+#include "../../include/dktree/DKtree.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
            const std::string &delims = " ") {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     unsigned int n_vertices = atoi(argv[2]);
     int i=0;
 
-    dynamic_ktree::DKtree_background<2> graph(n_vertices);
+    dynamic_ktree::DKtree<2> graph(n_vertices);
     clock_t time_t;
     if (test_case.is_open()) {
         std::string line;

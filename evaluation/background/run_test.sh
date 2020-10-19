@@ -1,41 +1,53 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 RUNS=5
+RUNS_FILE_BACKGROUND="runs_time_background.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_DATA="runs.data"
 
 eval_time() {
   #  $1 - number of vertices of the current test file
   for _ in $(seq 1 $RUNS); do
-    ./add_background $DATASETDIR/$1/$1.tsv $1 >>"$1/$RUNS_FILE"
+    ./add_background $DATASETDIR/$1/$1.tsv $1 >>"$1/$RUNS_FILE_BACKGROUND"
+    ./add $DATASETDIR/$1/$1.tsv $1 >>"$1/$RUNS_FILE"
   done
 }
 
 eval_memory() {
   #  $1 - number of vertices of the current test file
   /usr/bin/time -v --output="$1/mem_add_background_$1.txt" ./add_background "$DATASETDIR/$1/$1.tsv" $1
+  /usr/bin/time -v --output="$1/mem_add_$1.txt" ./add "$DATASETDIR/$1/$1.tsv" $1
 }
 
-declare -a X=() #time
-declare -a Y=() #n+m
-declare -a Z=() #memory
+declare -a X=() #n+m
+declare -a TIME_BACKGROUND=() #time background
+declare -a MEMORY_BACKGROUND=() #memory background
+declare -a TIME=() #time background
+declare -a MEMORY=() #memory background
 i=0
 prepared_data() {
   for vertices in $(ls $DATASETDIR); do
+    edges=$(wc -l $DATASETDIR/$vertices/$vertices.tsv | awk '{ print $1 }')
+    X+=("$(echo "$vertices + $edges" | bc)")
+
+    sum_background=0
     sum=0
     while read line; do
-      sum=$(echo "$sum + $line" | bc)
+      sum_background=$(echo "$sum_background + $line" | bc)
+    done < "$vertices/$RUNS_FILE_BACKGROUND"
+    while read line_2; do
+      sum=$(echo "$sum + $line_2" | bc)
     done < "$vertices/$RUNS_FILE"
-    X+=("$(echo "scale=3; $sum / $RUNS" | bc)")
-    edges=$(wc -l $DATASETDIR/$vertices/$vertices.tsv | awk '{ print $1 }')
-    Y+=("$(echo "$vertices + $edges" | bc)")
-    Z+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_background_$vertices.txt")")
+    TIME_BACKGROUND+=("$(echo "scale=3; $sum_background / $RUNS" | bc)")
+    TIME+=("$(echo "scale=3; $sum / $RUNS" | bc)")
+    MEMORY_BACKGROUND+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_background_$vertices.txt")")
+    MEMORY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_$vertices.txt")")
     i=$((i+1))
   done
 
   i=$((i-1))
   for item in $(seq 0 $i); do
-    echo "${X[${item}]} ${Y[${item}]} ${Z[${item}]}" >> $RUNS_DATA
+    echo "${X[${item}]} ${TIME_BACKGROUND[${item}]} ${MEMORY_BACKGROUND[${item}]} ${TIME[${item}]} ${MEMORY[${item}]}" >> $RUNS_DATA
   done
   i=$((i+1))
 }
@@ -45,12 +57,13 @@ plot_data_time() {
   set terminal png
   set datafile separator whitespace
   set output 'add_background_time.png'
-  set title "Add edge (Background) Time" font ",14" textcolor rgbcolor "royalblue"
-  set xrange [0:${Y[${i}]}]
+  set title "Add edge Time" font ",14" textcolor rgbcolor "royalblue"
+  set xrange [0:${X[${i}]}]
   set xlabel "n + m"
-  set yrange [0:${X[${i}]}]
+  set yrange [0:${TIME[${i}]}]
   set ylabel "time"
-  plot "$RUNS_DATA" using 2:1 with linespoints title "add edge background"
+  plot "$RUNS_DATA" using 1:2 with linespoints title "add edge background",\
+       "$RUNS_DATA" using 1:4 with linespoints title "add edge",
 EOF
 }
 
@@ -59,17 +72,18 @@ plot_data_mem() {
   set terminal png
   set datafile separator whitespace
   set output 'add_background_mem.png'
-  set title "Add edge (Background) Memory" font ",14" textcolor rgbcolor "royalblue"
-  set xrange [0:${Y[${i}]}]
+  set title "Add edge Memory" font ",14" textcolor rgbcolor "royalblue"
+  set xrange [0:${X[${i}]}]
   set xlabel "n + m"
-  set yrange [4300:${Z[${i}]}]
+  set yrange [4300:${MEMORY[${i}]}]
   set ylabel "memory"
-  plot "$RUNS_DATA" using 2:3 with linespoints title "add edge background"
+  plot "$RUNS_DATA" using 1:3 with linespoints title "add edge background",\
+       "$RUNS_DATA" using 1:5 with linespoints title "add edge",
 EOF
 }
 
 echo "Compiling..."
-make clean add_background
+make clean add_background add
 for vertices in $(ls $DATASETDIR); do
   rm -r "$vertices"
 done
