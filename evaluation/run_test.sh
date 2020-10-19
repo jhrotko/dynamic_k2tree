@@ -51,7 +51,7 @@ plot_data_time() {
   set yrange [0:$y]
   set xlabel "n + m"
   set ylabel "time"
-  plot "$UNION_DATA" using 1:2 with linespoints
+  plot "$UNION_DATA" using 1:2 with linespoints title "union operation"
 EOF
 }
 
@@ -62,10 +62,10 @@ plot_data_mem() {
   set output 'union_mem.png'
   set title "Union Memory" font ",14" textcolor rgbcolor "royalblue"
   set xrange [0:$x]
-  set yrange [1000:${Z[${i}]}]
+  set yrange [3000:${Z[${i}]}]
   set xlabel "n + m"
   set ylabel "memory"
-  plot "$UNION_DATA" using 1:3 with linespoints
+  plot "$UNION_DATA" using 1:3 with linespoints title "union operation"
 EOF
 }
 
