@@ -13,10 +13,16 @@ int main(int argc, char *argv[]) {
     ktree_test.load(ifs);
     ktree_test2.load(ifs2);
 
-    clock_t start = clock();
-    ktree_test.unionOp(ktree_test2);
-    clock_t end = clock();
+    float sum = 0;
+    int runs = 5;
 
-    std::cout << "Union Time: " << (float)(end-start) / CLOCKS_PER_SEC << std::endl;
+    for (int i = 0; i < runs; i++) {
+        clock_t start = clock();
+        ktree_test.unionOp(ktree_test2);
+        clock_t end = clock();
+
+        sum += (float) (end - start) / CLOCKS_PER_SEC;
+    }
+    cout << sum/(float)runs << endl;
     return 0;
 }

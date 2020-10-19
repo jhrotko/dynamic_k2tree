@@ -8,5 +8,7 @@ test/*
 
 evaluation/create
 evaluation/union
+evaluation/*.png
+evaluation/10*
 
 datasets/*
