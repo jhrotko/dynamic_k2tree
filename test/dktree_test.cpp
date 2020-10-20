@@ -366,6 +366,13 @@ TEST(SerializationTest, Container0SerializaAndLoad) {
     boost::archive::text_iarchive iar(ss); //exception
     iar >> load_c0;
 
+    ASSERT_TRUE(load_c0.contains(0, 1));
+    ASSERT_TRUE(load_c0.contains(6, 3));
+    ASSERT_TRUE(load_c0.contains(9, 8));
+    ASSERT_TRUE(load_c0.contains(4, 2));
+    ASSERT_TRUE(load_c0.contains(0, 0));
+    ASSERT_TRUE(load_c0.contains(5, 3));
+
     ASSERT_EQ(serialize_c0, load_c0);
 }
 
@@ -386,7 +393,6 @@ TEST(SerializationTest, DKtreeSerializaAndLoad) {
     load_dktree.load(ss);
 
     ASSERT_EQ(serialize_dktree, load_dktree);
-
 }
 
 TEST(neighbourTimes, letssee) {

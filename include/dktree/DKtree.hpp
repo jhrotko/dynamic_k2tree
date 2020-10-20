@@ -246,7 +246,6 @@ namespace dynamic_ktree {
         }
 
         friend class boost::serialization::access;
-
         template<class Archive>
         void serialize(Archive &ar, const unsigned int) {
             ar & max_r;
@@ -256,18 +255,7 @@ namespace dynamic_ktree {
             ar & C0;
         }
 
-        template<class Archive>
-        void load(Archive &ar, const unsigned int) {
-            ar >> max_r;
-            ar >> n_vertices;
-            ar >> n_total_edges;
-
-            ar >> C0;
-        }
-
         void serialize(std::ostream &out, string project_dir = "./") {
-            boost::archive::text_oarchive oa(out);
-            oa << *this;
             int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
             if (status < 0 && errno != EEXIST) throw "Could not create dir";
 
@@ -287,8 +275,10 @@ namespace dynamic_ktree {
         }
 
         void load(std::istream &in, string project_dir = "./", bool clear = true) {
-            boost::archive::text_iarchive ar(in);
-            ar >> *this;
+            string  aux = project_dir;
+            std::ifstream ifs(aux.append("dktree_serialize/0.kt"));
+            boost::archive::text_iarchive arf(ifs);
+            arf >> *this;
 
             for (size_t l = 0; l <= max_r; l++) {
                 char filename[10];
@@ -306,10 +296,6 @@ namespace dynamic_ktree {
                     load_file.close();
                 }
             }
-            string  aux = project_dir;
-            std::ifstream ifs(aux.append("dktree_serialize/0.kt"));
-            boost::archive::text_iarchive arf(ifs);
-            arf >> *this;
 
             if (clear)
                 clean_serialize(project_dir);

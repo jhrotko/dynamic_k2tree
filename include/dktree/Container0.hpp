@@ -10,16 +10,15 @@
 
 #include <boost/serialization/unordered_map.hpp>
 #include <boost/serialization/vector.hpp>
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/level.hpp>
+#include <boost/serialization/tracking.hpp>
 
 #include "Container0NeighIterator.hpp"
 
 namespace dynamic_ktree {
 
     class Container0 {
-    private:
-        uint64_t n_elements, max_edges;
-        uint64_t n_vertices;
-
     public:
         Container0() {}
 
@@ -42,7 +41,7 @@ namespace dynamic_ktree {
             max_edges = MAXSZ(n_vertices, 0);
             edge_lst = EdgeHashTable();
             edge_lst.reserve(max_edges);
-            adj_map = unordered_map<etype, etype>(max_edges*2);
+            adj_map = unordered_map<etype, etype>(max_edges * 2);
 
             elements = vector<NodeEdge>(max_edges);
             elements_nodes = vector<Edge>(max_edges);
@@ -86,17 +85,16 @@ namespace dynamic_ktree {
             if (nodeIndex != -1) {
                 edge_lst.erase(x, y);
 
-                if(!elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { // empty
+                if (!elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { // empty
                     adj_map.erase(x);
                 }
                 if (!elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) { //last
                     elements[elements[nodeIndex].prev()].remove_next();
-                }
-                else if (elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { //first
+                } else if (elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { //first
                     elements[elements[nodeIndex].next()].remove_prev();
                     adj_map[x] = elements[nodeIndex].next();
 
-                } else if(elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()){
+                } else if (elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) {
                     elements[elements[nodeIndex].next()].prev(elements[nodeIndex].prev());
                     elements[elements[nodeIndex].prev()].next(elements[nodeIndex].next());
                 }
@@ -111,10 +109,10 @@ namespace dynamic_ktree {
             if (adj_contains(x) && !elements.empty()) {
                 bool done = false;
                 size_t k = adj_map[x];
-                while(!done) {
+                while (!done) {
                     neighbours.push_back(elements_nodes[k].y());
 
-                    if(elements[k].has_next()) {
+                    if (elements[k].has_next()) {
                         k = elements[k].next();
                     } else {
                         done = true;
@@ -124,7 +122,7 @@ namespace dynamic_ktree {
         }
 
         etype size() const {
-            return n_elements == 0? 0: n_elements-marked;
+            return n_elements == 0 ? 0 : n_elements - marked;
         }
 
         etype size_non_marked() {
@@ -185,42 +183,58 @@ namespace dynamic_ktree {
         Container0NeighIterator<Container0> neighbour_end() {
             return Container0NeighIterator<Container0>().end();
         }
+
         friend class boost::serialization::access;
-        template<class Archive>
-        void serialize(Archive &ar, const unsigned int) {
-            ar & n_elements;
-            ar & n_vertices;
-            ar & max_edges;
 
-            ar & edge_free;
-            ar & elements_nodes;
-            ar & elements;
-            ar & adj_map;
-            ar & edge_lst;
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int file_version) {
+        boost::serialization::split_member(ar, *this, file_version);
+    }
+
+    template<class Archive>
+    void save(Archive &ar, const unsigned int) const {
+        ar << n_vertices;
+        ar << max_edges;
+        ar << marked;
+        ar << elements_nodes;
+    }
+
+    template<class Archive>
+    void load(Archive &ar, const unsigned int) {
+        ar >> n_vertices;
+        ar >> max_edges;
+        ar >> marked;
+        ar >> elements_nodes;
+
+
+        vector<Edge> copy_elements = elements_nodes;
+        elements_nodes = vector<Edge>(max_edges);
+        edge_lst = EdgeHashTable();
+        edge_lst.reserve(max_edges);
+        adj_map = unordered_map<etype, etype>(max_edges << 1);
+        elements = vector<NodeEdge>(max_edges);
+        edge_free = vector<int64_t>(max_edges);
+        for (etype i = 0; i < max_edges; i++)
+            edge_free[i] = i;
+        n_elements = 0;
+
+        for (auto edge: copy_elements) {
+            insert(edge.x(), edge.y(), n_elements);
         }
+    }
 
-        template<class Archive>
-        void load(Archive &ar, const unsigned int) {
-            ar >> n_elements;
-            ar >> n_vertices;
-            ar >> max_edges;
+    EdgeHashTable edge_lst;
+    unordered_map<etype, etype> adj_map; // x -> next
 
-            ar >> edge_free;
-            ar >> elements_nodes;
-            ar >> elements;
-            ar >> adj_map;
-            ar >> edge_lst;
-        }
+    vector<NodeEdge> elements; // next and prev
+    vector<Edge> elements_nodes; //x and y
 
+    vector<int64_t> edge_free;
+    etype marked = 0;
 
-        EdgeHashTable edge_lst;
-        unordered_map<etype, etype> adj_map; // x -> next
-
-        vector<NodeEdge> elements; // next and prev
-        vector<Edge> elements_nodes; //x and y
-
-        vector<int64_t> edge_free;
-        etype marked = 0;
-    };
+    private:
+    uint64_t n_elements, max_edges;
+    uint64_t n_vertices;
+};
 }
 #endif //IMPLEMENTATION_CONTAINER_0_HPP

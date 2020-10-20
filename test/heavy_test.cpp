@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include "../include/dktree/DKtree.hpp"
-#include "../include/dktree/DKtree_background.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
            const std::string &delims = " ") {
@@ -12,15 +11,13 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    std::stringstream ss;
-    unsigned int n_vertices = 10000;
+    unsigned int n_vertices = 100000;
     std::ostringstream path;
 
-    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-//    path << "datasets/indochina-2004/indochina-2004.tsv";
-    ifstream test_case (path.str());
-//    dynamic_ktree::DKtree<2> graph(n_vertices);
-    dynamic_ktree::DKtree_background<2> graph(n_vertices);
+//        path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
+    ifstream test_case(path.str());
+    dynamic_ktree::DKtree<2> graph(n_vertices);
 
     if (test_case.is_open()) {
         std::string line;
@@ -28,8 +25,7 @@ TEST(ReadTest, ReadFromDataset) {
         const std::string delims = " ";
         clock_t end_add = clock();
 
-        while (getline (test_case, line))
-        {
+        while (getline(test_case, line)) {
             split(line, substrings, delims);
 
             etype x = (etype) stoi(substrings[1]);
@@ -41,16 +37,10 @@ TEST(ReadTest, ReadFromDataset) {
             }
         }
 
-//        clock_t start = clock();
-//        Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(graph);
-//        clock_t end = clock();
-        cout << "TOTAL TIME " << (float)(end_add) / CLOCKS_PER_SEC << endl;
-//        clock_t start_2 = clock();
-//        Algorithm<dynamic_ktree::DKtree<2>>::count_triangles_dummy(graph, true);
-//        clock_t end_2 = clock();
-//        cout << "TOTAL TIME " << (float)(end_2-start_2) / CLOCKS_PER_SEC << endl;
-
-    } else  {
+        std::stringstream ss;
+        graph.serialize(ss);
+        cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
+    } else {
         cout << "Unable to open file";
         FAIL();
     }
