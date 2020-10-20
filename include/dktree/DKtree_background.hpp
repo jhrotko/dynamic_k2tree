@@ -177,13 +177,12 @@ namespace dynamic_ktree {
     virtual bool contains(etype x, etype y) {
         if (C0.contains(x, y))
             return true;
-
+        std::lock_guard<std::mutex> lock_guard(locked_mutex);
         if (k_collection_background_empty) {
             // check in other containers
 //            cout << "contains no background" << endl;
             for (size_t i = 0; i <=max_r; i++)
                 if (k_collection[i] != nullptr && k_collection[i]->adj(x, y)) {
-
                     return true;
                 }
 
