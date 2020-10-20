@@ -171,14 +171,14 @@ public:
         double total_nodes = 0.0f;
 
         vector<vector<uint64_t >> outgoing_link(N);
-        for (size_t i = 0; i < N; i++) {  //O(V*sqrt(E))
+        for (size_t i = 0; i < N; i++) {
             outgoing_link[i] = g.list_neighbour(i);
             if (!outgoing_link[i].empty())
                 total_nodes++;
         }
 
         vector<uint> dangling_nodes;
-        for (size_t i = 0; i < N; ++i)  //O(V)
+        for (size_t i = 0; i < N; ++i)
             if (outgoing_link[i].empty())
                 dangling_nodes.push_back(i);
 
@@ -210,13 +210,13 @@ public:
                 pr[i] += dangling_sum * (1.0f / N) + (1.0f - alpha) * (1.0f / N);
                 //Check Convergence
                 double err = 0.0f;
-                for (size_t i = 0; i < N; i++) {
-                    err += abs(pr[i] - old_pr[i]);
+                for (size_t k = 0; k < N; k++) {
+                    err += abs(pr[k] - old_pr[k]);
                 }
                 if (err < N * convergence) {
                     unordered_map<uint, double> res;
-                    for (size_t i = 0; i < N; i++) {
-                        res[i] = pr[i];
+                    for (size_t j = 0; j < N; j++) {
+                        res[j] = pr[j];
                     }
                     return res;
                 }
