@@ -266,6 +266,7 @@ namespace dynamic_ktree {
                     string project_dir_copy = project_dir;
                     std::ofstream ktree_files(project_dir_copy.append(filename));
                     k_collection[l]->serialize(ktree_files);
+                    ktree_files.close();
                 }
             }
             std::ofstream ss(project_dir.append("/0.kt"));
@@ -274,11 +275,12 @@ namespace dynamic_ktree {
             ss.close();
         }
 
-        void load(std::istream &in, string project_dir = "./", bool clear = true) {
-            string  aux = project_dir;
-            std::ifstream ifs(aux.append("dktree_serialize/0.kt"));
+        void load(std::istream &in, string project_dir = "./", bool clear=true) {
+            string project_dir_copy = project_dir;
+            std::ifstream ifs(project_dir_copy.append("dktree_serialize/0.kt"));
             boost::archive::text_iarchive arf(ifs);
             arf >> *this;
+            ifs.close();
 
             for (size_t l = 0; l <= max_r; l++) {
                 char filename[10];
@@ -291,11 +293,11 @@ namespace dynamic_ktree {
                     k_tree new_ktree;
                     new_ktree.load(load_file);
 
-                    shared_ptr<k_tree> tmp = make_shared<k_tree>(new_ktree);
-                    k_collection[l] = tmp;
+                    k_collection[l] = make_shared<k_tree>(new_ktree);
                     load_file.close();
                 }
             }
+
 
             if (clear)
                 clean_serialize(project_dir);

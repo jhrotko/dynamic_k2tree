@@ -11,11 +11,11 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 100000;
+    unsigned int n_vertices = 1000000;
     std::ostringstream path;
 
-//        path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
+        path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+//    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
     dynamic_ktree::DKtree<2> graph(n_vertices);
 
@@ -39,6 +39,7 @@ TEST(ReadTest, ReadFromDataset) {
 
         std::stringstream ss;
         graph.serialize(ss);
+        graph.load(ss, "./", false);
         cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
     } else {
         cout << "Unable to open file";
