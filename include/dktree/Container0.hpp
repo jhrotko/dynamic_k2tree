@@ -195,17 +195,20 @@ namespace dynamic_ktree {
     void save(Archive &ar, const unsigned int) const {
         ar << n_vertices;
         ar << max_edges;
-        ar << marked;
-        ar << elements_nodes;
+
+        vector<Edge> elements_copy(n_elements);
+        for(uint i = 0; i < n_elements; ++i) {
+            if(edge_free[i] != -1)
+                elements_copy[i] = elements_nodes[i];
+        }
+        ar << elements_copy;
     }
 
     template<class Archive>
     void load(Archive &ar, const unsigned int) {
         ar >> n_vertices;
         ar >> max_edges;
-        ar >> marked;
         ar >> elements_nodes;
-
 
         vector<Edge> copy_elements = elements_nodes;
         elements_nodes = vector<Edge>(max_edges);
@@ -217,6 +220,7 @@ namespace dynamic_ktree {
         for (etype i = 0; i < max_edges; i++)
             edge_free[i] = i;
         n_elements = 0;
+        marked = 0;
 
         for (auto edge: copy_elements) {
             insert(edge.x(), edge.y(), n_elements);
