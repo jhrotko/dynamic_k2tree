@@ -25,9 +25,8 @@ namespace dynamic_ktree {
         Container0(size_t n_vertices) : n_vertices(n_vertices) {
             max_edges = MAXSZ(n_vertices, 0);
 
-            edge_lst.reserve(max_edges);
+            edge_lst.reserve(max_edges << 1);
             elements.resize(max_edges);
-            elements_nodes.resize(max_edges);
             edge_free.resize(max_edges);
             for (etype i = 0; i < max_edges; i++)
                 edge_free[i] = i;
@@ -43,9 +42,8 @@ namespace dynamic_ktree {
             edge_lst.reserve(max_edges);
             adj_map = unordered_map<etype, etype>(max_edges * 2);
 
-            elements = vector<NodeEdge>(max_edges);
-            elements_nodes = vector<Edge>(max_edges);
-            edge_free = vector<int64_t>(max_edges);
+            elements = vector<shared_ptr<NodeEdge>>(max_edges);
+            edge_free = vector<int32_t>(max_edges);
 
             for (etype i = 0; i < max_edges; i++) {
                 edge_free[i] = i;
@@ -67,14 +65,14 @@ namespace dynamic_ktree {
                 }
                 etype i = edge_free[n_elements];
                 n_elements++;
-                elements_nodes[i] = Edge(x, y);
+                elements[i] = make_shared<NodeEdge>(x, y);
                 edge_lst.insert(x, y, i);
 
                 if (!adj_contains(x))
                     adj_map[x] = i;
                 else {
-                    elements[i].next(adj_map[x]);
-                    elements[adj_map[x]].prev(i);
+                    elements[i]->next(adj_map[x]);
+                    elements[adj_map[x]]->prev(i);
                     adj_map[x] = i;
                 }
             }
@@ -85,18 +83,18 @@ namespace dynamic_ktree {
             if (nodeIndex != -1) {
                 edge_lst.erase(x, y);
 
-                if (!elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { // empty
+                if (!elements[nodeIndex]->has_next() && !elements[nodeIndex]->has_prev()) { // empty
                     adj_map.erase(x);
                 }
-                if (!elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) { //last
-                    elements[elements[nodeIndex].prev()].remove_next();
-                } else if (elements[nodeIndex].has_next() && !elements[nodeIndex].has_prev()) { //first
-                    elements[elements[nodeIndex].next()].remove_prev();
-                    adj_map[x] = elements[nodeIndex].next();
+                if (!elements[nodeIndex]->has_next() && elements[nodeIndex]->has_prev()) { //last
+                    elements[elements[nodeIndex]->prev()]->remove_next();
+                } else if (elements[nodeIndex]->has_next() && !elements[nodeIndex]->has_prev()) { //first
+                    elements[elements[nodeIndex]->next()]->remove_prev();
+                    adj_map[x] = elements[nodeIndex]->next();
 
-                } else if (elements[nodeIndex].has_next() && elements[nodeIndex].has_prev()) {
-                    elements[elements[nodeIndex].next()].prev(elements[nodeIndex].prev());
-                    elements[elements[nodeIndex].prev()].next(elements[nodeIndex].next());
+                } else if (elements[nodeIndex]->has_next() && elements[nodeIndex]->has_prev()) {
+                    elements[elements[nodeIndex]->next()]->prev(elements[nodeIndex]->prev());
+                    elements[elements[nodeIndex]->prev()]->next(elements[nodeIndex]->next());
                 }
                 edge_free[nodeIndex] = -1;
                 marked++;
@@ -110,10 +108,10 @@ namespace dynamic_ktree {
                 bool done = false;
                 size_t k = adj_map[x];
                 while (!done) {
-                    neighbours.push_back(elements_nodes[k].y());
+                    neighbours.push_back(elements[k]->y());
 
-                    if (elements[k].has_next()) {
-                        k = elements[k].next();
+                    if (elements[k]->has_next()) {
+                        k = elements[k]->next();
                     } else {
                         done = true;
                     }
@@ -136,13 +134,11 @@ namespace dynamic_ktree {
         void resize(uint64_t new_max_edges) {
             if (new_max_edges > max_edges) {
                 elements.resize(new_max_edges);
-                elements_nodes.resize(new_max_edges);
                 edge_free.resize(new_max_edges);
                 for (etype i = n_elements; i < new_max_edges; i++) {
                     edge_free[i] = i;
                 }
                 max_edges = new_max_edges;
-
             }
         }
 
@@ -155,10 +151,8 @@ namespace dynamic_ktree {
             eval &= edge_lst == rhs.edge_lst;
             eval &= adj_map == rhs.adj_map;
 
-            eval &= elements == rhs.elements;
-            eval &= elements_nodes.size() == rhs.elements_nodes.size();
             for (unsigned int i = 0; i < n_elements; i++)
-                eval &= elements_nodes[i] == rhs.elements_nodes[i];
+                eval &= *elements[i] == *rhs.elements[i];
             eval &= edge_free == rhs.edge_free;
 
             return eval;
@@ -168,9 +162,9 @@ namespace dynamic_ktree {
             return !(*this == rhs);
         }
 
-        vector<Edge>::const_iterator edge_begin() const { return elements_nodes.begin(); }
+        vector<shared_ptr<NodeEdge>>::const_iterator edge_begin() const { return elements.begin(); }
 
-        vector<Edge>::const_iterator edge_end() const { return elements_nodes.end(); }
+        vector<shared_ptr<NodeEdge>>::const_iterator edge_end() const { return elements.end(); }
 
         unordered_map<etype, etype>::const_iterator node_begin() const { return adj_map.begin(); }
 
@@ -186,59 +180,55 @@ namespace dynamic_ktree {
 
         friend class boost::serialization::access;
 
-    template<class Archive>
-    void serialize(Archive &ar, const unsigned int file_version) {
-        boost::serialization::split_member(ar, *this, file_version);
-    }
-
-    template<class Archive>
-    void save(Archive &ar, const unsigned int) const {
-        ar << n_vertices;
-        ar << max_edges;
-
-        vector<Edge> elements_copy(n_elements);
-        for(uint i = 0; i < n_elements; ++i) {
-            if(edge_free[i] != -1)
-                elements_copy[i] = elements_nodes[i];
+        template<class Archive>
+        void serialize(Archive &ar, const unsigned int file_version) {
+            boost::serialization::split_member(ar, *this, file_version);
         }
-        ar << elements_copy;
-    }
 
-    template<class Archive>
-    void load(Archive &ar, const unsigned int) {
-        ar >> n_vertices;
-        ar >> max_edges;
-        ar >> elements_nodes;
+        template<class Archive>
+        void save(Archive &ar, const unsigned int) const {
+            ar << n_vertices;
+            ar << max_edges;
 
-        vector<Edge> copy_elements = elements_nodes;
-        elements_nodes = vector<Edge>(max_edges);
-        edge_lst = EdgeHashTable();
-        edge_lst.reserve(max_edges);
-        adj_map = unordered_map<etype, etype>(max_edges << 1);
-        elements = vector<NodeEdge>(max_edges);
-        edge_free = vector<int64_t>(max_edges);
-        for (etype i = 0; i < max_edges; i++)
-            edge_free[i] = i;
-        n_elements = 0;
-        marked = 0;
-
-        for (auto edge: copy_elements) {
-            insert(edge.x(), edge.y(), n_elements);
+            vector<NodeEdge> elements_copy(n_elements);
+            for (uint i = 0; i < n_elements; ++i) {
+                if (edge_free[i] != -1)
+                    elements_copy[i] = *elements[i];
+            }
+            ar << elements_copy;
         }
-    }
 
-    EdgeHashTable edge_lst;
-    unordered_map<etype, etype> adj_map; // x -> next
+        template<class Archive>
+        void load(Archive &ar, const unsigned int) {
+            ar >> n_vertices;
+            ar >> max_edges;
+            vector<NodeEdge> copy_elements;
+            ar >> copy_elements;
 
-    vector<NodeEdge> elements; // next and prev
-    vector<Edge> elements_nodes; //x and y
+            edge_lst.reserve(max_edges << 1);
+            elements.resize(max_edges);
+            edge_free.resize(max_edges);
+            for (etype i = 0; i < max_edges; i++)
+                edge_free[i] = i;
+            adj_map.reserve(max_edges << 1);
+            n_elements = 0;
+            marked = 0;
 
-    vector<int64_t> edge_free;
-    etype marked = 0;
+            for (auto edge: copy_elements) {
+                insert(edge.x(), edge.y(), n_elements);
+            }
+        }
+
+        EdgeHashTable edge_lst;
+        unordered_map<etype, etype> adj_map; // x -> next
+        vector<shared_ptr<NodeEdge>> elements; // next and prev
+
+        vector<int32_t> edge_free;
+        etype marked = 0;
 
     private:
-    uint64_t n_elements, max_edges;
-    uint64_t n_vertices;
-};
+        uint64_t n_elements, max_edges;
+        uint64_t n_vertices;
+    };
 }
 #endif //IMPLEMENTATION_CONTAINER_0_HPP

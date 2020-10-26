@@ -10,10 +10,14 @@ evaluation/union_op/create
 evaluation/union_op/union
 evaluation/union_op/*.png
 evaluation/union_op/10*
+evaluation/union_op/50*
+evaluation/union_op/80*
 
 evaluation/background/add_background
 evaluation/background/add
 evaluation/background/*.png
 evaluation/background/10*
+evaluation/background/50*
+evaluation/background/80*
 
 datasets/*

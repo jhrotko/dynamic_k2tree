@@ -33,8 +33,8 @@ int main(int argc, char *argv[]) {
         while (getline(test_case, line)) {
             split(line, substrings, delims);
 
-            uint64_t x = (uint64_t) stoi(substrings[1]);
-            uint64_t y = (uint64_t) stoi(substrings[2]);
+            etype x = (etype) stoi(substrings[1]);
+            etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
                 clock_t aux = clock();
                 graph.add_edge(x,y);

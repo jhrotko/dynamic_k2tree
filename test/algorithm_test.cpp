@@ -52,7 +52,7 @@ namespace {
     TYPED_TEST_CASE(Algorithm_Test, graph_implementations);
 
     TYPED_TEST(Algorithm_Test, BFS) {
-        vector<long unsigned int> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
+        vector<etype> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
 
         ASSERT_EQ(path[0], 1);
         ASSERT_EQ(path[1], 2);
@@ -63,7 +63,7 @@ namespace {
     }
 
     TYPED_TEST(Algorithm_Test, DFS) {
-        vector<long unsigned int> path = Algorithm<TypeParam>::dfs(*(this->graph_), 1);
+        vector<etype> path = Algorithm<TypeParam>::dfs(*(this->graph_), 1);
 
         ASSERT_EQ(path[0], 1);
         ASSERT_EQ(path[1], 2);

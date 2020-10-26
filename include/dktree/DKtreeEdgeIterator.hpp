@@ -17,18 +17,27 @@ using namespace sdsl;
 using namespace k2_tree_ns;
 
 namespace dynamic_ktree {
-    #define R 8
+#define R 8
 
-    class DKtreeEdge : public Edge {
+    class DKtreeEdge {
+    private:
+        etype _x, _y;
     public:
         DKtreeEdge() {}
+        DKtreeEdge(tuple<etype, etype> t) : _x(std::get<0>(t)), _y(std::get<1>(t)) {}
+        DKtreeEdge(NodeEdge e) : _x(e.x()), _y(e.y()) {}
+        DKtreeEdge(etype x, etype y) : _x(x), _y(y) {}
 
-        DKtreeEdge(tuple<idx_type, idx_type> t) : Edge(std::get<0>(t), std::get<1>(t)) {}
+        etype x() const {
+            return _x;
+        }
+        etype y() const {
+            return _y;
+        }
 
-//        DKtreeEdge(NodeEdge e) : Edge(e.x(), e.y()) {}
-        DKtreeEdge(Edge e) : Edge(e.x(), e.y()) {}
-
-        DKtreeEdge(idx_type x, idx_type y) : Edge(x, y) {}
+        bool operator==(const DKtreeEdge& rhs) const {
+            return _x == rhs._x && _y == rhs._y;
+        }
     };
 
     template<class dk_tree, class k2tree, class k2tree_edge_iterator>
@@ -43,9 +52,9 @@ namespace dynamic_ktree {
 
         DKtreeEdgeIterator(const dk_tree *tree) {
             //Initialize curr pointers
-            this->_tree = tree;
-            this->_c0 = tree->first_container();
-            this->_kcollection = _tree->k_collections();
+            _tree = tree;
+            _c0 = tree->first_container();
+            _kcollection = _tree->k_collections();
 
             if (tree->get_number_nodes() == 0) {
                 _ptr = DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
@@ -104,7 +113,7 @@ namespace dynamic_ktree {
             }
             cout << endl;
         }
-//guardar a C0
+
         virtual DKtreeEdgeIterator<dk_tree, k2tree, k2tree_edge_iterator> &operator++() {
             if (distance_C0 < (int) _c0.size()) {
                 distance_C0++;
@@ -178,7 +187,7 @@ namespace dynamic_ktree {
 
     private:
         bool is_end() {
-            if (_ptr == DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE))
+            if (_ptr.x() == MAX_SIZE_EDGE && _ptr.y() == MAX_SIZE_EDGE)
                 return true;
             int containers = 0;
             int end_containers = 0;
@@ -196,8 +205,8 @@ namespace dynamic_ktree {
             return containers == end_containers;
         }
 
-        value_type _convert_C0_edge(vector<Edge>::const_iterator it) {
-            return DKtreeEdge(*it);
+        value_type _convert_C0_edge(vector<shared_ptr<NodeEdge>>::const_iterator it) {
+            return DKtreeEdge(**it);
         }
 
         value_type _convert_k_collection_edge(k2tree_edge_iterator &it) {
@@ -212,7 +221,7 @@ namespace dynamic_ktree {
 
         //state
         value_type _ptr = DKtreeEdge(MAX_SIZE_EDGE, MAX_SIZE_EDGE);
-        vector<Edge>::const_iterator _data_C0_curr;
+        vector<shared_ptr<NodeEdge>>::const_iterator _data_C0_curr;
         int distance_C0 = -1;
         array<k2tree_edge_iterator, R> _data_k_collection_curr;
     };
