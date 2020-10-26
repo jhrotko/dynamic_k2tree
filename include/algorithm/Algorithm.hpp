@@ -170,7 +170,7 @@ public:
         double N = (double) g.get_number_nodes();
         double total_nodes = 0.0f;
 
-        vector<vector<uint64_t >> outgoing_link(N);
+        vector<vector<etype>> outgoing_link(N);
         for (size_t i = 0; i < N; i++) {
             outgoing_link[i] = g.list_neighbour(i);
             if (!outgoing_link[i].empty())

@@ -3,6 +3,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <string>
 #include <vector>
+#include "../include/dktree/DKtree_background.hpp"
 #include "../include/dktree/DKtree.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
@@ -11,13 +12,15 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 1000000;
+    unsigned int n_vertices = 10;
     std::ostringstream path;
 
-        path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
 //    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
-    dynamic_ktree::DKtree<2> graph(n_vertices);
+//    dynamic_ktree::DKtree<2> graph(n_vertices);
+    dynamic_ktree::DKtree_background<2> graph(n_vertices);
+    uint edges = 0;
 
     if (test_case.is_open()) {
         std::string line;
@@ -34,20 +37,25 @@ TEST(ReadTest, ReadFromDataset) {
                 clock_t aux = clock();
                 graph.add_edge(x, y);
                 end_add += clock() - aux;
+                edges++;
             }
         }
 
         std::stringstream ss;
         graph.serialize(ss);
-        graph.load(ss, "./", false);
+//        dynamic_ktree::DKtree<2> graph2;
+//        graph2.load(ss, "./", false);
         cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
     } else {
         cout << "Unable to open file";
         FAIL();
     }
 }
-
-
+TEST(a,v){
+    std::stringstream ss;
+    dynamic_ktree::DKtree<2> graph2;
+    graph2.load(ss, "./", false);
+}
 //TEST(ReadTestK2TREE, ReadFromDatasetK2TREE) {
 //    std::stringstream ss;
 //    unsigned int n_vertices = 50000;

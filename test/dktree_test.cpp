@@ -22,6 +22,7 @@ TEST(dktreeAddLink, addLink0) {
     tree.add_edge(0, 1);
 
     ASSERT_EQ(tree.get_number_edges(), 1);
+    ASSERT_TRUE(tree.contains(0,1));
 }
 
 TEST(dktreeAddLink, addLink) {
@@ -30,7 +31,12 @@ TEST(dktreeAddLink, addLink) {
     tree.add_edge(1, 4);
     tree.add_edge(3, 0);
     tree.add_edge(1, 3);
+
     ASSERT_EQ(tree.get_number_edges(), 4);
+    ASSERT_TRUE(tree.contains(1,2));
+    ASSERT_TRUE(tree.contains(1,4));
+    ASSERT_TRUE(tree.contains(3,0));
+    ASSERT_TRUE(tree.contains(1,3));
 }
 
 TEST(dktreeAddLink, addSameLink) {
@@ -110,9 +116,9 @@ TEST(Container_0, listNeighbours) {
     C.insert(0, 10, 3);
     C.insert(0, 8, 4);
 
-    vector<uint64_t> neigh;
+    vector<etype> neigh;
     C.list_neighbours(0, neigh);
-    vector<uint64_t> expected = {8, 10, 3, 2, 1};
+    vector<etype> expected = {8, 10, 3, 2, 1};
 
     ASSERT_EQ(expected, neigh);
 }
