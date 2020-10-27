@@ -197,6 +197,7 @@ namespace dynamic_ktree {
                 n_total_edges--;
                 return;
             } else {
+                while (needs_work) {}
                 uint64_t n_total_marked = 0;
                 for (size_t l = 0; l < R; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
@@ -241,11 +242,19 @@ namespace dynamic_ktree {
             vector<etype> neighbours;
             C0.list_neighbours(x, neighbours);
 
-            for (size_t l = 0; l <= max_r; l++)
-                if (k_collection[l] != nullptr) {
-                    vector<idx_type> lst = k_collection[l]->neigh(x);
-                    neighbours.insert(neighbours.end(), lst.begin(), lst.end()); //append
-                }
+            if (needs_work) {
+                for (size_t l = 0; l <= max_r; l++)
+                    if (k_collection_background[l] != nullptr) {
+                        vector<idx_type> lst = k_collection_background[l]->neigh(x);
+                        neighbours.insert(neighbours.end(), lst.begin(), lst.end()); //append
+                    }
+            } else {
+                for (size_t l = 0; l <= max_r; l++)
+                    if (k_collection[l] != nullptr) {
+                        vector<idx_type> lst = k_collection[l]->neigh(x);
+                        neighbours.insert(neighbours.end(), lst.begin(), lst.end()); //append
+                    }
+            }
             return neighbours;
         }
 
@@ -326,6 +335,7 @@ namespace dynamic_ktree {
             int status = mkdir(project_dir.append("dktree_serialize").c_str(), 0777);
             if (status < 0 && errno != EEXIST) throw "Could not create dir";
 
+            while (needs_work) {}
             for (size_t l = 0; l <= max_r; l++) {
                 if (k_collection[l] != nullptr) {
                     char filename[10];
