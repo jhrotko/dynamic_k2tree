@@ -89,22 +89,31 @@ TEST(dktreeDelete, deleteItem) {
     ASSERT_EQ(tree.get_number_edges(), 5);
 
     tree.del_edge(3, 3);
+    ASSERT_FALSE(tree.contains(3, 3));
     ASSERT_EQ(tree.get_number_edges(), 4);
 
     tree.del_edge(1, 3);
+    ASSERT_FALSE(tree.contains(1, 3));
     ASSERT_EQ(tree.get_number_edges(), 3);
 
     tree.del_edge(3, 0);
+    ASSERT_FALSE(tree.contains(3, 0));
     ASSERT_EQ(tree.get_number_edges(), 2);
 
     tree.del_edge(1, 2);
+    ASSERT_FALSE(tree.contains(1, 2));
     ASSERT_EQ(tree.get_number_edges(), 1);
 
     tree.del_edge(1, 2);
     ASSERT_EQ(tree.get_number_edges(), 1);
 
     tree.del_edge(2, 3);
+    ASSERT_FALSE(tree.contains(2, 3));
     ASSERT_EQ(tree.get_number_edges(), 0);
+
+    for (auto edge = tree.edge_begin(); edge != tree.edge_end(); edge++) {
+        cout << "x:" << edge.x() << "  y:" << edge.y() << endl;
+    }
 }
 
 TEST(Container_0, listNeighbours) {

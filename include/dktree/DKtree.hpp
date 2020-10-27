@@ -137,49 +137,58 @@ namespace dynamic_ktree {
         }
 
         virtual void del_edge(etype x, etype y) {
-            if (C0.erase(x, y)) {
-                n_total_edges--;
-                return;
-            } else {
-                uint64_t n_total_marked = 0;
-                for (size_t l = 0; l < R; l++) {
-                    if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
-                        n_total_edges--;
+        if (C0.erase(x, y)) {
+            n_total_edges--;
+            return;
+        } else {
+            uint64_t n_total_marked = 0;
+            for (size_t l = 0; l < R; l++) {
+                if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
+                    n_total_edges--;
 
-                        uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
-                        n_total_marked += k_marked_edges;
+                    uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
+                    n_total_marked += k_marked_edges;
 
-                        if (k_marked_edges == k_collection[l]->total_edges()) {
-                            n_total_marked -= k_marked_edges;
-                            k_collection[l].reset();
-                        }
+                    if (k_marked_edges == k_collection[l]->total_edges()) {
+                        n_total_marked -= k_marked_edges;
+                        k_collection[l].reset();
+                    }
+                    break;
+                }
+            }
+            /* Rebuild data structure... */
+            if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
+                size_t max_size = MAXSZ(max(n_vertices, n_total_edges),0);
+                size_t i = 0;
+                for (; i < R; ++i) {
+                    if (k_collection[i] != nullptr)
+                        max_size += k_collection[i]->total_edges();
+                    if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
+                        break;
+                }
+
+                shared_ptr<k_tree> first_tree = nullptr;
+                uint j = 0;
+                for(; j <= i; ++j) {
+                    if (k_collection[j] != nullptr) {
+                        first_tree = k_collection[j];
+                        n_total_marked -= k_collection[j]->get_marked_edges();
+                        k_collection[j] = nullptr;
+                        ++j;
                         break;
                     }
                 }
-                /* Rebuild data structure... */
-                if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
-                    const size_t old_max_r = max_r;
-                    array<shared_ptr<k_tree>, R> old_collection;
-                    max_r = 0;
-                    for (size_t i = 0; i <= old_max_r; i++) {
-                        if (k_collection[i] != nullptr) {
-                            old_collection[i] = k_collection[i];
-                            k_collection[i].reset();
-                        }
-                    }
 
-                    n_total_edges = C0.size();
-                    for (size_t j = 0; j <= old_max_r; j++) {
-                        if (old_collection[j] != nullptr) {
-                            old_collection[j]->edge_it(
-                                    [this](uint64_t i, uint64_t j) -> void {
-                                        this->add_edge(i, j);
-                                    });
-                        }
+                for(; j <= i; ++j) {
+                    if (k_collection[j] != nullptr) {
+                        first_tree->unionOp(k_collection[j]);
+                        n_total_marked -= k_collection[j]->get_marked_edges();
+                        k_collection[j].reset();
                     }
                 }
             }
         }
+    }
 
         virtual vector<etype> list_neighbour(etype x) {
             vector<etype> neighbours;
