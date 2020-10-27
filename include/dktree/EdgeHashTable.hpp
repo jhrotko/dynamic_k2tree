@@ -141,6 +141,10 @@ public:
 //    friend class boost::serialization::access;
     EdgeHashTable() = default;
 
+    EdgeHashTable(uint size) {
+        ht.reserve(size);
+    }
+
     EdgeHashTable(vector<NodeEdge> &new_elements) {
         for (unsigned int i = 0; i < new_elements.size(); ++i)
             ht[new_elements[i]] = i;

@@ -23,24 +23,25 @@ namespace dynamic_ktree {
         Container0() {}
 
         Container0(size_t n_vertices) : n_vertices(n_vertices) {
+            n_elements = 0;
             max_edges = MAXSZ(n_vertices, 0);
 
-            edge_lst.reserve(max_edges << 1);
+            edge_lst_size = max_edges << 1;
+            edge_lst.reserve(edge_lst_size);
+            adj_map.reserve(edge_lst_size);
+
             elements.resize(max_edges);
+
             edge_free.resize(max_edges);
             for (etype i = 0; i < max_edges; i++)
                 edge_free[i] = i;
-            adj_map.reserve(max_edges << 1);
-            n_elements = 0;
         }
 
         void clean() {
             n_elements = 0;
             marked = 0;
-            max_edges = MAXSZ(n_vertices, 0);
-            edge_lst = EdgeHashTable();
-            edge_lst.reserve(max_edges);
-            adj_map = unordered_map<etype, etype>(max_edges * 2);
+            edge_lst = EdgeHashTable(edge_lst_size);
+            adj_map = unordered_map<etype, etype>(edge_lst_size);
 
             elements = vector<shared_ptr<NodeEdge>>(max_edges);
             edge_free = vector<int32_t>(max_edges);
@@ -220,6 +221,7 @@ namespace dynamic_ktree {
         }
 
         EdgeHashTable edge_lst;
+        uint edge_lst_size = 0;
         unordered_map<etype, etype> adj_map; // x -> next
         vector<shared_ptr<NodeEdge>> elements; // next and prev
 
