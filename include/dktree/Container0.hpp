@@ -55,7 +55,7 @@ namespace dynamic_ktree {
             return adj_map.find(x) != adj_map.end();
         }
 
-        bool contains(etype x, etype y) {
+        bool contains(etype x, etype y) { //if it is deletd check also in edge_free
             return edge_lst.contains(x, y);
         }
 

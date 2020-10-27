@@ -12,15 +12,15 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 10000;
+    unsigned int n_vertices = 100000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
 //    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
-    dynamic_ktree::DKtree < 2 > graph(n_vertices);
+    dynamic_ktree::DKtree <2> graph(n_vertices);
 //    dynamic_ktree::DKtree_background<2> graph(n_vertices);
-    uint edges = 0;
+    vector<tuple<etype, etype>> edges;
 
     if (test_case.is_open()) {
         std::string line;
@@ -35,9 +35,10 @@ TEST(ReadTest, ReadFromDataset) {
             etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
                 clock_t aux = clock();
+                cout << "x:" << x << "    y:" << y << endl;
                 graph.add_edge(x, y);
                 end_add += clock() - aux;
-                edges++;
+                edges.emplace_back(tuple<etype,etype>(x,y));
             }
         }
 
@@ -46,51 +47,66 @@ TEST(ReadTest, ReadFromDataset) {
 //        dynamic_ktree::DKtree<2> graph2;
 //        graph2.load(ss, "./", false);
         cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
+
+        for(auto edge : edges) {
+            etype  x = get<0>(edge);
+            etype  y = get<1>(edge);
+            ASSERT_TRUE(graph.contains(x,y));
+
+            graph.del_edge(x, y);
+
+            cout << "x:" << x << "    y:" << y << endl;
+            ASSERT_FALSE(graph.contains(x,y));
+        }
+
     } else {
         cout << "Unable to open file";
         FAIL();
     }
 }
 
-//TEST(a, v) {
-//    std::stringstream ss;
-//    dynamic_ktree::DKtree < 2 > graph, graph2;
-////    graph.load(ss, "./", false);
-//    graph2.load(ss, "./", false);
-//
-//    unsigned int n_vertices = 10000;
-//    std::ostringstream path;
-//    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-//    ifstream test_case(path.str());
-//
-////    clock_t start = 0;
-//    clock_t start2 = 0;
-//    if (test_case.is_open()) {
-//        std::string line;
-//        vector<std::string> substrings;
-//        const std::string delims = " ";
-//
-//        while (getline(test_case, line)) {
-//            split(line, substrings, delims);
-//
-//            etype x = (etype) stoi(substrings[1]);
-//            etype y = (etype) stoi(substrings[2]);
-//            if (substrings[0] == "a") {
-//                int n_edges = graph2.get_number_edges();
-//                clock_t aux2 = clock();
-//                graph2.del_edge_new(x, y);
-//                start2 += clock() - aux2;
-//                ASSERT_EQ(n_edges-1, graph2.get_number_edges());
-//            }
-//        }
-//
-////        ASSERT_EQ(graph.get_number_edges(), 0);
-//        ASSERT_EQ(graph2.get_number_edges(), 0);
-////        cout << "TOTAL TIME old delete" << (float) (start) / CLOCKS_PER_SEC << endl;
-//        cout << "TOTAL TIME new delete" << (float) (start2) / CLOCKS_PER_SEC << endl;
-//
-//    }
-//}
+TEST(a, v) {
+    std::stringstream ss;
+    dynamic_ktree::DKtree < 2 > graph;
+    graph.load(ss, "./", false);
+
+    unsigned int n_vertices = 100000;
+    std::ostringstream path;
+    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+    ifstream test_case(path.str());
+
+//    clock_t start = 0;
+    clock_t start2 = 0;
+    vector<tuple<etype, etype>> edges;
+    if (test_case.is_open()) {
+        std::string line;
+        vector<std::string> substrings;
+        const std::string delims = " ";
+
+        while (getline(test_case, line)) {
+            split(line, substrings, delims);
+
+            etype x = (etype) stoi(substrings[1]);
+            etype y = (etype) stoi(substrings[2]);
+            if (substrings[0] == "a") {
+                clock_t aux2 = clock();
+                graph.del_edge(x, y);
+                start2 += clock() - aux2;
+                edges.emplace_back(tuple<etype,etype>(x,y));
+            }
+        }
+
+        for(auto item: edges) {
+            etype  x = get<0>(item);
+            etype  y = get<1>(item);
+            cout << "x:" << x << "  y:" << y << endl;
+            ASSERT_FALSE(graph.contains(x,y));
+        }
+//        cout << "TOTAL TIME old delete" << (float) (start) / CLOCKS_PER_SEC << endl;
+        cout << "TOTAL TIME new delete" << (float) (start2) / CLOCKS_PER_SEC << endl;
+
+    }
+}
 
 //TEST(ReadTestK2TREE, ReadFromDatasetK2TREE) {
 //    std::stringstream ss;
