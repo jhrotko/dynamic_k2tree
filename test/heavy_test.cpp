@@ -15,8 +15,8 @@ TEST(ReadTest, ReadFromDataset) {
     unsigned int n_vertices = 100000;
     std::ostringstream path;
 
-//    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
+    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+//    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
     dynamic_ktree::DKtree <2> graph(n_vertices);
 //    dynamic_ktree::DKtree_background<2> graph(n_vertices);
@@ -47,20 +47,20 @@ TEST(ReadTest, ReadFromDataset) {
         graph.serialize(ss);
         cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
 
+        clock_t del = 0;
         for(auto edge : edges) {
             etype  x = get<0>(edge);
             etype  y = get<1>(edge);
 
-
-            if (x == 10861&& y == 10812) {
-                cout << endl;
-            }
-            ASSERT_TRUE(graph.contains(x,y));
+//            ASSERT_TRUE(graph.contains(x,y));
+            clock_t aux = clock();
             graph.del_edge(x, y);
-            cout << "x:" << x << "    y:" << y << endl;
-            ASSERT_FALSE(graph.contains(x,y));
-
+            del += clock() - aux;
+//            cout << "x:" << x << "    y:" << y << endl;
+//            ASSERT_FALSE(graph.contains(x,y));
         }
+        cout << "TOTAL TIME " << (float) (del) / CLOCKS_PER_SEC << endl;
+
 
     } else {
         cout << "Unable to open file";
