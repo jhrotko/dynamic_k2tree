@@ -51,6 +51,7 @@ TEST(ReadTest, ReadFromDataset) {
             etype  x = get<0>(edge);
             etype  y = get<1>(edge);
 
+            ASSERT_TRUE(graph.contains(x,y));
             graph.del_edge(x, y);
             cout << "x:" << x << "    y:" << y << endl;
             ASSERT_FALSE(graph.contains(x,y));
