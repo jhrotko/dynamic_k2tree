@@ -35,26 +35,23 @@ TEST(ReadTest, ReadFromDataset) {
             etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
                 clock_t aux = clock();
-                cout << "x:" << x << "    y:" << y << endl;
+
                 graph.add_edge(x, y);
                 end_add += clock() - aux;
+
                 edges.emplace_back(tuple<etype,etype>(x,y));
             }
         }
 
         std::stringstream ss;
         graph.serialize(ss);
-//        dynamic_ktree::DKtree<2> graph2;
-//        graph2.load(ss, "./", false);
         cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
 
         for(auto edge : edges) {
             etype  x = get<0>(edge);
             etype  y = get<1>(edge);
-            ASSERT_TRUE(graph.contains(x,y));
 
             graph.del_edge(x, y);
-
             cout << "x:" << x << "    y:" << y << endl;
             ASSERT_FALSE(graph.contains(x,y));
         }
@@ -75,7 +72,6 @@ TEST(a, v) {
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
     ifstream test_case(path.str());
 
-//    clock_t start = 0;
     clock_t start2 = 0;
     vector<tuple<etype, etype>> edges;
     if (test_case.is_open()) {

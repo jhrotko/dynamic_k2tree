@@ -179,28 +179,7 @@ namespace dynamic_ktree {
                 }
 
                 shared_ptr<k_tree> tmp;
-                if (C0.size() == 0) {
-                    tmp = nullptr;
-                    uint j;
-                    for (j = 0; j <= i; ++j) {
-                        if (k_collection[j] != nullptr) {
-                            tmp = k_collection[j];
-                            k_collection[j].reset();
-                            break;
-                        }
-                    }
-
-                    if (tmp != nullptr && j <= i) {
-                        for (j = j+1; j <= i; ++j) {
-                            if (k_collection[j] != nullptr) {
-                                tmp->unionOp(k_collection[j]);
-                                k_collection[j].reset();
-                            }
-                        }
-                        k_collection[i] = tmp;
-                    }
-
-                } else {
+                if (C0.size() > 0) {
                     //Add new link...
                     vector<tuple<uint64_t, uint64_t>> converted;
                     for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
@@ -211,16 +190,14 @@ namespace dynamic_ktree {
                     }
                     tmp = make_shared<k_tree>(converted, n_vertices);
                     C0.clean();
-
-
-                    for (uint j = 0; j <= i; ++j) {
-                        if (k_collection[j] != nullptr) {
-                            tmp->unionOp(k_collection[j]);
-                            k_collection[j].reset();
-                        }
-                    }
-                    k_collection[i] = tmp;
                 }
+                for (uint j = 0; j <= i; ++j) {
+                    if (k_collection[j] != nullptr) {
+                        tmp->unionOp(k_collection[j]);
+                        k_collection[j].reset();
+                    }
+                }
+                k_collection[i] = tmp;
             }
         }
     }
