@@ -58,7 +58,14 @@ namespace dynamic_ktree {
         }
 
         bool contains(etype x, etype y) { //if it is deletd check also in edge_free
-            return edge_lst.contains(x, y);
+            if(edge_lst.contains(x,y)) {
+                int32_t m = edge_lst.find(x, y);
+                 if(m != -1 && edge_free[m] == -1)
+                     return false;
+                 else
+                     return true;
+            }
+            return false;
         }
 
         void insert(etype x, etype y, uint64_t n_edges) {

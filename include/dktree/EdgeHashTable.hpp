@@ -21,33 +21,16 @@ using type = uint32_t;
 
 class NodeEdge {
 private:
-    type _x, _y, _next, _prev;
+    etype _next, _prev;
     bool _next_set, _prev_set;
 public:
     NodeEdge() : _next_set(false), _prev_set(false) {}
-    NodeEdge(type x, type y) : _x(x), _y(y), _next_set(false), _prev_set(false) {}
 
-    type x() const {
-        return _x;
-    }
-
-    void x(type value) {
-        _x = value;
-    }
-
-    type y() const {
-        return _y;
-    }
-
-    void y(type value) {
-        _y = value;
-    }
-
-    type next() const {
+    etype next() const {
         return _next;
     }
 
-    void next(type value) {
+    void next(etype value) {
         _next = value;
         _next_set = true;
     }
@@ -56,11 +39,11 @@ public:
         return _next_set;
     }
 
-    type prev() const {
+    etype prev() const {
         return _prev;
     }
 
-    void prev(type value) {
+    void prev(etype value) {
         _prev = value;
         _prev_set = true;
     }
@@ -97,8 +80,19 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
-        ar & _x;
-        ar & _y;
+        ar & _next_set;
+        ar & _prev_set;
+        ar & _next;
+        ar & _prev;
+    }
+
+    template<class Archive>
+    void load(Archive & ar, const unsigned int)
+    {
+        ar >> _next_set;
+        ar >> _prev_set;
+        ar >> _next;
+        ar >> _prev;
     }
 };
 
@@ -106,7 +100,7 @@ class EdgeHashTable {
 private:
     class Hash {
     public:
-        unsigned int operator()(const NodeEdge &e) const {
+        unsigned int operator()(Edge const &e) const {
             unsigned long key = edge_to_uint64(e);
             key = (~key) + (key << 18);
             key = key ^ (key >> 31);
@@ -118,7 +112,7 @@ private:
             return (unsigned int) key;
         }
 
-        unsigned long edge_to_uint64(const NodeEdge &e) const {
+        unsigned long edge_to_uint64(Edge const &e) const {
             unsigned long concat_edge = e.x();
             concat_edge <<= 32;
             concat_edge |= e.y();
@@ -129,13 +123,13 @@ private:
 
     class Comparator {
     public:
-        bool operator()(NodeEdge const &e1, NodeEdge const &e2) const {
+        bool operator()(Edge const &e1, Edge const &e2) const {
             return e1 == e2;
         }
     };
 
 protected:
-    using h_table = unordered_map<NodeEdge, unsigned int, Hash, Comparator>;
+    using h_table = unordered_map<Edge, unsigned int, Hash, Comparator>;
     h_table ht;
 public:
 //    friend class boost::serialization::access;
@@ -145,23 +139,23 @@ public:
         ht.reserve(size);
     }
 
-    EdgeHashTable(vector<NodeEdge> &new_elements) {
+    EdgeHashTable(vector<Edge> &new_elements) {
         for (unsigned int i = 0; i < new_elements.size(); ++i)
             ht[new_elements[i]] = i;
     }
 
     void insert(etype x, etype y, unsigned int index) {
-        ht[NodeEdge(x, y)] = index;
+        ht[Edge(x, y)] = index;
     }
 
     void reserve(uint size) {
         ht.reserve(size);
     }
 
-    // Returns the index of the index where the NodeEdge is.
+    // Returns the index of the index where the Edge is.
     // Returns -1 in case it cannot find
     int64_t find(etype x, etype y) const {
-        h_table::const_iterator iterator = ht.find(NodeEdge(x, y));
+        h_table::const_iterator iterator = ht.find(Edge(x, y));
         if (iterator == ht.end())
             return -1;
         return iterator->second;
@@ -172,14 +166,14 @@ public:
     }
 
     void erase(etype x, etype y) {
-        ht.erase(NodeEdge(x, y));
+        ht.erase(Edge(x, y));
     }
 
     size_t size() {
         return ht.size();
     }
 
-    unsigned int &operator[](const NodeEdge &edge) {
+    unsigned int &operator[](const Edge &edge) {
         return ht[edge];
     }
 
