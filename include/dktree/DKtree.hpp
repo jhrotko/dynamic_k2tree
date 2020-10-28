@@ -190,11 +190,11 @@ namespace dynamic_ktree {
                     }
                     tmp = make_shared<k_tree>(converted, n_vertices);
                     C0.clean();
-                }
-                for (uint j = 0; j <= i; ++j) {
-                    if (k_collection[j] != nullptr) {
-                        tmp->unionOp(k_collection[j]);
-                        k_collection[j].reset();
+                    for (uint j = 0; j <= i; ++j) {
+                        if (k_collection[j] != nullptr) {
+                            tmp->unionOp(k_collection[j]);
+                            k_collection[j].reset();
+                        }
                     }
                 }
                 k_collection[i] = tmp;
