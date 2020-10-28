@@ -114,7 +114,7 @@ namespace dynamic_ktree {
         vector<tuple<uint64_t, uint64_t>> converted;
         for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
             if (C0.edge_free[j] != -1) {
-                NodeEdge converted_edge = *C0.elements[C0.edge_free[j]];
+                Edge converted_edge = C0.elements_nodes[C0.edge_free[j]];
                 converted.emplace_back(tuple<uint64_t, uint64_t>(converted_edge.x(), converted_edge.y()));
             }
         }
@@ -184,7 +184,7 @@ namespace dynamic_ktree {
                     vector<tuple<uint64_t, uint64_t>> converted;
                     for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
                         if (C0.edge_free[j] != -1) {
-                            NodeEdge converted_edge = *C0.elements[C0.edge_free[j]];
+                            Edge converted_edge = C0.elements_nodes[C0.edge_free[j]];
                             converted.emplace_back(tuple<uint64_t, uint64_t>(converted_edge.x(), converted_edge.y()));
                         }
                     }

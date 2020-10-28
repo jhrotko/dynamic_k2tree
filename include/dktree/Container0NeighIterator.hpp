@@ -1,7 +1,3 @@
-//
-// Created by joana on 04/09/20.
-//
-
 #ifndef DYNAMIC_K2TREE_CONTAINER0NEIGHITERATOR_HPP
 #define DYNAMIC_K2TREE_CONTAINER0NEIGHITERATOR_HPP
 
@@ -27,7 +23,7 @@ namespace dynamic_ktree {
             _C0 = C0;
             if (_C0->adj_contains(x) && !_C0->elements.empty()) {
                 k = _C0->adj_map.find(x)->second;
-                _ptr = _C0->elements[k]->y();
+                _ptr = _C0->elements_nodes[k].y();
             } else {
                 _ptr = -1;
             }
@@ -44,9 +40,9 @@ namespace dynamic_ktree {
         }
 
         Container0NeighIterator &operator++() {
-            if (_C0->elements[k]->has_next()) {
-                k = _C0->elements[k]->next();
-                _ptr = _C0->elements[k]->y();
+            if (_C0->elements[k].has_next()) {
+                k = _C0->elements[k].next();
+                _ptr = _C0->elements_nodes[k].y();
             } else {
                 end();
             }
@@ -65,7 +61,6 @@ namespace dynamic_ktree {
         bool operator!=(const Container0NeighIterator &rhs) const {
             return !(*this == rhs);
         }
-
     };
 
 }

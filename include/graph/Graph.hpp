@@ -51,38 +51,38 @@ public:
     virtual GraphIterator<GraphNeighbourIteratorImpl> &neighbour_begin(etype node) = 0;
     virtual GraphIterator<GraphNeighbourIteratorImpl> &neighbour_end() = 0;
 };
-//
-//class Edge {
-//private:
-//    etype x_, y_;
-//public:
-//    Edge() {}
-//    Edge(etype x, etype y) {
-//        x_ = x;
-//        y_ = y;
-//    }
-//
-//    etype x() const {
-//        return x_;
-//    }
-//    etype y() const {
-//        return y_;
-//    }
-//
-//    bool operator==(const Edge &rhs) const {
-//        return x() == rhs.x() && y() == rhs.y();
-//    }
-//    bool operator!=(const Edge &rhs) const {
-//        return !(*this == rhs);
-//    }
-//
-//    friend class boost::serialization::access;
-//    template<class Archive>
-//    void serialize(Archive & ar, const unsigned int)
-//    {
-//        ar & x_;
-//        ar & y_;
-//    }
-//};
+
+class Edge {
+private:
+    etype x_, y_;
+public:
+    Edge() {}
+    Edge(etype x, etype y) {
+        x_ = x;
+        y_ = y;
+    }
+
+    etype x() const {
+        return x_;
+    }
+    etype y() const {
+        return y_;
+    }
+
+    bool operator==(const Edge &rhs) const {
+        return x() == rhs.x() && y() == rhs.y();
+    }
+    bool operator!=(const Edge &rhs) const {
+        return !(*this == rhs);
+    }
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & x_;
+        ar & y_;
+    }
+};
 
 #endif //_GRAPH_INTERFACE_HPP
