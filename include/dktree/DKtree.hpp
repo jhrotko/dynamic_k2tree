@@ -155,7 +155,6 @@ namespace dynamic_ktree {
                     n_total_edges--;
 
                     uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
-//                    cout << "l:" << l << endl;
                     n_total_marked += k_marked_edges;
 
                     if (k_marked_edges == k_collection[l]->total_edges()) {
@@ -165,10 +164,8 @@ namespace dynamic_ktree {
                     break;
                 }
             }
-//            cout << "n_marked:" << n_total_marked << endl;
             /* Rebuild data structure... */
             if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
-//                cout << "rebuilding" << endl;
                 size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
                 size_t i = 0;
                 for (; i < R; ++i) {
