@@ -20,8 +20,8 @@ TEST(ReadTest, ReadFromDataset) {
 //    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
 //    dynamic_ktree::DKtree <2> graph(n_vertices);
-    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
-//    dynamic_ktree::DKtree_background<2> graph(n_vertices);
+//    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
+    dynamic_ktree::DKtree_background<2> graph(n_vertices);
     vector<tuple<etype, etype>> edges;
 
     if (test_case.is_open()) {
