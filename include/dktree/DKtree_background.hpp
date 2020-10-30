@@ -64,7 +64,7 @@ namespace dynamic_ktree {
         dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
 
         std::thread background_union;
-        array<k_tree, R> k_collection_background;
+        array<shared_ptr<k_tree>, R> k_collection_background;
         std::atomic<bool> run, needs_work;
         vector<tuple<uint64_t, uint64_t>> converted;
         uint tmp_i, max_r_background, max_size_background;
@@ -134,9 +134,9 @@ namespace dynamic_ktree {
             max_r_background = max_r;
             for (size_t j = 0; j < R; ++j) {
                 if(k_collection[j] != nullptr)
-                    k_collection_background[j] = *k_collection[j];
+                    k_collection_background[j] = k_collection[j];
                 else
-                    k_collection_background[j] = k_tree();
+                    k_collection_background[j] = nullptr;
             }
             needs_work = true;
 
@@ -182,7 +182,7 @@ namespace dynamic_ktree {
             // check in other containers
             if (needs_work) {
                 for (size_t i = 0; i <= max_r_background; i++)
-                    if (k_collection_background[i].get_number_nodes() > 0 && k_collection_background[i].adj(x, y))
+                    if (k_collection_background[i] != nullptr && k_collection_background[i]->adj(x, y))
                         return true;
             } else {
                 for (size_t i = 0; i <= max_r; i++)
