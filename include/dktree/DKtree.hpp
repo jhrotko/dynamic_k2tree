@@ -171,7 +171,7 @@ namespace dynamic_ktree {
                 for (; i < R; ++i) {
                     if (k_collection[i] != nullptr)
                         max_size += k_collection[i]->total_edges();
-                    if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
+                    if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > n_total_edges  + 1)
                         break;
                 }
 
