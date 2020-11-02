@@ -32,6 +32,38 @@ using namespace k2_tree_ns;
 namespace dynamic_ktree {
 #define R 8
 
+    template<class dktree_background, class k_tree>
+    void union_collection(dktree_background &graph) {
+        while (graph.run) {
+            if (graph.needs_work) {
+                //Add new link...
+                shared_ptr<k_tree> tmp = make_shared<k_tree>(graph.converted, graph.n_vertices);
+                graph.converted.clear();
+
+                size_t i, max_size;
+                max_size = MAXSZ(graph.max_size_background, 0);
+                for (i = 0; i < R; ++i) {
+                    if (graph.k_collection[i] != nullptr)
+                        max_size += graph.k_collection[i]->total_edges();
+                    if (MAXSZ(graph.max_size_background, i + 1) > max_size + 1)
+                        break;
+                }
+                if (i >= R)
+                    throw logic_error("Error: collection too big...");
+                graph.max_r = max(i, graph.max_r);
+
+                for (size_t j = 0; j <= i; ++j) {
+                    if (graph.k_collection[j] != nullptr) {
+                        tmp->unionOp(graph.k_collection[j]);
+                        graph.k_collection[j].reset();
+                    }
+                }
+                graph.k_collection[i] = tmp;
+                graph.needs_work = false;
+            }
+        }
+    }
+
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
             typename t_rank = typename t_bv::rank_1_type,
@@ -53,23 +85,21 @@ namespace dynamic_ktree {
         using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree_background<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it, Container0,
                 Container0NeighIterator<Container0>>;
     private:
-        uint max_r = 0;
-        uint64_t n_vertices = 0;
         uint64_t n_total_edges = 0;
-
         Container0 C0;
-
         dktree_edge_it it_edge_begin, it_end;
         dktree_node_it it_node_begin, it_node_end;
         dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
+        tuple<etype, etype> tmp_edge;
 
+    public:
+        uint max_r = 0;
+        uint64_t n_vertices = 0;
         std::thread background_union;
-        array<shared_ptr<k_tree>, R> k_collection_background;
+        array<k_tree, R> k_collection_background;
         std::atomic<bool> run, needs_work;
         vector<tuple<uint64_t, uint64_t>> converted;
         uint tmp_i, max_r_background, max_size_background;
-
-    public:
         array<shared_ptr<k_tree>, R> k_collection;
 
         DKtree_background() : background_union() {}
@@ -89,7 +119,9 @@ namespace dynamic_ktree {
             it_neighbour_end = dktree_neighbour_it().end();
             run = true;
             needs_work = false;
-            background_union = std::thread([&]() { union_collection(); });
+            background_union = std::thread([&]() {
+                union_collection<DKtree_background<k, t_bv, t_rank, l_rank>, k_tree>(*this);
+            });
             background_union.detach();
         }
 
@@ -132,47 +164,17 @@ namespace dynamic_ktree {
 
             max_size_background = max(n_vertices, n_total_edges);
             max_r_background = max_r;
+            tmp_edge = tuple<etype, etype>(x,y);
             for (size_t j = 0; j < R; ++j) {
                 if(k_collection[j] != nullptr)
-                    k_collection_background[j] = k_collection[j];
+                    k_collection_background[j] = *k_collection[j];
                 else
-                    k_collection_background[j] = nullptr;
+                    k_collection_background[j] = k_tree();
             }
             needs_work = true;
 
             C0.clean();
             ++n_total_edges;
-        }
-
-        void union_collection() {
-            while (run) {
-                if (needs_work) {
-                    //Add new link...
-                    shared_ptr<k_tree> tmp = make_shared<k_tree>(converted, n_vertices);
-                    converted.clear();
-
-                    size_t i, max_size;
-                    max_size = MAXSZ(max_size_background, 0);
-                    for (i = 0; i < R; ++i) {
-                        if (k_collection[i] != nullptr)
-                            max_size += k_collection[i]->total_edges();
-                        if (MAXSZ(max_size_background, i + 1) > max_size + 1)
-                            break;
-                    }
-                    if (i >= R)
-                        throw logic_error("Error: collection too big...");
-                    max_r = max(i, max_r);
-
-                    for (size_t j = 0; j <= i; ++j) {
-                        if (k_collection[j] != nullptr) {
-                            tmp->unionOp(k_collection[j]);
-                            k_collection[j].reset();
-                        }
-                    }
-                    k_collection[i] = tmp;
-                    needs_work = false;
-                }
-            }
         }
 
         virtual bool contains(etype x, etype y) {
@@ -181,8 +183,10 @@ namespace dynamic_ktree {
             }
             // check in other containers
             if (needs_work) {
+                if(get<0>(tmp_edge) == x && get<1>(tmp_edge) == y)
+                    return true;
                 for (size_t i = 0; i <= max_r_background; i++)
-                    if (k_collection_background[i] != nullptr && k_collection_background[i]->adj(x, y))
+                    if (k_collection_background[i].get_number_nodes() > 0 && k_collection_background[i].adj(x, y))
                         return true;
             } else {
                 for (size_t i = 0; i <= max_r; i++)
@@ -243,9 +247,11 @@ namespace dynamic_ktree {
             C0.list_neighbours(x, neighbours);
 
             if (needs_work) {
+                if(get<0>(tmp_edge) == x)
+                    neighbours.push_back(get<1>(tmp_edge));
                 for (size_t l = 0; l <= max_r; l++)
-                    if (k_collection_background[l] != nullptr) {
-                        vector<idx_type> lst = k_collection_background[l]->neigh(x);
+                    if (k_collection_background[l] != k_tree()) {
+                        vector<idx_type> lst = k_collection_background[l].neigh(x);
                         neighbours.insert(neighbours.end(), lst.begin(), lst.end()); //append
                     }
             } else {
