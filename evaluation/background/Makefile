@@ -2,8 +2,10 @@ add_background:
 	g++ -o add_background add_background.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
 add:
 	g++ -o add add.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
+add_delay:
+	g++ -o add_delay add_delay.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
 clean:
-	rm add_background add
+	rm add_background add add_delay
 #memory:
 #	valgrind --tool=massif ./create ../datasets/dmgen/prepared_datasets/dmgen/10000/10000.tsv 10000 bla
 #	echo "ms_print massif.out... > analize.txt"
