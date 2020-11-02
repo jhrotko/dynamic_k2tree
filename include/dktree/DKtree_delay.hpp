@@ -89,14 +89,18 @@ namespace dynamic_ktree {
 
     uint union_i = 0;
     uint union_final = 0;
+    tuple<etype, etype> tmp_edge;
     shared_ptr<k_tree> tmp;
-    array<shared_ptr<k_tree>, 8> k_collection_copy;
+    array<k_tree, 8> k_collection_copy;
 
     void union_delay() {
         for (; union_i <= union_final; ++union_i) {
             if (k_collection[union_i] != nullptr) {
                 tmp->unionOp(k_collection[union_i]);
                 k_collection[union_i].reset();
+                if(union_i == union_final)
+                    k_collection[union_final] = tmp;
+                ++union_i;
                 return;
             }
         }
@@ -104,7 +108,7 @@ namespace dynamic_ktree {
     }
 
     bool work_done() const {
-        return union_i >= union_final;
+        return union_i > union_final;
     }
 
     virtual void add_edge(etype x, etype y) {
@@ -122,6 +126,7 @@ namespace dynamic_ktree {
         }
 
         if (work_done()) {
+            tmp_edge = tuple<etype, etype>(x,y);
             size_t i = 0;
             for (; i < R; i++) {
                 if (k_collection[i] != nullptr)
@@ -147,10 +152,17 @@ namespace dynamic_ktree {
             converted.emplace_back(tuple<uint64_t, uint64_t>(x, y));
             tmp = make_shared<k_tree>(converted, n_vertices);
             C0.clean();
-            k_collection_copy = k_collection;
+
+            for (size_t j = 0; j < R; ++j) {
+                if(k_collection[j] != nullptr)
+                    k_collection_copy[j] = *k_collection[j];
+                else
+                    k_collection_copy[j] = k_tree();
+            }
+
             union_delay();
         } else {
-            assert(false);
+            assert(false); // cannot happen
         }
         n_total_edges++;
     }
@@ -165,8 +177,10 @@ namespace dynamic_ktree {
                 if (k_collection[i] != nullptr && k_collection[i]->adj(x, y))
                     return true;
         } else {
+            if(get<0>(tmp_edge) == x && get<1>(tmp_edge) == y)
+                return true;
             for (size_t i = 0; i < R; i++)
-                if (k_collection_copy[i] != nullptr && k_collection_copy[i]->adj(x, y))
+                if (k_collection_copy[i].get_number_nodes() > 0 && k_collection_copy[i].adj(x, y))
                     return true;
         }
         return false;
@@ -236,6 +250,8 @@ namespace dynamic_ktree {
         C0.list_neighbours(x, neighbours);
 
         if (work_done()) {
+            if(get<0>(tmp_edge) == x)
+                neighbours.push_back(get<1>(tmp_edge));
             for (size_t l = 0; l <= max_r; l++)
                 if (k_collection[l] != nullptr) {
                     vector<idx_type> lst = k_collection[l]->neigh(x);
@@ -243,8 +259,8 @@ namespace dynamic_ktree {
                 }
         } else {
             for (size_t l = 0; l <= max_r; l++)
-                if (k_collection_copy[l] != nullptr) {
-                    vector<idx_type> lst = k_collection_copy[l]->neigh(x);
+                if (k_collection_copy[l] != k_tree()) {
+                    vector<idx_type> lst = k_collection_copy[l].neigh(x);
                     neighbours.insert(neighbours.end(), lst.begin(), lst.end());
                 }
         }

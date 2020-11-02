@@ -38,9 +38,13 @@ TEST(ReadTest, ReadFromDataset) {
             if (substrings[0] == "a") {
                 clock_t aux = clock();
 
+                if(x == 99 && y == 1) {
+                    cout << endl;
+                }
                 graph.add_edge(x, y);
                 end_add += clock() - aux;
-
+                cout << "x:" << x << "    y:" << y << endl;
+                ASSERT_TRUE(graph.contains(x,y));
                 edges.emplace_back(tuple<etype,etype>(x,y));
             }
         }
@@ -54,11 +58,11 @@ TEST(ReadTest, ReadFromDataset) {
 //            etype  x = get<0>(edge);
 //            etype  y = get<1>(edge);
 //
+//            cout << "x:" << x << "    y:" << y << endl;
 //            ASSERT_TRUE(graph.contains(x,y));
 //            clock_t aux = clock();
 //            graph.del_edge(x, y);
 //            del += clock() - aux;
-////            cout << "x:" << x << "    y:" << y << endl;
 //            ASSERT_FALSE(graph.contains(x,y));
 //        }
 //        cout << "TOTAL TIME " << (float) (del) / CLOCKS_PER_SEC << endl;
