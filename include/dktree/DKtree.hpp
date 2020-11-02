@@ -152,20 +152,20 @@ namespace dynamic_ktree {
             for (size_t l = 0; l < R; l++)
                 if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                     n_total_edges--;
-		    break;
-		}
+                    break;
+                }
 
             uint64_t n_total_marked = 0;
             for (size_t l = 0; l < R; l++)
                 if (k_collection[l] != nullptr) {
-		    uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
-	            n_total_marked += k_marked_edges;
+                    uint64_t k_marked_edges = k_collection[l]->get_marked_edges();
+                    n_total_marked += k_marked_edges;
 
-        	    if (k_marked_edges == k_collection[l]->total_edges()) {
+                    if (k_marked_edges == k_collection[l]->total_edges()) {
                         n_total_marked -= k_marked_edges;
-	                k_collection[l].reset();
-        	    }
-            	}
+                        k_collection[l].reset();
+                    }
+                }
 
             /* Rebuild data structure... */
             if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
@@ -179,10 +179,10 @@ namespace dynamic_ktree {
                 }
 
                 shared_ptr<k_tree> tmp;
-		bool oo = false;
-                if(C0.size() == 0) {
-		    oo = contains(1, 1);
-		    add_edge(1, 1);
+                bool oo = false;
+                if (C0.size() == 0) {
+                    oo = contains(1, 1);
+                    add_edge(1, 1);
                     //tmp = make_shared<k_tree>(n_vertices);
                 }
                 if (C0.size() > 0) {
@@ -204,8 +204,8 @@ namespace dynamic_ktree {
                     }
                 }
                 k_collection[i] = tmp;
-		if (! oo) k_collection[i]->erase(1, 1);
-	    }
+                if (!oo) k_collection[i]->erase(1, 1);
+            }
         }
     }
 
