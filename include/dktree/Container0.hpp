@@ -46,7 +46,6 @@ namespace dynamic_ktree {
 
             elements = vector<NodeEdge>(max_edges);
             elements_nodes = vector<Edge>(max_edges);
-            edge_free = vector<int32_t>(max_edges);
 
             for (etype i = 0; i < max_edges; i++) {
                 edge_free[i] = i;
