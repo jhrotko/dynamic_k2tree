@@ -38,9 +38,9 @@ TEST(ReadTest, ReadFromDataset) {
             etype x = (etype) stoi(substrings[1]);
             etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
-//                if(x == 80 && y == 111) {
-//                    cout << endl;
-//                }
+                if(x == 230 && y == 103) {
+                    cout << endl;
+                }
 
                 clock_t aux = clock();
                 graph.add_edge(x, y);
