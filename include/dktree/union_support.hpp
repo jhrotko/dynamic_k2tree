@@ -48,20 +48,9 @@ namespace dynamic_ktree {
             tmp->k_t_rank = k_rank(&tmp->k_t);
             tmp->k_l_rank = k_rank(&tmp->k_l);
             tmp->k_height = std::ceil(std::log(tmp->get_number_nodes()) / std::log(tmp->k_k));
-            tmp->k_height = tmp->k_height > 1 ?tmp-> k_height : 1;
+            tmp->k_height = tmp->k_height > 1 ? tmp-> k_height : 1;
             tmp->set_edges(n_total_edges);
             n_total_edges = 0;
-//            cout << "T:";
-//            for (auto el:tmp->k_t) {
-//                cout << el;
-//            }
-//            cout << endl;
-//
-//            cout << "L:";
-//            for (auto el:tmp->k_l) {
-//                cout << el;
-//            }
-//            cout << endl;
         }
 
     public:
