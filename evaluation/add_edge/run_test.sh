@@ -39,14 +39,14 @@ eval_memory() {
 
 declare -a X_time=()             #n+m
 declare -a X_mem=()              #n+m
-declare -a TIME_BACKGROUND=()    #time background
-declare -a MEMORY_BACKGROUND=()  #memory background
-declare -a TIME=()               #time background
-declare -a MEMORY=()             #memory background
-declare -a TIME_DELAY=()         #time background
-declare -a MEMORY_DELAY=()       #memory background
-declare -a TIME_DELAY_MUNRO=()   #time background
-declare -a MEMORY_DELAY_MUNRO=() #memory background
+declare -a TIME_BACKGROUND=()    #time add_edge
+declare -a MEMORY_BACKGROUND=()  #memory add_edge
+declare -a TIME=()               #time add_edge
+declare -a MEMORY=()             #memory add_edge
+declare -a TIME_DELAY=()         #time add_edge
+declare -a MEMORY_DELAY=()       #memory add_edge
+declare -a TIME_DELAY_MUNRO=()   #time add_edge
+declare -a MEMORY_DELAY_MUNRO=() #memory add_edge
 i=0
 prepared_data() {
   for vertices in $(ls $DATASETDIR | sort --version-sort); do
@@ -90,6 +90,7 @@ plot_data_time() {
   set xlabel "log_k(n)log(m)"
   set yrange [$MIN:${TIME_DELAY_MUNRO[${i}]}]
   set ylabel "time"
+  set key left
   plot "$RUNS_DATA" using 1:2 with linespoints t "add edge parallel",\
        "$RUNS_DATA" using 1:4 with linespoints t "add edge",\
        "$RUNS_DATA" using 1:6 with linespoints t "add edge delay",\
@@ -102,11 +103,13 @@ plot_data_mem() {
   set terminal png
   set datafile separator whitespace
   set output 'add_($TYPE)_mem.png'
+  set rmargin at screen 0.90
   set title "Add edge Memory" font ",14" textcolor rgbcolor "royalblue"
   set xrange [0:${X_mem[${i}]}]
   set xlabel "n + m"
   set yrange [4300:${MEMORY[${i}]}]
   set ylabel "memory"
+  set key left
   plot "$RUNS_DATA" using 10:3 with linespoints t "add edge parallel",\
        "$RUNS_DATA" using 10:5 with linespoints t "add edge",\
        "$RUNS_DATA" using 10:7 with linespoints t "add edge delay",\

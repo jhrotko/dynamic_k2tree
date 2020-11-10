@@ -13,12 +13,12 @@ evaluation/union_op/50*
 evaluation/union_op/80*
 
 !evaluation/background/*.cpp
-evaluation/background/10*
-evaluation/background/50*
-evaluation/background/80*
-evaluation/background/add
-evaluation/background/add_background
-evaluation/background/add_delay
-evaluation/background/add_delay_munro
+evaluation/add_edge/10*
+evaluation/add_edge/50*
+evaluation/add_edge/80*
+evaluation/add_edge/add
+evaluation/add_edge/add_background
+evaluation/add_edge/add_delay
+evaluation/add_edge/add_delay_munro
 
 datasets/*
