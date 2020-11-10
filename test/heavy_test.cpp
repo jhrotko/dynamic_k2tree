@@ -14,7 +14,7 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 10000;
+    unsigned int n_vertices = 100;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
@@ -25,7 +25,7 @@ TEST(ReadTest, ReadFromDataset) {
 //    dynamic_ktree::DKtree_background<2> graph(n_vertices);
     dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices);
     vector<tuple<etype, etype>> edges;
-
+    double i = 0;
     if (test_case.is_open()) {
         std::string line;
         vector<std::string> substrings;
@@ -38,10 +38,7 @@ TEST(ReadTest, ReadFromDataset) {
             etype x = (etype) stoi(substrings[1]);
             etype y = (etype) stoi(substrings[2]);
             if (substrings[0] == "a") {
-                if(x == 230 && y == 103) {
-                    cout << endl;
-                }
-
+                ++i;
                 clock_t aux = clock();
                 graph.add_edge(x, y);
                 end_add += clock() - aux;
@@ -54,7 +51,7 @@ TEST(ReadTest, ReadFromDataset) {
 
 //        std::stringstream ss;
 //        graph.serialize(ss);
-        cout << "TOTAL TIME " << (float) (end_add) / CLOCKS_PER_SEC << endl;
+        cout << "TOTAL TIME " << (double) (end_add) / CLOCKS_PER_SEC / i << endl;
 
 //        clock_t del = 0;
 //        for(auto edge : edges) {
