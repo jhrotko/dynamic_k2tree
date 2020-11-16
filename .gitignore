@@ -17,9 +17,20 @@ evaluation/add_edge/10*
 evaluation/add_edge/50*
 evaluation/add_edge/80*
 evaluation/add_edge/add
+evaluation/add_edge/in-2004/*
+evaluation/add_edge/uk-2007-05@100000/*
+evaluation/add_edge/uk-2014-host/*
+evaluation/add_edge/eu-2015-host/*
 
 evaluation/delay_add_edge/add
 evaluation/delay_add_edge/*.txt
+evaluation/delay_add_edge/10*
+evaluation/delay_add_edge/50*
+evaluation/delay_add_edge/80*
+evaluation/delay_add_edge/in-2004/*
+evaluation/delay_add_edge/uk-2007-05@100000/*
+evaluation/delay_add_edge/uk-2014-host/*
+evaluation/delay_add_edge/eu-2015-host/*
 
 evaluation/contains/10*
 evaluation/contains/50*
