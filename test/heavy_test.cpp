@@ -14,11 +14,11 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 100;
+    unsigned int n_vertices = 100000;
     std::ostringstream path;
 
-    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-//    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
+//    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
+    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
 //    dynamic_ktree::DKtree <2> graph(n_vertices);
 //    dynamic_ktree::DKtree_delay<2> graph(n_vertices);

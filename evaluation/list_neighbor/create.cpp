@@ -3,7 +3,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include <sdsl/k2_tree.hpp>
+#include "../../include/dktree/DKtree.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
            const std::string &delims = " ") {
@@ -12,7 +12,7 @@ void split(const std::string &str, std::vector<std::string> &cont,
 
 int main(int argc, char *argv[]) {
     if (argc != 4) {
-        fprintf(stderr, "Usage: %s <path to dataset> <number of vertices> <filename for serialize k2tree>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <path to dataset> <number of vertices> <save folder name>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -20,8 +20,9 @@ int main(int argc, char *argv[]) {
     path << argv[1];
 
     std::ifstream test_case(path.str());
-    std::vector<std::tuple<uint64_t, uint64_t>> edges;
     unsigned int n_vertices = atoi(argv[2]);
+    dynamic_ktree::DKtree<2> tree(n_vertices);
+    double arcs = 0;
 
     if (test_case.is_open()) {
         std::string line;
@@ -31,26 +32,20 @@ int main(int argc, char *argv[]) {
         while (getline(test_case, line)) {
             split(line, substrings, delims);
 
-            uint64_t x = (uint64_t) stoi(substrings[1]);
-            uint64_t y = (uint64_t) stoi(substrings[2]);
+            uint x = (uint) stoi(substrings[1]);
+            uint y = (uint) stoi(substrings[2]);
             if (substrings[0] == "a") {
-                edges.emplace_back(x,y);
+                tree.add_edge(x, y);
+                arcs++;
             }
         }
     }
 
-    sdsl::k2_tree<2> ktree_test(edges, n_vertices);
-    std::ofstream ss(argv[3]);
-    if (ss.is_open())
-    {
-        ktree_test.serialize(ss);
-        ss.close();
-    }
-    else
-    {
-        std::cerr << "didn't write" << std::endl;
-    }
-    //n + m
-    cout << n_vertices + edges.size() << endl;
+    std::ofstream ss;
+    std::string folder(argv[3]);
+    tree.serialize(ss, folder);
+    ss.close();
+
+    std::cout << sqrt(arcs) << " " << n_vertices + arcs << std::endl;
     return 0;
 }
