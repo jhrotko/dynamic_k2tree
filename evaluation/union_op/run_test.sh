@@ -1,57 +1,63 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
-UNION_FILE="time_union.txt"
+TYPE="dmgen"
 UNION_DATA="time_union.data"
 
-create_serialized_tree() {
-  #  $1 - number of vertices of the current test file
-  ./create $DATASETDIR/$1/$1.tsv $1 $1/test.kt >>$UNION_FILE
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
+#declare -a WEBGRAPH=("eu-2015-host")
+#declare -a WEBGRAPH_NODES=(11264052)
+
+if [[ $1 != "-dmgen" && $1 != "-webgraph" && $1 != "" ]]; then
+  echo "Usage: ./run_test.sh [-dmgen/webgraph]"
+  exit
+elif [[ $1 == "-webgraph" ]]; then
+  DATASETDIR="../../datasets/webgraph"
+  TYPE="webgraph"
+fi
+
+declare -a TIME_COMPLEXITY=()
+create_serialized_tree() { #[create_serialized_test $dataset $vertice]
+#  ./create "$DATASETDIR/$1/$1.tsv" "$2" "$1/test.kt"
+  TIME_COMPLEXITY+=("$(./create "$DATASETDIR/$1/$1.tsv" "$2" "$1/test.kt")")
 }
 
+declare -a TIME=()
 eval_time_union() {
   #  time analisys -  run $RUN times and save it in array file
-  ./union $1/test.kt $1/test.kt >>$UNION_FILE
+  echo "$1"
+  TIME+=("$(./union "$1/test.kt" "$1/test.kt")")
 }
 
+declare -a MEMORY=()
+declare -a VERTICES=()
 eval_memory_union() {
   #  $1 - number of vertices of the current test file
-#  valgrind --tool=massif --massif-out-file=$1/$1.union.mem.out ./union $1/test.kt $1/test.kt
-  /usr/bin/time -v --output=$1/mem_union_$1.txt ./union $1/test.kt $1/test.kt
+  #  valgrind --tool=massif --massif-out-file=$1/$1.union.mem.out ./union $1/test.kt $1/test.kt
+  /usr/bin/time -v --output="$1/mem_union.txt" ./union "$1/test.kt" "$1/test.kt"
+  MEMORY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$1/mem_union.txt")")
+  VERTICES+=("$2")
   #  valgrind --tool=massif --massif-out-file=$vertices/$vertices.union.mem.out ./union $vertices/test.kt $vertices/test.kt
 }
 
-x=0
-y=0
 i=0
-declare -a Z=()
 prepared_data() {
-  n=0
-  for vertices in $(ls $DATASETDIR); do
-      Z+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' $vertices/mem_union_$vertices.txt)")
+  for el in "${TIME_COMPLEXITY[@]}"; do
+    echo "${TIME[${i}]} ${MEMORY[${i}]} ${VERTICES[${i}]} $el" >>$UNION_DATA
+    i=$((i + 1))
   done
-  while read line; do
-    n=$((n + 1))
-    if ((n % 2)); then
-      x=$line
-    else
-      y=$line
-      echo "$x $y ${Z[${i}]}" >> $UNION_DATA
-      i=$((i+1))
-    fi
-  done < $UNION_FILE
 }
 
 plot_data_time() {
   gnuplot -persist <<-EOF
   set terminal png
   set datafile separator whitespace
-  set output 'union_time.png'
-  set title "Union Time" font ",14" textcolor rgbcolor "royalblue"
-  set xrange [0:$x]
-  set yrange [0:$y]
+  set output 'union_time_$TYPE.png'
+  set xrange [0:${TIME_COMPLEXITY[${i}]}]
+  set yrange [0:${TIME[${i}]}]
   set xlabel "n + m"
-  set ylabel "time"
-  plot "$UNION_DATA" using 1:2 with linespoints title "union operation"
+  set ylabel "Time (s)"
+  plot "$UNION_DATA" using 4:1 with linespoints title "union operation"
 EOF
 }
 
@@ -59,29 +65,49 @@ plot_data_mem() {
   gnuplot -persist <<-EOF
   set terminal png
   set datafile separator whitespace
-  set output 'union_mem.png'
-  set title "Union Memory" font ",14" textcolor rgbcolor "royalblue"
-  set xrange [0:$x]
-  set yrange [3000:${Z[${i}]}]
-  set xlabel "n + m"
-  set ylabel "memory"
-  plot "$UNION_DATA" using 1:3 with linespoints title "union operation"
+  set output 'union_mem_$TYPE.png'
+  set xrange [0:${VERTICES[${i}]}]
+  set yrange [0:${MEMORY[${i}]}]
+  set xlabel "n"
+  set ylabel "Memory (kbytes)"
+  plot "$UNION_DATA" using 3:2 with linespoints title "union operation"
 EOF
 }
 
 echo "Compiling..."
 make clean create union
-echo "Evaluating..."
-for vertices in $(ls $DATASETDIR); do
-#for vertices in "${VERTICES[@]}"; do
-  mkdir -p $vertices
-  create_serialized_tree $vertices
 
-  #TIME analysis
-  eval_time_union $vertices
-  #MEMORY analysis
-  eval_memory_union $vertices
-done
+echo "Evaluating..."
+if [[ $TYPE == "dmgen" ]]; then
+  for vertices in $(ls $DATASETDIR | sort --version-sort); do
+    rm -r $vertices
+  done
+
+  for vertices in $(ls $DATASETDIR | sort --version-sort); do
+    mkdir -p $vertices
+    create_serialized_tree $vertices $vertices
+
+    eval_time_union $vertices
+    eval_memory_union $vertices $vertices
+  done
+fi
+
+if [[ $TYPE == "webgraph" ]]; then
+  for dataset in "${WEBGRAPH[@]}"; do
+    rm -r $dataset
+  done
+
+  k=0
+  for dataset in "${WEBGRAPH[@]}"; do
+    mkdir -p "$dataset"
+
+    create_serialized_tree "$dataset" "${WEBGRAPH_NODES[${k}]}"
+    eval_time_union "$dataset"
+    eval_memory_union "$dataset" "${WEBGRAPH_NODES[${k}]}"
+    k=$((k + 1))
+  done
+fi
+
 #PLOT data
 echo "Preparing data..."
 prepared_data
@@ -94,5 +120,4 @@ plot_data_mem
 
 echo "Cleaning up..."
 rm $UNION_DATA
-rm $UNION_FILE
 echo "Done!"

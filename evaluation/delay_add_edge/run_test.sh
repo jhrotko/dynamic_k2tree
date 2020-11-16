@@ -59,11 +59,10 @@ plot_data_time() {
   set terminal png size 1024,768
   set datafile separator whitespace
   set output 'add_per_edge_time.png'
-  set title "Add per edge Time" font ",14" textcolor rgbcolor "royalblue"
   set xrange [0:200000]
   set xlabel "m"
   set yrange [0:0.2]
-  set ylabel "time"
+  set ylabel "Time (s)"
   plot "$RUNS_DATA" using 1:2 w p ls 8 pt 6 t "add edge",\
        "$RUNS_DATA" using 1:4 w p ls 6 pt 9 t "add edge delay",\
        "$RUNS_DATA" using 1:5 w p ls 3 pt 9 t "add edge munro",\

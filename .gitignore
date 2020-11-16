@@ -21,4 +21,5 @@ evaluation/add_edge/add
 evaluation/delay_add_edge/add
 evaluation/delay_add_edge/*.txt
 
+evaluation/jic-results/*
 datasets/*
