@@ -11,8 +11,11 @@ evaluation/union_op/union
 evaluation/union_op/10*
 evaluation/union_op/50*
 evaluation/union_op/80*
+evaluation/union_op/in-2004/*
+evaluation/union_op/uk-2007-05@100000/*
+evaluation/union_op/uk-2014-host/*
+evaluation/union_op/eu-2015-host/*
 
-!evaluation/add_edge/*.cpp
 evaluation/add_edge/10*
 evaluation/add_edge/50*
 evaluation/add_edge/80*
