@@ -108,6 +108,7 @@ if [[ $2 != "-plot" ]]; then
   fi
 
   if [[ $TYPE == "webgraph" ]]; then
+    RUNS=1
     for dataset in "${WEBGRAPH[@]}"; do
       rm -r $dataset
     done

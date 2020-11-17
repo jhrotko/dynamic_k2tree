@@ -153,6 +153,7 @@ if [[ $2 != "-plot" ]]; then
   fi
 
   if [[ $TYPE == "webgraph" ]]; then
+    RUNS=1
     for dataset in "${WEBGRAPH[@]}"; do
       echo "deleting $dataset..."
       rm -r $dataset
