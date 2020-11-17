@@ -3,7 +3,7 @@ DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
 DATA="time-data"
 LIMITS="limits-data"
-RUNS=1
+RUNS=5
 
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
 declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
