@@ -3,8 +3,10 @@ DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
 UNION_DATA="time_union.data"
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+#declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")
 #declare -a WEBGRAPH_NODES=(11264052)
 
@@ -50,27 +52,23 @@ prepared_data() {
 
 plot_data_time() {
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'union_time_$TYPE.png'
-  set xrange [0:${TIME_COMPLEXITY[${i}]}]
-  set yrange [0:${TIME[${i}]}]
   set xlabel "n + m"
   set ylabel "Time (s)"
-  plot "$UNION_DATA" using 4:1 with linespoints title "union operation"
+  plot "$UNION_DATA" using 4:1 with linespoints linestyle 7 title "union operation"
 EOF
 }
 
 plot_data_mem() {
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'union_mem_$TYPE.png'
-  set xrange [0:${VERTICES[${i}]}]
-  set yrange [0:${MEMORY[${i}]}]
   set xlabel "n"
   set ylabel "Memory (kbytes)"
-  plot "$UNION_DATA" using 3:2 with linespoints title "union operation"
+  plot "$UNION_DATA" using 3:2 with linespoints linestyle 7 title "union operation"
 EOF
 }
 
