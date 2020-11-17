@@ -34,10 +34,10 @@ eval_time_mean() {
 
 eval_memory() {
   #  $1 - number of vertices of the current test file
-  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $1 1 1
-  /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $1 1 2
-  /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $1 1 3
-  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $1 1 4
+  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 1
+  /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 2
+  /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 3
+  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 4
 }
 
 declare -a X_time=()             #n+m
@@ -165,7 +165,7 @@ if [[ $2 != "-plot" ]]; then
 
       echo "running for $dataset ${WEBGRAPH_NODES[${k}]}"
       eval_time_mean "$dataset" "${WEBGRAPH_NODES[${k}]}"
-      eval_memory "$dataset"
+      eval_memory "$dataset" "${WEBGRAPH_NODES[${k}]}"
       k=$((k + 1))
     done
   fi
