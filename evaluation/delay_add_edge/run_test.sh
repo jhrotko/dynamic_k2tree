@@ -56,13 +56,16 @@ prepared_data() {
 
 plot_data_time() {
   gnuplot -persist <<-EOF
-  set terminal png size 1024,768
+  set terminal pngcairo size 1024,768
   set datafile separator whitespace
   set output 'add_per_edge_time.png'
-  set xrange [0:200000]
+  set xrange [0:203257]
   set xlabel "m"
-  set yrange [0:0.2]
   set ylabel "Time (s)"
+    set style line 1 \
+    linecolor rgb '#00000' \
+    linetype 1 linewidth 2 \
+    pointtype 8 pointsize 1
   plot "$RUNS_DATA" using 1:2 w p ls 8 pt 6 t "add edge",\
        "$RUNS_DATA" using 1:4 w p ls 6 pt 9 t "add edge delay",\
        "$RUNS_DATA" using 1:5 w p ls 3 pt 9 t "add edge munro",\

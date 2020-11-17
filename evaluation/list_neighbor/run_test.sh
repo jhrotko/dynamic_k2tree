@@ -5,8 +5,10 @@ DATA="time-data"
 LIMITS="limits-data"
 RUNS=1
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+#declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")
 #declare -a WEBGRAPH_NODES=(11264052)
 
@@ -56,14 +58,12 @@ plot_data_time() {
   MIN_y=${info[2]}
   MAX_y=${info[3]}
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'list_time_$TYPE.png'
-  set xrange [$MIN:$MAX]
-  set yrange [$MIN_y:$MAX_y]
   set xlabel "sqrt(m)"
   set ylabel "Time (s)"
-  plot "$DATA-$TYPE" using 1:2 with linespoints title "list neighbor operation"
+  plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 title "list neighbor operation"
 EOF
 }
 
@@ -75,14 +75,12 @@ plot_data_mem() {
   MIN_y=${info[6]}
   MAX_y=${info[7]}
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'list_mem_$TYPE.png'
-  set xrange [$MIN:$MAX]
-  set yrange [$MIN_y:$MAX_y]
   set xlabel "n+m"
   set ylabel "Memory (kbytes)"
-  plot "$DATA-$TYPE" using 3:4 with linespoints title "list neighbor operation"
+  plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 title "list neighbor operation"
 EOF
 }
 

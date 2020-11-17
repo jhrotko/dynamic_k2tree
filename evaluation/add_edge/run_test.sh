@@ -104,12 +104,10 @@ prepared_data() {
 
 plot_data_time() {
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'add_time_$TYPE.png'
-  set xrange [${X_time[0]}:${X_time[${i}]}]
   set xlabel "log_k(n)log(m)"
-  set yrange [${TIME_BACKGROUND[0]}:${TIME_DELAY_MUNRO[${i}]}]
   set ylabel "Time (s)"
   set key left
   plot "$RUNS_DATA" using 1:2 with linespoints t "add edge parallel",\
@@ -121,13 +119,11 @@ EOF
 
 plot_data_mem() {
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'add_mem_$TYPE.png'
   set rmargin at screen 0.90
-  set xrange [0:${X_mem[${i}]}]
   set xlabel "n + m"
-  set yrange [4300:${MEMORY[${i}]}]
   set ylabel "Memory (kbytes)"
   set key left
   plot "$RUNS_DATA" using 10:3 with linespoints t "add edge parallel",\
@@ -139,7 +135,7 @@ EOF
 
 if [[ $2 != "-plot" ]]; then
   echo "Compiling and cleaning..."
-  make clean all
+  make --keep-going clean all
 
   if [[ $TYPE == "dmgen" ]]; then
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
@@ -151,8 +147,8 @@ if [[ $2 != "-plot" ]]; then
       mkdir -p $vertices
 
       echo "running for $vertices"
-      eval_time_mean $vertices
-      eval_memory $vertices
+      eval_time_mean $vertices $vertices
+      eval_memory $vertices $vertices
     done
   fi
 

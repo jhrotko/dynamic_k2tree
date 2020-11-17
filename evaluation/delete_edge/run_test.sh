@@ -5,8 +5,10 @@ DATA="time.data"
 LIMITS="limits.data"
 RUNS=1
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+#declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")
 #declare -a WEBGRAPH_NODES=(11264052)
 
@@ -55,17 +57,18 @@ plot_data_time() {
   MIN_y=${info[2]}
   MAX_y=${info[3]}
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'delete_time_$TYPE.png'
-  set xrange [$MIN:$MAX]
-  set yrange [$MIN_y:$MAX_y]
   set xlabel "log_k(n)log(m)"
   set ylabel "Time (s)"
-  plot "$DATA-$TYPE" using 1:2 with linespoints title "delete operation"
+  plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 title "delete operation"
 EOF
 }
-
+#  set style line 1 \
+#  linecolor rgb '#00000' \
+#  linetype 1 linewidth 2 \
+#  pointtype 8 pointsize 1
 plot_data_mem() {
   bo="$(head -n 1 "$LIMITS-$TYPE")"
   info=($(echo "$bo" | tr ' ' '\n'))
@@ -74,14 +77,12 @@ plot_data_mem() {
   MIN_y=${info[6]}
   MAX_y=${info[7]}
   gnuplot -persist <<-EOF
-  set terminal png
+  set terminal pngcairo
   set datafile separator whitespace
   set output 'delete_mem_$TYPE.png'
-  set xrange [$MIN:$MAX]
-  set yrange [$MIN_y:$MAX_y]
   set xlabel "n+m"
   set ylabel "Memory (kbytes)"
-  plot "$DATA-$TYPE" using 3:4 with linespoints title "delete operation"
+  plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 title "delete operation"
 EOF
 }
 

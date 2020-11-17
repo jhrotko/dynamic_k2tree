@@ -46,7 +46,6 @@ int main(int argc, char *argv[]) {
     tree.serialize(ss, folder);
     ss.close();
 
-    double aux = log(n_vertices) / log(2);
-    std::cout << aux *log(arcs) << " " << (n_vertices + arcs) << std::endl;
+    std::cout << log(n_vertices) / log(2) << " " << (n_vertices + arcs) << std::endl;
     return 0;
 }

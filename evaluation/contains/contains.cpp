@@ -59,7 +59,6 @@ int main(int argc, char *argv[]) {
         std::ostringstream path;
         path << argv[1];
         std::ifstream test_case(path.str());
-        uint arcs = 0;
         double sum = 0;
 
         dynamic_ktree::DKtree<2> tree;
@@ -79,14 +78,13 @@ int main(int argc, char *argv[]) {
                 if (substrings[0] == "a") {
                     clock_t start = clock();
                     tree.contains(x, y);
-                    sum += clock() - start;
-                    ++arcs;
+                    clock_t time_iter = clock() - start;
+                    sum = max(sum, time_iter);
 //                    sysinfo (&memInfo);
 //                    totalPhysMem = max( totalPhysMem, getValue());
                 }
             }
         }
-        sum /= arcs;
         sum /= CLOCKS_PER_SEC;
         final += sum;
         test_case.close();
