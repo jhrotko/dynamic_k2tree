@@ -75,7 +75,7 @@ EOF
 
 if [[ $PLOT == 0 ]]; then
   echo "Compiling..."
-  make clean add
+  make --keep-going clean add
 
   echo "Cleaning ..."
   rm $RUNS_FILE

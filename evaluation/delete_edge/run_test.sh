@@ -1,8 +1,8 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
-DATA="time.data"
-LIMITS="limits.data"
+DATA="time-data"
+LIMITS="limits-data"
 RUNS=5
 
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")

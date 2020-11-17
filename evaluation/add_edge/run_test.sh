@@ -5,7 +5,7 @@ RUNS_FILE_BACKGROUND="runs_time_background.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
 RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
-RUNS_DATA="runs.data"
+RUNS_DATA="runs-data"
 
 TYPE="dmgen"
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
@@ -97,7 +97,7 @@ prepared_data() {
 
   i=$((i - 1))
   for item in $(seq 0 $i); do
-    echo "${X_time[${item}]} ${TIME_BACKGROUND[${item}]} ${MEMORY_BACKGROUND[${item}]} ${TIME[${item}]} ${MEMORY[${item}]} ${TIME_DELAY[${item}]} ${MEMORY_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${X_mem[${item}]}" >>$RUNS_DATA
+    echo "${X_time[${item}]} ${TIME_BACKGROUND[${item}]} ${MEMORY_BACKGROUND[${item}]} ${TIME[${item}]} ${MEMORY[${item}]} ${TIME_DELAY[${item}]} ${MEMORY_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${X_mem[${item}]}" >>$RUNS_DATA-$TYPE
   done
   i=$((i + 1))
 }
@@ -110,10 +110,10 @@ plot_data_time() {
   set xlabel "log_k(n)log(m)"
   set ylabel "Time (s)"
   set key left
-  plot "$RUNS_DATA" using 1:2 with linespoints t "add edge parallel",\
-       "$RUNS_DATA" using 1:4 with linespoints t "add edge",\
-       "$RUNS_DATA" using 1:6 with linespoints t "add edge delay",\
-       "$RUNS_DATA" using 1:8 with linespoints t "add edge munro"
+  plot "$RUNS_DATA-$TYPE" using 1:2 with linespoints t "add edge parallel",\
+       "$RUNS_DATA-$TYPE" using 1:4 with linespoints t "add edge",\
+       "$RUNS_DATA-$TYPE" using 1:6 with linespoints t "add edge delay",\
+       "$RUNS_DATA-$TYPE" using 1:8 with linespoints t "add edge munro"
 EOF
 }
 
@@ -126,15 +126,16 @@ plot_data_mem() {
   set xlabel "n + m"
   set ylabel "Memory (kbytes)"
   set key left
-  plot "$RUNS_DATA" using 10:3 with linespoints t "add edge parallel",\
-       "$RUNS_DATA" using 10:5 with linespoints t "add edge",\
-       "$RUNS_DATA" using 10:7 with linespoints t "add edge delay",\
-       "$RUNS_DATA" using 10:9 with linespoints t "add edge munro"
+  plot "$RUNS_DATA-$TYPE" using 10:3 with linespoints t "add edge parallel",\
+       "$RUNS_DATA-$TYPE" using 10:5 with linespoints t "add edge",\
+       "$RUNS_DATA-$TYPE" using 10:7 with linespoints t "add edge delay",\
+       "$RUNS_DATA-$TYPE" using 10:9 with linespoints t "add edge munro"
 EOF
 }
 
 if [[ $2 != "-plot" ]]; then
   echo "Compiling and cleaning..."
+  rm $RUNS_DATA-$TYPE
   make --keep-going clean all
 
   if [[ $TYPE == "dmgen" ]]; then
@@ -180,7 +181,3 @@ plot_data_time
 
 echo "Ploting memory..."
 plot_data_mem
-
-echo "Cleaning up..."
-rm $RUNS_DATA
-echo "Done!"
