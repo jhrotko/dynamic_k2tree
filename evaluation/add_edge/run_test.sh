@@ -1,6 +1,6 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
-RUNS=1
+RUNS=5
 RUNS_FILE_BACKGROUND="runs_time_background.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
