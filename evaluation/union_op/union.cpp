@@ -21,6 +21,9 @@ int main(int argc, char *argv[]) {
     shared_ptr<sdsl::k2_tree<2>> ptr2 = make_shared<sdsl::k2_tree<2>>(ktree_test2);
     double sum = 0;
     int runs = 5;
+    string test_path(argv[1]);
+    if(test_path.find("-20") != std::string::npos)
+        runs = 1;
 
     for (int i = 0; i < runs; i++) {
         clock_t start = clock();
