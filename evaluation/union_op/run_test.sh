@@ -1,7 +1,7 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
-UNION_DATA="time_union.data"
+UNION_DATA="time-data"
 
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
 declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
@@ -45,7 +45,7 @@ eval_memory_union() {
 i=0
 prepared_data() {
   for el in "${TIME_COMPLEXITY[@]}"; do
-    echo "${TIME[${i}]} ${MEMORY[${i}]} ${VERTICES[${i}]} $el" >>$UNION_DATA
+    echo "${TIME[${i}]} ${MEMORY[${i}]} ${VERTICES[${i}]} $el" >>$UNION_DATA-$TYPE
     i=$((i + 1))
   done
 }
@@ -57,7 +57,7 @@ plot_data_time() {
   set output 'union_time_$TYPE.png'
   set xlabel "n + m"
   set ylabel "Time (s)"
-  plot "$UNION_DATA" using 4:1 with linespoints linestyle 7 title "union operation"
+  plot "$UNION_DATA-$TYPE" using 4:1 with linespoints linestyle 7 title "union operation"
 EOF
 }
 
@@ -68,7 +68,7 @@ plot_data_mem() {
   set output 'union_mem_$TYPE.png'
   set xlabel "n"
   set ylabel "Memory (kbytes)"
-  plot "$UNION_DATA" using 3:2 with linespoints linestyle 7 title "union operation"
+  plot "$UNION_DATA-$TYPE" using 3:2 with linespoints linestyle 7 title "union operation"
 EOF
 }
 
@@ -76,6 +76,9 @@ echo "Compiling..."
 make clean create union
 
 echo "Evaluating..."
+echo "Cleaning up..."
+rm $UNION_DATA-$TYPE
+echo "Done!"
 if [[ $TYPE == "dmgen" ]]; then
   for vertices in $(ls $DATASETDIR | sort --version-sort); do
     rm -r $vertices
@@ -116,6 +119,4 @@ plot_data_time
 echo "Ploting memory..."
 plot_data_mem
 
-echo "Cleaning up..."
-rm $UNION_DATA
-echo "Done!"
+
