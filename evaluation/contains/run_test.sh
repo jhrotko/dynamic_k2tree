@@ -3,10 +3,10 @@ DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
 DATA="time-data"
 LIMITS="limits-data"
-RUNS=5
+RUNS=3
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
 #declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")
@@ -22,22 +22,18 @@ fi
 
 declare -a TIME_COMPLEXITY=()
 declare -a MEMORY_COMPLEXITY=()
-create_serialized_tree() { #[create_serialized_test $dataset $vertice]
+time_complexity() { #[create_serialized_test $dataset $vertice]
   echo "$1"
-  bo=$(./create "$DATASETDIR/$1/$1.tsv" "$2" "$1")
+  bo=$(./time "$DATASETDIR/$1/$1.tsv" "$2")
   complexity=($(echo "$bo" | tr ' ' '\n'))
   TIME_COMPLEXITY+=("${complexity[0]}")
   MEMORY_COMPLEXITY+=("${complexity[1]}")
 }
 
 declare -a TIME=()
-eval_time_union() {
-  TIME+=("$(./contains "$DATASETDIR/$1/$1.tsv" $RUNS "$1")")
-}
-
 declare -a MEMORY=()
 eval_memory_union() {
-  /usr/bin/time -v --output="$1/mem.txt" ./contains "$DATASETDIR/$1/$1.tsv" $RUNS "$1"
+  TIME+=("$(/usr/bin/time -v --output="$1/mem.txt" ./contains "$DATASETDIR/$1/$1.tsv" $RUNS "../serialized/$1")")
   MEMORY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$1/mem.txt")")
 }
 
@@ -100,9 +96,7 @@ if [[ $2 != "-plot" ]]; then
 
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
       mkdir -p $vertices
-      create_serialized_tree $vertices $vertices
-
-      eval_time_union $vertices
+      time_complexity $vertices $vertices
       eval_memory_union $vertices $vertices
     done
   fi
@@ -117,8 +111,7 @@ if [[ $2 != "-plot" ]]; then
     for dataset in "${WEBGRAPH[@]}"; do
       mkdir -p "$dataset"
 
-      create_serialized_tree "$dataset" "${WEBGRAPH_NODES[${k}]}"
-      eval_time_union "$dataset"
+      time_complexity "$dataset" "${WEBGRAPH_NODES[${k}]}"
       eval_memory_union "$dataset" "${WEBGRAPH_NODES[${k}]}"
       k=$((k + 1))
     done
