@@ -8,8 +8,8 @@ RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs-data"
 
 TYPE="dmgen"
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 
 if [[ $1 != "-webgraph" && ($1 != "-plot" || $2 != "-plot") && $1 != "-dmgen" ]]; then
   echo "Usage: ./run_test.sh [OPTIONAL: -plot]"
@@ -154,7 +154,7 @@ if [[ $2 != "-plot" ]]; then
   fi
 
   if [[ $TYPE == "webgraph" ]]; then
-    RUNS=1
+    RUNS=2
     for dataset in "${WEBGRAPH[@]}"; do
       echo "deleting $dataset..."
       rm -r $dataset

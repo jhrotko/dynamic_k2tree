@@ -58,9 +58,9 @@ ship:
 	make update_repo && make tests_all && git push
 
 evaluate:
-	#cd evaluation && cd add_edge && make evaluate
+	cd evaluation && cd add_edge && make evaluate
 	cd evaluation && cd contains && make evaluate
-	#cd evaluation && cd delay_edge && make evaluate
+	cd evaluation && cd delay_edge && make evaluate
 	cd evaluation && cd delete_edge && make evaluate
 	cd evaluation && cd list_neighbour && make evaluate
 	cd evaluation && cd union_op && make evaluate

@@ -1,14 +1,14 @@
 list:
 	g++ -o list list.cpp -lstdc++fs -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
 
-create:
-	g++ -o create create.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
+time:
+	g++ -o time time.cpp
 
 clean:
-	rm list create
+	rm list time
 
 all:
-	make list create
+	make list time
 
 evaluate:
 	./run_test.sh -dmgen
