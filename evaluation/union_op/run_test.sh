@@ -57,7 +57,7 @@ plot_data_time() {
   set output 'union_time_$TYPE.png'
   set xlabel "n + m"
   set ylabel "Time (s)"
-  plot "$UNION_DATA-$TYPE" using 4:1 with linespoints linestyle 7 title "union operation"
+  plot "$UNION_DATA-$TYPE" using 4:1 with linespoints linestyle 7 notitle
 EOF
 }
 
@@ -68,12 +68,12 @@ plot_data_mem() {
   set output 'union_mem_$TYPE.png'
   set xlabel "n"
   set ylabel "Memory (kbytes)"
-  plot "$UNION_DATA-$TYPE" using 3:2 with linespoints linestyle 7 title "union operation"
+  plot "$UNION_DATA-$TYPE" using 3:2 with linespoints linestyle 7 notitle
 EOF
 }
 
 echo "Compiling..."
-make clean create union
+make --keep-going clean create union
 
 echo "Evaluating..."
 echo "Cleaning up..."
