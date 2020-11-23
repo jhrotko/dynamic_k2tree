@@ -24,8 +24,8 @@ evaluation/add_edge/in-2004/*
 evaluation/add_edge/uk-2007-05@100000/*
 evaluation/add_edge/uk-2014-host/*
 evaluation/add_edge/eu-2015-host/*
+evaluation/add_edge/add_mean
 
-evaluation/delay_add_edge/add
 evaluation/delay_add_edge/*.txt
 evaluation/delay_add_edge/10*
 evaluation/delay_add_edge/50*
@@ -64,3 +64,15 @@ evaluation/list_neighbor/uk-2014-host/*
 
 evaluation/jic-results/*
 datasets/*
+
+evaluation/*/conatains
+evaluation/*/list
+evaluation/*/edge_iterator
+evaluation/*/neighbor_iterator
+evaluation/*/time
+evaluation/*/delete
+evaluation/*/create
+evaluation/*/union
+evaluation/*/add
+evaluation/*/*/mem*.txt
+evaluation/results/*
