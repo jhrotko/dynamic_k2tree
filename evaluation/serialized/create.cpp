@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) {
     std::ifstream test_case(path.str());
     unsigned int n_vertices = atoi(argv[2]);
     dynamic_ktree::DKtree<2> tree(n_vertices);
-    double arcs = 0;
 
     if (test_case.is_open()) {
         std::string line;
@@ -36,7 +35,6 @@ int main(int argc, char *argv[]) {
             uint y = (uint) stoi(substrings[2]);
             if (substrings[0] == "a") {
                 tree.add_edge(x, y);
-                arcs++;
             }
         }
     }
