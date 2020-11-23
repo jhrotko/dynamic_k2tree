@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     uint dynamic_type = atoi(argv[4]);
 
     clock_t time_t = 0;
-    clock_t final = 0;
+    double final = 0;
     std::vector<clock_t> runs_time;
 
     switch (dynamic_type) {
@@ -66,13 +66,10 @@ int main(int argc, char *argv[]) {
                     clock_t aux_end = clock();
                     time_t += aux_end - aux;
                 }
-                time_t /= edges.size();
-                runs_time.push_back(time_t);
+                time_t /= edges.size() / CLOCKS_PER_SEC;
+                final += time_t;
             }
-            for (auto el: runs_time) {
-                final += el;
-            }
-            final /= runs_time.size();
+            final /= runs;
             break;
         }
         case 2: {
@@ -87,18 +84,11 @@ int main(int argc, char *argv[]) {
                     graph.add_edge(x, y);
                     clock_t aux_end = clock();
                     time_t += aux_end - aux;
-                    copy_last = aux_end - aux;
-                    real_last = aux;
                 }
-                time_t += real_last - clock();
-                time_t -= copy_last;
-                time_t /= edges.size();
-                runs_time.push_back(time_t);
+                time_t /= edges.size() / CLOCKS_PER_SEC;
+                final += time_t;
             }
-            for (auto el: runs_time) {
-                final += el;
-            }
-            final /= runs_time.size();
+            final /= runs;
             break;
         }
         case 3: {
@@ -113,13 +103,10 @@ int main(int argc, char *argv[]) {
                     clock_t aux_end = clock();
                     time_t += aux_end - aux;
                 }
-                time_t /= edges.size();
-                runs_time.push_back(time_t);
+                time_t /= edges.size() / CLOCKS_PER_SEC;
+                final += time_t;
             }
-            for (auto el: runs_time) {
-                final += el;
-            }
-            final /= runs_time.size();
+            final /= runs;
             break;
         }
         case 4: {
@@ -134,17 +121,14 @@ int main(int argc, char *argv[]) {
                     clock_t aux_end = clock();
                     time_t += aux_end - aux;
                 }
-                time_t /= edges.size();
-                runs_time.push_back(time_t);
+                time_t /= edges.size() / CLOCKS_PER_SEC;
+                final += time_t;
             }
-            for (auto el: runs_time) {
-                final += el;
-            }
-            final /= runs_time.size();
+            final /= runs;
             break;
         }
     }
 
-    cout << ((double) final / CLOCKS_PER_SEC) << endl;
+    cout << ((double) final) << endl;
     return 0;
 }

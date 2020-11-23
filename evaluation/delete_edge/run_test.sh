@@ -5,8 +5,8 @@ DATA="time-data"
 LIMITS="limits-data"
 RUNS=3
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
 #declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
 #declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")
@@ -59,7 +59,7 @@ plot_data_time() {
   set output 'delete_time_$TYPE.png'
   set xlabel "log_k(n)log(m)"
   set ylabel "Time (s)"
-  plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 title "delete operation"
+  plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 notitle
 EOF
 }
 #  set style line 1 \
@@ -79,7 +79,7 @@ plot_data_mem() {
   set output 'delete_mem_$TYPE.png'
   set xlabel "n+m"
   set ylabel "Memory (kbytes)"
-  plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 title "delete operation"
+  plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 notitle
 EOF
 }
 

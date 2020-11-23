@@ -3,8 +3,8 @@ DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
 UNION_DATA="time-data"
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+declare -a WEBGRAPH=("eu-2015-host")
+declare -a WEBGRAPH_NODES=(11264052)
 #declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
 #declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")
@@ -20,7 +20,7 @@ fi
 
 declare -a TIME_COMPLEXITY=()
 create_serialized_tree() { #[create_serialized_test $dataset $vertice]
-#  ./create "$DATASETDIR/$1/$1.tsv" "$2" "$1/test.kt"
+  #  ./create "$DATASETDIR/$1/$1.tsv" "$2" "$1/test.kt"
   TIME_COMPLEXITY+=("$(./create "$DATASETDIR/$1/$1.tsv" "$2" "$1/test.kt")")
 }
 
@@ -72,51 +72,51 @@ plot_data_mem() {
 EOF
 }
 
-echo "Compiling..."
-make --keep-going clean create union
+if [[ $2 != "-plot" ]]; then
+  echo "Compiling..."
+  make --keep-going clean create union
 
-echo "Evaluating..."
-echo "Cleaning up..."
-rm $UNION_DATA-$TYPE
-echo "Done!"
-if [[ $TYPE == "dmgen" ]]; then
-  for vertices in $(ls $DATASETDIR | sort --version-sort); do
-    rm -r $vertices
-  done
+  echo "Evaluating..."
+  echo "Cleaning up..."
+  rm $UNION_DATA-$TYPE
+  echo "Done!"
+  if [[ $TYPE == "dmgen" ]]; then
+    for vertices in $(ls $DATASETDIR | sort --version-sort); do
+      rm -r $vertices
+    done
 
-  for vertices in $(ls $DATASETDIR | sort --version-sort); do
-    mkdir -p $vertices
-    create_serialized_tree $vertices $vertices
+    for vertices in $(ls $DATASETDIR | sort --version-sort); do
+      mkdir -p $vertices
+      create_serialized_tree $vertices $vertices
 
-    eval_time_union $vertices
-    eval_memory_union $vertices $vertices
-  done
+      eval_time_union $vertices
+      eval_memory_union $vertices $vertices
+    done
+  fi
+
+  if [[ $TYPE == "webgraph" ]]; then
+    for dataset in "${WEBGRAPH[@]}"; do
+      rm -r $dataset
+    done
+
+    k=0
+    for dataset in "${WEBGRAPH[@]}"; do
+      mkdir -p "$dataset"
+
+      create_serialized_tree "$dataset" "${WEBGRAPH_NODES[${k}]}"
+      eval_time_union "$dataset"
+      eval_memory_union "$dataset" "${WEBGRAPH_NODES[${k}]}"
+      k=$((k + 1))
+    done
+  fi
+
+  #PLOT data
+  echo "Preparing data..."
+  prepared_data
 fi
-
-if [[ $TYPE == "webgraph" ]]; then
-  for dataset in "${WEBGRAPH[@]}"; do
-    rm -r $dataset
-  done
-
-  k=0
-  for dataset in "${WEBGRAPH[@]}"; do
-    mkdir -p "$dataset"
-
-    create_serialized_tree "$dataset" "${WEBGRAPH_NODES[${k}]}"
-    eval_time_union "$dataset"
-    eval_memory_union "$dataset" "${WEBGRAPH_NODES[${k}]}"
-    k=$((k + 1))
-  done
-fi
-
-#PLOT data
-echo "Preparing data..."
-prepared_data
 
 echo "Ploting time..."
 plot_data_time
 
 echo "Ploting memory..."
 plot_data_mem
-
-

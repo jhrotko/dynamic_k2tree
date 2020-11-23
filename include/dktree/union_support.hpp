@@ -6,6 +6,8 @@
 #include <memory>
 #include <cmath>
 
+#include "DKtree.hpp"
+
 namespace dynamic_ktree {
     template<class k_tree, class bit_vector, class k_rank>
     class k2_tree_union_support {
