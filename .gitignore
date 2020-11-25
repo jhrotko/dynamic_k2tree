@@ -26,7 +26,8 @@ evaluation/add_edge/uk-2014-host/*
 evaluation/add_edge/eu-2015-host/*
 evaluation/add_edge/add_mean
 
-evaluation/delay_add_edge/*.txt
+evaluation/delay_add_edge/*.txt-dmgen
+evaluation/delay_add_edge/*.txt-webgraph
 evaluation/delay_add_edge/10*
 evaluation/delay_add_edge/50*
 evaluation/delay_add_edge/80*
@@ -76,3 +77,7 @@ evaluation/*/union
 evaluation/*/add
 evaluation/*/*/mem*.txt
 evaluation/results/*
+evaluation/serialized/eu-2015-host/*
+evaluation/serialized/indochina-2004/*
+evaluation/*/limits-data-dmgen
+evaluation/*/limits-data-webgraph
