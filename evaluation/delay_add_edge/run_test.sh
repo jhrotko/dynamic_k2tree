@@ -6,22 +6,28 @@ RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
 RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs.data"
-vertices=1000000
+vertices=100000
+TYPE="dmgen"
 
 PLOT=0
-if [[ $1 != "-plot" && $1 != "" ]]; then
-  echo "Usage: ./run_test.sh [OPTIONAL: -plot]"
+if [[ $2 != "-plot" && $1 != "-webgraph" && $1 != "-dmgen" ]]; then
+  echo "Usage: ./run_test.sh [-dmgen/webgraph] [OPTIONAL: -plot]"
   echo "  -plot: just plot the current data without having to run everything again."
   exit
-elif [[ $1 == "-plot" ]]; then
+elif [[ $2 == "-plot" ]]; then
   PLOT=1
 fi
 
+if [[ $1 == "-webgraph" ]]; then
+  TYPE="webgraph"
+  DATASETDIR="../../datasets/webgraph"
+fi
+
 eval_time() {
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 1 >>"$RUNS_FILE"
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 2 >>"$RUNS_FILE_BACKGROUND"
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 3 >>"$RUNS_FILE_DELAY"
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 4 >>"$RUNS_FILE_DELAY_MUNRO"
+  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 1 >>"$RUNS_FILE-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 2 >>"$RUNS_FILE_BACKGROUND-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 3 >>"$RUNS_FILE_DELAY-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 4 >>"$RUNS_FILE_DELAY_MUNRO-$TYPE"
 }
 
 declare -a X_time=()
@@ -33,23 +39,23 @@ prepared_data() {
   while read line; do
     X_time+=("$line")
     i=$((i + 1))
-  done <$RUNS_FILE
+  done <"$RUNS_FILE-$TYPE"
 
   while read line; do
     X_time_BACKGROUND+=("$line")
-  done <$RUNS_FILE_BACKGROUND
+  done <"$RUNS_FILE_BACKGROUND-$TYPE"
 
   while read line; do
     X_time_DELAY+=("$line")
-  done <$RUNS_FILE_DELAY
+  done <"$RUNS_FILE_DELAY-$TYPE"
 
   while read line; do
     X_time_MUNRO+=("$line")
-  done <$RUNS_FILE_DELAY_MUNRO
+  done <"$RUNS_FILE_DELAY_MUNRO-$TYPE"
 
   i=$((i - 1))
   for item in $(seq 0 $i); do
-    echo "$item ${X_time[${item}]} ${X_time_BACKGROUND[${item}]} ${X_time_DELAY[${item}]}  ${X_time_MUNRO[${item}]}" >>$RUNS_DATA
+    echo "$item ${X_time[${item}]} ${X_time_BACKGROUND[${item}]} ${X_time_DELAY[${item}]}  ${X_time_MUNRO[${item}]}" >>"$RUNS_DATA-$TYPE"
   done
   i=$((i + 1))
 }
@@ -58,7 +64,7 @@ plot_data_time() {
   gnuplot -persist <<-EOF
   set terminal pngcairo size 1024,768
   set datafile separator whitespace
-  set output 'add_per_edge_time.png'
+  set output 'add_per_edge_time_$TYPE.png'
   set xrange [0:203257]
   set xlabel "m"
   set ylabel "Time (s)"
@@ -66,10 +72,10 @@ plot_data_time() {
     linecolor rgb '#00000' \
     linetype 1 linewidth 2 \
     pointtype 8 pointsize 1
-  plot "$RUNS_DATA" using 1:2 w p ls 8 pt 6 t "add edge",\
-       "$RUNS_DATA" using 1:4 w p ls 6 pt 9 t "add edge delay",\
-       "$RUNS_DATA" using 1:5 w p ls 3 pt 9 t "add edge munro",\
-       "$RUNS_DATA" using 1:3 w p ls 4 pt 11 t "add edge parallel"
+  plot "$RUNS_DATA-$TYPE" using 1:2 w p ls 8 pt 6 t "add edge",\
+       "$RUNS_DATA-$TYPE" using 1:4 w p ls 6 pt 9 t "add edge delay",\
+       "$RUNS_DATA-$TYPE" using 1:5 w p ls 3 pt 9 t "add edge munro",\
+       "$RUNS_DATA-$TYPE" using 1:3 w p ls 4 pt 11 t "add edge parallel"
 EOF
 }
 
@@ -78,16 +84,19 @@ if [[ $PLOT == 0 ]]; then
   make --keep-going clean add
 
   echo "Cleaning ..."
-  rm $RUNS_FILE
-  rm $RUNS_FILE_BACKGROUND
-  rm $RUNS_FILE_DELAY
-  rm $RUNS_FILE_DELAY_MUNRO
-  rm $RUNS_DATA
+  rm "$RUNS_FILE-$TYPE"
+  rm "$RUNS_FILE_BACKGROUND-$TYPE"
+  rm "$RUNS_FILE_DELAY-$TYPE"
+  rm "$RUNS_FILE_DELAY_MUNRO-$TYPE"
+  rm "$RUNS_DATA-$TYPE"
 
   echo "Evaluating..."
-  echo "running for $vertices"
-  eval_time $vertices
-
+  if [[ $TYPE == "dmgen" ]]; then
+    echo "running for $vertices"
+    eval_time $vertices
+  else
+    eval_time "uk-2007-05@100000"
+  fi
   echo "Preparing data..."
   prepared_data
 fi
