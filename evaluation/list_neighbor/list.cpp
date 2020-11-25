@@ -19,25 +19,25 @@ int main(int argc, char *argv[]) {
                 argv[0]);
         return EXIT_FAILURE;
     }
+    std::ostringstream path;
+    path << argv[1];
     int runs = atoi(argv[2]);
     string folder(argv[3]);
     double final = 0;
 
     for (int i = 0; i < runs; i++) {
-        std::ostringstream path;
-        path << argv[1];
         std::ifstream test_case(path.str());
-        double sum = 0;
-        double times = 0;
 
         dynamic_ktree::DKtree<2> tree;
         std::ifstream ifs;
         tree.load(ifs, folder, false);
+        double sum = 0;
+        double times = 0;
 
         if (test_case.is_open()) {
             std::string line;
             vector<std::string> substrings;
-            const std::string delims = " ";
+            const std::string delims = "\t";
 
             while (getline(test_case, line)) {
                 split(line, substrings, delims);

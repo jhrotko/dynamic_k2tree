@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         if (test_case.is_open()) {
             std::string line;
             vector<std::string> substrings;
-            const std::string delims = " ";
+            const std::string delims = "\t";
 
             while (getline(test_case, line)) {
                 split(line, substrings, delims);
