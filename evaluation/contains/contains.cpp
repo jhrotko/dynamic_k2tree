@@ -15,22 +15,23 @@ struct sysinfo memInfo;
 
 static unsigned long long lastTotalUser, lastTotalUserLow, lastTotalSys, lastTotalIdle;
 
-int parseLine(char* line){
+int parseLine(char *line) {
     // This assumes that a digit will be found and the line ends in " Kb".
     int i = strlen(line);
-    const char* p = line;
-    while (*p <'0' || *p > '9') p++;
-    line[i-3] = '\0';
+    const char *p = line;
+    while (*p < '0' || *p > '9') p++;
+    line[i - 3] = '\0';
     i = atoi(p);
     return i;
 }
-int getValue(){ //Note: this value is in KB!
-    FILE* file = fopen("/proc/self/status", "r");
+
+int getValue() { //Note: this value is in KB!
+    FILE *file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];
 
-    while (fgets(line, 128, file) != NULL){
-        if (strncmp(line, "VmRSS:", 6) == 0){
+    while (fgets(line, 128, file) != NULL) {
+        if (strncmp(line, "VmRSS:", 6) == 0) {
             result = parseLine(line);
             break;
         }
@@ -52,14 +53,15 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
     int runs = atoi(argv[2]);
-    string  folder(argv[3]);
+    string folder(argv[3]);
     double final = 0;
 
-    for(int i=0; i < runs; i++) {
+    for (int i = 0; i < runs; i++) {
         std::ostringstream path;
         path << argv[1];
         std::ifstream test_case(path.str());
         double sum = 0;
+        double times = 0;
 
         dynamic_ktree::DKtree<2> tree;
         std::ifstream ifs;
@@ -75,19 +77,19 @@ int main(int argc, char *argv[]) {
 
                 etype x = (etype) stoi(substrings[1]);
                 etype y = (etype) stoi(substrings[2]);
-                if (substrings[0] == "a") {
-                    clock_t start = clock();
-                    tree.contains(x, y);
-                    clock_t time_iter = clock() - start;
-                    sum = max(sum, time_iter);
+
+                clock_t start = clock();
+                tree.contains(x, y);
+                sum += clock() - start;
+                ++times;
 //                    sysinfo (&memInfo);
 //                    totalPhysMem = max( totalPhysMem, getValue());
-                }
             }
         }
+        test_case.close();
+        sum /= times;
         sum /= CLOCKS_PER_SEC;
         final += sum;
-        test_case.close();
     }
 //    cout << "memory: " << totalPhysMem << endl;
     cout << final / (double) runs << endl;

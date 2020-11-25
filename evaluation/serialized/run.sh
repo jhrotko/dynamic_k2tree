@@ -2,8 +2,12 @@
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
 
-declare -a WEBGRAPH=("eu-2015-host")
-declare -a WEBGRAPH_NODES=(11264052)
+#declare -a WEBGRAPH=("eu-2015-host")
+#declare -a WEBGRAPH_NODES=(11264052)
+#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004" "eu-2015-host")
+#declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866 11264052)
+declare -a WEBGRAPH=( "indochina-2004" )
+declare -a WEBGRAPH_NODES=( 7414866 )
 make --keep-going clean create
 if [[ $1 != "-dmgen" && $1 != "-webgraph" && $1 != "" ]]; then
   echo "Usage: ./run.sh [-dmgen/webgraph]"
@@ -14,6 +18,7 @@ elif [[ $1 == "-webgraph" ]]; then
 fi
 
 create_serialized_tree() { #[create_serialized_test $dataset $vertice]
+  echo "$DATASETDIR/$1/$1.tsv" "$2" "$1"
   ./create "$DATASETDIR/$1/$1.tsv" "$2" "$1"
 }
 

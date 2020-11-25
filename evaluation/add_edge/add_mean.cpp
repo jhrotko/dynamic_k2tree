@@ -13,27 +13,6 @@ void split(const std::string &str, std::vector<std::string> &cont,
     boost::split(cont, str, boost::is_any_of(delims));
 }
 
-void build_edges(std::ostringstream &path, vector<tuple<uint64_t, uint64_t>> &edges) {
-    std::ifstream test_case(path.str());
-
-    clock_t time_t;
-    if (test_case.is_open()) {
-        std::string line;
-        vector<std::string> substrings;
-        const std::string delims = " ";
-
-        while (getline(test_case, line)) {
-            split(line, substrings, delims);
-
-            etype x = (etype) stoi(substrings[1]);
-            etype y = (etype) stoi(substrings[2]);
-            if (substrings[0] == "a") {
-                edges.emplace_back(tuple<uint64_t, uint64_t>(x, y));
-            }
-        }
-    }
-}
-
 int main(int argc, char *argv[]) {
     if (argc != 5) {
         fprintf(stderr, "Usage: %s <path to dataset> <number of vertices> <number of runs> <dynamic k2tree version>\n",
@@ -42,93 +21,130 @@ int main(int argc, char *argv[]) {
     }
     std::ostringstream path;
     path << argv[1];
-    std::vector<tuple<uint64_t, uint64_t>> edges;
-    build_edges(path, edges);
+    std::ifstream test_case(path.str());
 
     uint n_vertices = atoi(argv[2]);
     uint runs = atoi(argv[3]);
     uint dynamic_type = atoi(argv[4]);
 
-    clock_t time_t = 0;
     double final = 0;
-    std::vector<clock_t> runs_time;
 
     switch (dynamic_type) {
         case 1: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree<2> graph(n_vertices);
-                for (auto edge:edges) {
-                    uint64_t x = get<0>(edge);
-                    uint64_t y = get<1>(edge);
+                double time_t = 0;
+                double arcs = 0;
+                if (test_case.is_open()) {
+                    std::string line;
+                    vector<std::string> substrings;
+                    const std::string delims = " ";
 
-                    clock_t aux = clock();
-                    graph.add_edge(x, y);
-                    clock_t aux_end = clock();
-                    time_t += aux_end - aux;
+                    while (getline(test_case, line)) {
+                        split(line, substrings, delims);
+
+                        uint64_t x = (uint64_t) stoi(substrings[1]);
+                        uint64_t y = (uint64_t) stoi(substrings[2]);
+                        clock_t aux = clock();
+                        graph.add_edge(x, y);
+                        time_t += clock() - aux;
+                        ++arcs;
+                    }
                 }
-                time_t /= edges.size() / CLOCKS_PER_SEC;
+                time_t /= arcs;
+                time_t /= CLOCKS_PER_SEC;
                 final += time_t;
+                test_case.close();
             }
-            final /= runs;
             break;
         }
         case 2: {
             for (int i = 0; i < runs; ++i) {
-                clock_t copy_last, real_last;
                 dynamic_ktree::DKtree_background<2> graph(n_vertices);
-                for (auto edge:edges) {
-                    uint64_t x = get<0>(edge);
-                    uint64_t y = get<1>(edge);
+                double time_t = 0;
+                double arcs = 0;
+                if (test_case.is_open()) {
+                    std::string line;
+                    vector<std::string> substrings;
+                    const std::string delims = " ";
 
-                    clock_t aux = clock();
-                    graph.add_edge(x, y);
-                    clock_t aux_end = clock();
-                    time_t += aux_end - aux;
+                    while (getline(test_case, line)) {
+                        split(line, substrings, delims);
+
+                        uint64_t x = (uint64_t) stoi(substrings[1]);
+                        uint64_t y = (uint64_t) stoi(substrings[2]);
+                        clock_t aux = clock();
+                        graph.add_edge(x, y);
+                        time_t += clock() - aux;
+                        ++arcs;
+                    }
                 }
-                time_t /= edges.size() / CLOCKS_PER_SEC;
+                time_t /= arcs;
+                time_t /= CLOCKS_PER_SEC;
                 final += time_t;
+                test_case.close();
             }
-            final /= runs;
             break;
         }
         case 3: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_delay<2> graph(n_vertices);
-                for (auto edge:edges) {
-                    uint64_t x = get<0>(edge);
-                    uint64_t y = get<1>(edge);
+                double time_t = 0;
+                double arcs = 0;
+                if (test_case.is_open()) {
+                    std::string line;
+                    vector<std::string> substrings;
+                    const std::string delims = " ";
 
-                    clock_t aux = clock();
-                    graph.add_edge(x, y);
-                    clock_t aux_end = clock();
-                    time_t += aux_end - aux;
+                    while (getline(test_case, line)) {
+                        split(line, substrings, delims);
+
+                        uint64_t x = (uint64_t) stoi(substrings[1]);
+                        uint64_t y = (uint64_t) stoi(substrings[2]);
+                        clock_t aux = clock();
+                        graph.add_edge(x, y);
+                        time_t += clock() - aux;
+                        ++arcs;
+                    }
                 }
-                time_t /= edges.size() / CLOCKS_PER_SEC;
+                time_t /= arcs;
+                time_t /= CLOCKS_PER_SEC;
                 final += time_t;
+                test_case.close();
             }
-            final /= runs;
             break;
         }
         case 4: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices);
-                for (auto edge:edges) {
-                    uint64_t x = get<0>(edge);
-                    uint64_t y = get<1>(edge);
+                double time_t = 0;
+                double arcs = 0;
+                if (test_case.is_open()) {
+                    std::string line;
+                    vector<std::string> substrings;
+                    const std::string delims = " ";
 
-                    clock_t aux = clock();
-                    graph.add_edge(x, y);
-                    clock_t aux_end = clock();
-                    time_t += aux_end - aux;
+                    while (getline(test_case, line)) {
+                        split(line, substrings, delims);
+
+                        uint64_t x = (uint64_t) stoi(substrings[1]);
+                        uint64_t y = (uint64_t) stoi(substrings[2]);
+                        clock_t aux = clock();
+                        graph.add_edge(x, y);
+                        time_t += clock() - aux;
+                        ++arcs;
+                    }
                 }
-                time_t /= edges.size() / CLOCKS_PER_SEC;
+                time_t /= arcs;
+                time_t /= CLOCKS_PER_SEC;
                 final += time_t;
+                test_case.close();
             }
-            final /= runs;
             break;
         }
     }
 
+    final /= runs;
     cout << ((double) final) << endl;
     return 0;
 }
