@@ -23,6 +23,7 @@ evaluation/add_edge/add
 evaluation/add_edge/in-2004/*
 evaluation/add_edge/uk-2007-05@100000/*
 evaluation/add_edge/uk-2014-host/*
+evaluation/dd_edge/indochina-2004/*
 evaluation/add_edge/eu-2015-host/*
 evaluation/add_edge/add_mean
 
@@ -34,6 +35,7 @@ evaluation/delay_add_edge/80*
 evaluation/delay_add_edge/in-2004/*
 evaluation/delay_add_edge/uk-2007-05@100000/*
 evaluation/delay_add_edge/uk-2014-host/*
+evaluation/delay_add_edge/indochina-2004/*
 evaluation/delay_add_edge/eu-2015-host/*
 
 evaluation/contains/10*
@@ -44,6 +46,8 @@ evaluation/contains/create
 evaluation/contains/in-2004/*
 evaluation/contains/uk-2007-05@100000/*
 evaluation/contains/uk-2014-host/*
+evaluation/contains/indochina-2004/*
+evaluation/contains/eu-2015-host/*
 
 evaluation/delete_edge/10*
 evaluation/delete_edge/50*
@@ -53,6 +57,8 @@ evaluation/delete_edge/create
 evaluation/delete_edge/in-2004/*
 evaluation/delete_edge/uk-2007-05@100000/*
 evaluation/delete_edge/uk-2014-host/*
+evaluation/delete_edge/indochina-2004/*
+evaluation/delete_edge/eu-2015-host/*
 
 evaluation/list_neighbor/10*
 evaluation/list_neighbor/50*
@@ -62,11 +68,13 @@ evaluation/list_neighbor/create
 evaluation/list_neighbor/in-2004/*
 evaluation/list_neighbor/uk-2007-05@100000/*
 evaluation/list_neighbor/uk-2014-host/*
+evaluation/list_neighbor/indochina-2004/*
+evaluation/list_neighbor/eu-2015-host/*
 
 evaluation/jic-results/*
 datasets/*
 
-evaluation/*/conatains
+evaluation/*/contains
 evaluation/*/list
 evaluation/*/edge_iterator
 evaluation/*/neighbor_iterator
