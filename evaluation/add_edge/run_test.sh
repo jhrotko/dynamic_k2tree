@@ -1,6 +1,6 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
-RUNS=5
+RUNS=3
 RUNS_FILE_BACKGROUND="runs_time_background.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
@@ -8,8 +8,8 @@ RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs-data"
 
 TYPE="dmgen"
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "eu-2015-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004" "eu-2015-host")
+#declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
 
 if [[ $1 != "-webgraph" && ($1 != "-plot" || $2 != "-plot") && $1 != "-dmgen" ]]; then
   echo "Usage: ./run_test.sh [OPTIONAL: -plot]"

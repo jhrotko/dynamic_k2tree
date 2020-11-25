@@ -59,8 +59,15 @@ ship:
 
 evaluate:
 	cd evaluation/add_edge && make evaluate
-	cd evaluation/contains && make evaluate
 	cd evaluation/delay_add_edge && make evaluate
 	cd evaluation/delete_edge && make evaluate
-	cd evaluation/list_neighbor && make evaluate
 	cd evaluation/union_op && make evaluate
+	cd evaluation/list_neighbor && make evaluate
+	cd evaluation/contains && make evaluate
+evaluate-dmgen:
+	cd evaluation/add_edge && ./run_test.sh -dmgen
+	cd evaluation/delay_add_edge && ./run_test.sh
+	cd evaluation/delete_edge && ./run_test.sh -dmgen
+	cd evaluation/union_op && ./run_test.sh -dmgen
+	cd evaluation/list_neighbor && ./run_test.sh -dmgen
+	cd evaluation/contains && ./run_test.sh -dmgen

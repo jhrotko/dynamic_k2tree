@@ -3,8 +3,8 @@ DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 TYPE="dmgen"
 UNION_DATA="time-data"
 
-declare -a WEBGRAPH=("eu-2015-host")
-declare -a WEBGRAPH_NODES=(11264052)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866)
 #declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
 #declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 #declare -a WEBGRAPH=("eu-2015-host")

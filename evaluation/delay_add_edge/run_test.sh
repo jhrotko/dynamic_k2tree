@@ -1,12 +1,12 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
-RUNS=5
+RUNS=3
 RUNS_FILE_BACKGROUND="runs_time_background.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
 RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs.data"
-vertices=10000
+vertices=1000000
 
 PLOT=0
 if [[ $1 != "-plot" && $1 != "" ]]; then

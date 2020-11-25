@@ -17,10 +17,10 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
     int runs = atoi(argv[2]);
-    string  folder(argv[3]);
+    string folder(argv[3]);
     double final = 0;
 
-    for(int i=0; i < runs; i++) {
+    for (int i = 0; i < runs; i++) {
         int arcs = 0;
         double sum = 0;
         std::ostringstream path;
@@ -42,12 +42,10 @@ int main(int argc, char *argv[]) {
 
                 etype x = (etype) stoi(substrings[1]);
                 etype y = (etype) stoi(substrings[2]);
-                if (substrings[0] == "a") {
-                    clock_t start = clock();
-                    tree.del_edge(x,y);
-                    sum += clock() - start;
-                    ++arcs;
-                }
+                clock_t start = clock();
+                tree.del_edge(x, y);
+                sum += clock() - start;
+                ++arcs;
             }
         }
         sum /= arcs;
