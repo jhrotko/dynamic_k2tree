@@ -24,10 +24,10 @@ if [[ $1 == "-webgraph" ]]; then
 fi
 
 eval_time() {
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 1 >>"$RUNS_FILE-$TYPE"
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 2 >>"$RUNS_FILE_BACKGROUND-$TYPE"
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 3 >>"$RUNS_FILE_DELAY-$TYPE"
-  ./add $DATASETDIR/$1/$1.tsv $1 $RUNS 4 >>"$RUNS_FILE_DELAY_MUNRO-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $2 $RUNS 1 >>"$RUNS_FILE-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $2 $RUNS 2 >>"$RUNS_FILE_BACKGROUND-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $2 $RUNS 3 >>"$RUNS_FILE_DELAY-$TYPE"
+  ./add $DATASETDIR/$1/$1.tsv $2 $RUNS 4 >>"$RUNS_FILE_DELAY_MUNRO-$TYPE"
 }
 
 declare -a X_time=()
@@ -93,9 +93,9 @@ if [[ $PLOT == 0 ]]; then
   echo "Evaluating..."
   if [[ $TYPE == "dmgen" ]]; then
     echo "running for $vertices"
-    eval_time $vertices
+    eval_time $vertices $vertices
   else
-    eval_time "uk-2007-05@100000"
+    eval_time "uk-2007-05@100000" 100000
   fi
   echo "Preparing data..."
   prepared_data
