@@ -57,13 +57,13 @@ plot_data_time() {
   set terminal pngcairo
   set datafile separator whitespace
   set output 'contains_time_$TYPE.png'
-
+  set grid
+  set title "CHECK ($TYPE)"
   set xlabel "log_k(n)log(m)"
-  set ylabel "Time (s)"
-  plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 title "contains operation"
+  set ylabel "t (µs)"
+  plot "$DATA-$TYPE" using 1:2 with linespoints pt 8 title "contains operation"
 EOF
 }
-
 plot_data_mem() {
   bo="$(head -n 1 "$LIMITS-$TYPE")"
   info=($(echo "$bo" | tr ' ' '\n'))
@@ -75,8 +75,10 @@ plot_data_mem() {
   set terminal pngcairo
   set datafile separator whitespace
   set output 'contains_mem_$TYPE.png'
+  set grid
+  set title "CHECK ($TYPE)"
   set xlabel "n+m"
-  set ylabel "Memory (kbytes)"
+  set ylabel "memory (MB)"
   plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 title "contains operation"
 EOF
 }

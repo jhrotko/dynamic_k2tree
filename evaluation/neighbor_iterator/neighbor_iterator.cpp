@@ -22,10 +22,10 @@ int main(int argc, char *argv[]) {
     int runs = atoi(argv[2]);
     string folder(argv[3]);
     double final = 0;
+    std::ostringstream path;
+    path << argv[1];
 
     for (int i = 0; i < runs; i++) {
-        std::ostringstream path;
-        path << argv[1];
         std::ifstream test_case(path.str());
         double sum = 0;
         double times = 0;
