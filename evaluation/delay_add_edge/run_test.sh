@@ -65,7 +65,6 @@ plot_data_time() {
   set terminal pngcairo size 1024,768
   set datafile separator whitespace
   set output 'add_per_edge_time_$TYPE.png'
-  set xrange [0:203257]
   set xlabel "m"
   set ylabel "Time (s)"
     set style line 1 \
