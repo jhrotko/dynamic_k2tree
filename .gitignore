@@ -88,3 +88,4 @@ evaluation/results/*
 evaluation/serialized/eu-2015-host/*
 evaluation/*/limits-data-dmgen
 evaluation/*/limits-data-webgraph
+evaluation/jic-**
