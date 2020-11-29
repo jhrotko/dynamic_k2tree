@@ -55,9 +55,11 @@ plot_data_time() {
   gnuplot -persist <<-EOF
   set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
+  set title "Edge Iterator (DMGEN)"
+  set grid
   set output 'edge_iterator_time_$TYPE.png'
   set xlabel "log_k n"
-  set ylabel "Time (s)"
+  set ylabel "t (µs)"
   plot "$DATA-$TYPE" using 1:2 with linespoints pt 8 notitle
 EOF
 }
@@ -75,10 +77,11 @@ plot_data_mem() {
   gnuplot -persist <<-EOF
   set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
+  set title "Edge Iterator (DMGEN)"
+  set grid
   set output 'edge_iterator_mem_$TYPE.png'
   set xlabel "n+m"
-  set ylabel "Memory (kbytes)"
-
+  set ylabel "memory (MB)"
   plot "$DATA-$TYPE" using 3:4 with linespoints pt 8 notitle
 EOF
 }

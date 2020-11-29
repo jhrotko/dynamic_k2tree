@@ -65,8 +65,10 @@ plot_data_time() {
   set terminal pngcairo size 1024,768
   set datafile separator whitespace
   set output 'add_per_edge_time_$TYPE.png'
+  set title "Add time per edge"
+  set grid
   set xlabel "m"
-  set ylabel "Time (s)"
+  set ylabel "t (s)"
     set style line 1 \
     linecolor rgb '#00000' \
     linetype 1 linewidth 2 \

@@ -55,8 +55,10 @@ plot_data_time() {
   set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
   set output 'union_time_$TYPE.png'
+  set title "Union ($TYPE)"
+  set grid
   set xlabel "n + m"
-  set ylabel "Time (s)"
+  set ylabel "t (s)"
   set style data linespoints
   plot "$UNION_DATA-$TYPE" using 4:1 with linespoints pt 8 notitle
 EOF
@@ -64,11 +66,13 @@ EOF
 
 plot_data_mem() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo mono font "sans, 12"
+  set terminal pngcairo mono font "sans, 10"
   set datafile separator whitespace
   set output 'union_mem_$TYPE.png'
+  set title "Union ($TYPE)"
+  set grid
   set xlabel "n"
-  set ylabel "Memory (kbytes)"
+  set ylabel "memory (MB)"
   set style data linespoints
   plot "$UNION_DATA-$TYPE" using 3:2 with linespoints pt 8 notitle
 EOF
