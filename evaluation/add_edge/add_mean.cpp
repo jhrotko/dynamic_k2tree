@@ -21,10 +21,9 @@ int main(int argc, char *argv[]) {
     }
     std::ostringstream path;
     path << argv[1];
-    std::ifstream test_case(path.str());
 
     uint n_vertices = atoi(argv[2]);
-    uint runs = atoi(argv[3]);
+    double runs = atoi(argv[3]);
     uint dynamic_type = atoi(argv[4]);
 
     double final = 0;
@@ -33,6 +32,7 @@ int main(int argc, char *argv[]) {
         case 1: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree<2> graph(n_vertices);
+                std::ifstream test_case(path.str());
                 double time_t = 0;
                 double arcs = 0;
                 if (test_case.is_open()) {
@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
         case 2: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_background<2> graph(n_vertices);
+                std::ifstream test_case(path.str());
                 double time_t = 0;
                 double arcs = 0;
                 if (test_case.is_open()) {
@@ -89,6 +90,8 @@ int main(int argc, char *argv[]) {
         case 3: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_delay<2> graph(n_vertices);
+                std::ifstream test_case(path.str());
+
                 double time_t = 0;
                 double arcs = 0;
                 if (test_case.is_open()) {
@@ -117,6 +120,8 @@ int main(int argc, char *argv[]) {
         case 4: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices);
+                std::ifstream test_case(path.str());
+
                 double time_t = 0;
                 double arcs = 0;
                 if (test_case.is_open()) {

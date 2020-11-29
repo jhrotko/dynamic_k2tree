@@ -52,23 +52,25 @@ prepared_data() {
 
 plot_data_time() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
   set output 'union_time_$TYPE.png'
   set xlabel "n + m"
   set ylabel "Time (s)"
-  plot "$UNION_DATA-$TYPE" using 4:1 with linespoints linestyle 7 notitle
+  set style data linespoints
+  plot "$UNION_DATA-$TYPE" using 4:1 with linespoints pt 8 notitle
 EOF
 }
 
 plot_data_mem() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
   set output 'union_mem_$TYPE.png'
   set xlabel "n"
   set ylabel "Memory (kbytes)"
-  plot "$UNION_DATA-$TYPE" using 3:2 with linespoints linestyle 7 notitle
+  set style data linespoints
+  plot "$UNION_DATA-$TYPE" using 3:2 with linespoints pt 8 notitle
 EOF
 }
 
