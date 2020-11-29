@@ -53,12 +53,12 @@ plot_data_time() {
   MIN_y=${info[2]}
   MAX_y=${info[3]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
   set output 'edge_iterator_time_$TYPE.png'
   set xlabel "log_k n"
   set ylabel "Time (s)"
-  plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 notitle
+  plot "$DATA-$TYPE" using 1:2 with linespoints pt 8 notitle
 EOF
 }
 #  set style line 1 \
@@ -73,13 +73,13 @@ plot_data_mem() {
   MIN_y=${info[6]}
   MAX_y=${info[7]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pngcairo mono font "sans, 12"
   set datafile separator whitespace
   set output 'edge_iterator_mem_$TYPE.png'
   set xlabel "n+m"
   set ylabel "Memory (kbytes)"
 
-  plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 notitle
+  plot "$DATA-$TYPE" using 3:4 with linespoints pt 8 notitle
 EOF
 }
 
@@ -104,7 +104,6 @@ if [[ $2 != "-plot" ]]; then
   fi
 
   if [[ $TYPE == "webgraph" ]]; then
-    RUNS=1
     for dataset in "${WEBGRAPH[@]}"; do
       rm -r $dataset
     done

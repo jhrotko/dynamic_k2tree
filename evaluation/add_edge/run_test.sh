@@ -1,6 +1,6 @@
 #!/bin/bash
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
-RUNS=3
+RUNS=5
 RUNS_FILE_BACKGROUND="runs_time_background.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
@@ -8,8 +8,10 @@ RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs-data"
 
 TYPE="dmgen"
+#declare -a WEBGRAPH=("indochina-2004" "eu-2015-host")
+#declare -a WEBGRAPH_NODES=(7414866 11264052)
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004" "eu-2015-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354 11264052)
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866 11264052)
 
 if [[ $1 != "-webgraph" && ($1 != "-plot" || $2 != "-plot") && $1 != "-dmgen" ]]; then
   echo "Usage: ./run_test.sh [OPTIONAL: -plot]"
@@ -22,10 +24,10 @@ fi
 
 eval_memory() {
   #  $1 - number of vertices of the current test file
-  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 1 >>"$1/$RUNS_FILE"
-  /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 2 >>"$1/$RUNS_FILE_BACKGROUND"
-  /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 3 >>"$1/$RUNS_FILE_DELAY"
-  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
+  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
+  /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 2 >>"$1/$RUNS_FILE_BACKGROUND"
+  /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 3 >>"$1/$RUNS_FILE_DELAY"
+  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
 }
 
 declare -a X_time=()             #n+m
@@ -156,10 +158,9 @@ if [[ $2 != "-plot" ]]; then
       k=$((k + 1))
     done
   fi
+  echo "Preparing data..."
+  prepared_data
 fi
-
-echo "Preparing data..."
-prepared_data
 
 echo "Ploting time..."
 plot_data_time
