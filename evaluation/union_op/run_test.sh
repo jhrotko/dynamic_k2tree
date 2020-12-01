@@ -52,9 +52,9 @@ prepared_data() {
 
 plot_data_time() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo mono font "sans, 12"
+  set terminal pdfcairo mono font "sans, 12"
   set datafile separator whitespace
-  set output 'union_time_$TYPE.png'
+  set output 'union_time_$TYPE.pdf'
   set title "Union ($TYPE)"
   set grid
   set xlabel "n + m"
@@ -66,9 +66,9 @@ EOF
 
 plot_data_mem() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo mono font "sans, 10"
+  set terminal pdfcairo mono font "sans, 10"
   set datafile separator whitespace
-  set output 'union_mem_$TYPE.png'
+  set output 'union_mem_$TYPE.pdf'
   set title "Union ($TYPE)"
   set grid
   set xlabel "n"

@@ -54,9 +54,9 @@ plot_data_time() {
   MIN_y=${info[2]}
   MAX_y=${info[3]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pdfcairo
   set datafile separator whitespace
-  set output 'contains_time_$TYPE.png'
+  set output 'contains_time_$TYPE.pdf'
   set grid
   set title "CHECK ($TYPE)"
   set xlabel "log_k(n)log(m)"
@@ -72,9 +72,9 @@ plot_data_mem() {
   MIN_y=${info[6]}
   MAX_y=${info[7]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pdfcairo
   set datafile separator whitespace
-  set output 'contains_mem_$TYPE.png'
+  set output 'contains_mem_$TYPE.pdf'
   set grid
   set title "CHECK ($TYPE)"
   set xlabel "n+m"

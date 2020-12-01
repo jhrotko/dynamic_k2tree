@@ -58,12 +58,16 @@ ship:
 	make update_repo && make tests_all && git push
 
 evaluate:
-	cd evaluation/add_edge && make evaluate
-	cd evaluation/delay_add_edge && make evaluate
 	cd evaluation/delete_edge && make evaluate
 	cd evaluation/union_op && make evaluate
 	cd evaluation/list_neighbor && make evaluate
 	cd evaluation/contains && make evaluate
+oops:
+	#cd evaluation/add_edge && make evaluate
+	cd evaluation/delay_add_edge && make evaluate
+	cd evaluation/edge_iterator && make evaluate
+	cd evaluation/neighbor_iterator && make evaluate
+
 evaluate-dmgen:
 	cd evaluation/add_edge && ./run_test.sh -dmgen
 	cd evaluation/delay_add_edge && ./run_test.sh
@@ -71,3 +75,5 @@ evaluate-dmgen:
 	cd evaluation/union_op && ./run_test.sh -dmgen
 	cd evaluation/list_neighbor && ./run_test.sh -dmgen
 	cd evaluation/contains && ./run_test.sh -dmgen
+	cd evaluation/edge_iterator && ./run_test.sh -dmgen
+	cd evaluation/neighbor_iterator && ./run_test.sh -dmgen

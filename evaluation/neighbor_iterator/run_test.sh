@@ -53,11 +53,11 @@ plot_data_time() {
   MIN_y=${info[2]}
   MAX_y=${info[3]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo mono font "sans, 12"
+  set terminal pdfcairo mono font "sans, 12"
   set datafile separator whitespace
   set title "Neighbor Iterator ($TYPE)"
   set grid
-  set output 'neighbor_iterator_time_$TYPE.png'
+  set output 'neighbor_iterator_time_$TYPE.pdf'
   set xlabel '√m'
   set ylabel "t (µs)"
   plot "$DATA-$TYPE" using 1:2 with linespoints pt 8 notitle
@@ -75,10 +75,11 @@ plot_data_mem() {
   MIN_y=${info[6]}
   MAX_y=${info[7]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo mono font "sans, 12"
+  set terminal pdfcairo mono font "sans, 12"
   set datafile separator whitespace
-  set output 'neighbor_iterator_mem_$TYPE.png'
+  set output 'neighbor_iterator_mem_$TYPE.pdf'
   set title "Neighbor Iterator ($TYPE)"
+  set grid
   set xlabel "n+m"
   set ylabel "memory (MB)"
   plot "$DATA-$TYPE" using 3:4 with linespoints pt 8 notitle
