@@ -62,13 +62,12 @@ prepared_data() {
 
 plot_data_time() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo size 1024,768
-  set datafile separator whitespace
-  set output 'add_per_edge_time_$TYPE.png'
-  set title "Add time per edge"
+  set terminal pdfcairo mono font "sans, 16"
+  set output 'add_per_edge_time_$TYPE.pdf'
+  set title "Add time per edge ($TYPE)"
   set grid
   set xlabel "m"
-  set ylabel "t (s)"
+  set ylabel "t(s)"
     set style line 1 \
     linecolor rgb '#00000' \
     linetype 1 linewidth 2 \

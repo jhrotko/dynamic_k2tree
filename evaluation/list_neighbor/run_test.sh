@@ -50,9 +50,9 @@ plot_data_time() {
   MIN_y=${info[2]}
   MAX_y=${info[3]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pdfcairo
   set datafile separator whitespace
-  set output 'list_time_$TYPE.png'
+  set output 'list_time_$TYPE.pdf'
   set xlabel "sqrt(m)"
   set ylabel "Time (s)"
   plot "$DATA-$TYPE" using 1:2 with linespoints linestyle 7 notitle
@@ -67,9 +67,9 @@ plot_data_mem() {
   MIN_y=${info[6]}
   MAX_y=${info[7]}
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+  set terminal pdfcairo
   set datafile separator whitespace
-  set output 'list_mem_$TYPE.png'
+  set output 'list_mem_$TYPE.pdf'
   set xlabel "n+m"
   set ylabel "Memory (kbytes)"
   plot "$DATA-$TYPE" using 3:4 with linespoints linestyle 7 notitle
