@@ -97,8 +97,10 @@ plot_data_time() {
   set terminal pngcairo
   set datafile separator whitespace
   set output 'add_time_$TYPE.png'
+  set title "Add Edge ($TYPE)"
+  set grid
   set xlabel "log_k(n)log(m)"
-  set ylabel "Time (s)"
+  set ylabel "t (µs)"
   set key left
   plot "$RUNS_DATA-$TYPE" using 1:2 with linespoints t "add edge parallel",\
        "$RUNS_DATA-$TYPE" using 1:4 with linespoints t "add edge",\
@@ -109,12 +111,14 @@ EOF
 
 plot_data_mem() {
   gnuplot -persist <<-EOF
-  set terminal pngcairo
+    set terminal pngcairo
   set datafile separator whitespace
   set output 'add_mem_$TYPE.png'
+  set title "Add Edge ($TYPE)"
+  set grid
   set rmargin at screen 0.90
-  set xlabel "n + m"
-  set ylabel "Memory (kbytes)"
+  set xlabel "n+m (10^6)"
+  set ylabel "memory (MB)"
   set key left
   plot "$RUNS_DATA-$TYPE" using 10:3 with linespoints t "add edge parallel",\
        "$RUNS_DATA-$TYPE" using 10:5 with linespoints t "add edge",\
