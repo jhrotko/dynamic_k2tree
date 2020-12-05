@@ -91,3 +91,10 @@ evaluation/*/limits-data-webgraph
 evaluation/jic-journal-2020-plots/*
 evaluation/plots/*
 evaluation/eval_scripts/*
+evaluation/serialized/1*
+evaluation/serialized/5*
+evaluation/serialized/uk*
+evaluation/serialized/in*
+evaluation/serialized/eu*
+evaluation/plots
+makefila_ayin
