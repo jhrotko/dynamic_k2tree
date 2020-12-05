@@ -99,20 +99,20 @@ TEST(edge, iterator) {
 TEST(neighbour, iterator) {
     std::ifstream ifs;
     dynamic_ktree::DKtree<2> ktree;
-    ktree.load(ifs, "../evaluation/serialized/1000000", false);
+    ktree.load(ifs, "../evaluation/serialized/50000", false);
 
     clock_t aux_end, aux;
-    for (uint i = 1000; i < 10000; ++i) {
+    for (uint i = 0; i < 100; ++i) {
         cout << "i:" << i << endl;
-//        aux = clock();
-//        for (auto neigh = ktree.neighbour_begin(i); neigh != ktree.neighbour_end(); ++neigh) {}
-//        aux_end = clock();
-//        cout << "ITERATOR -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
+        aux = clock();
+        for (auto neigh = ktree.neighbour_begin(i); neigh != ktree.neighbour_end(); ++neigh) {}
+        aux_end = clock();
+        cout << "ITERATOR -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
 
-//        aux = clock();
-//        ktree.neigh_it(i, [](etype x) {});
-//        aux_end = clock();
-//        cout << "IT -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
+        aux = clock();
+        ktree.neigh_it(i, [](etype x) {});
+        aux_end = clock();
+        cout << "IT -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
 
         aux = clock();
         ktree.list_neighbour(i);

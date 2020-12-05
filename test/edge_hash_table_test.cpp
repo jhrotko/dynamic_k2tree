@@ -6,16 +6,15 @@ using edge = tuple<etype, etype>;
 
 TEST(edgeHashTableInsert, createHashTable)
 {
-    vector<NodeEdge> elements = {NodeEdge(1, 2), NodeEdge(3, 4), NodeEdge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);
 }
 
-
 TEST(edgeHashTableFind, find)
 {
-    vector<NodeEdge> elements = {NodeEdge(1, 2), NodeEdge(3, 4), NodeEdge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.find(1,1), -1);
@@ -26,7 +25,7 @@ TEST(edgeHashTableFind, find)
 
 TEST(edgeHashTableInsert, insert)
 {
-    vector<NodeEdge> elements = {NodeEdge(1, 2), NodeEdge(3, 4), NodeEdge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ht.insert(5,6, 3);
@@ -37,7 +36,7 @@ TEST(edgeHashTableInsert, insert)
 
 TEST(edgeHashTableErase, eraseedgeExist)
 {
-    vector<NodeEdge> elements = {NodeEdge(1, 2), NodeEdge(3, 4), NodeEdge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 4), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);
@@ -49,7 +48,7 @@ TEST(edgeHashTableErase, eraseedgeExist)
 
 TEST(edgeHashTableErase, clear)
 {
-    vector<NodeEdge> elements = {NodeEdge(1, 2), NodeEdge(3, 5), NodeEdge(0, 1)};
+    vector<Edge> elements = {Edge(1, 2), Edge(3, 5), Edge(0, 1)};
     EdgeHashTable ht(elements);
 
     ASSERT_EQ(ht.size(), 3);

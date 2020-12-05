@@ -68,25 +68,25 @@ public:
         // at its ends as the key
         EdgeHashTable edges_table;
         uint index = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) { //O(log_k(n))
             edges_table.insert(edge_it.x(), edge_it.y(), index++);
         }
         // Given a node v, we can retrieve the nodes adjacent to v
         // in time proportional to the number of those nodes
         unordered_map<etype, vector<etype>> adj_node;
-        for (auto node_it = g.node_begin(); node_it != g.node_end(); ++node_it) {
+        for (auto node_it = g.node_begin(); node_it != g.node_end(); ++node_it) { //O(sqrt(m))
             etype node = *node_it;
-            vector<etype> node_neighbour = g.list_neighbour(node);
+            vector<etype> node_neighbour = g.list_neighbour(node); //O(sqrt(m))
             if (node_neighbour.size() == 0) continue;
             adj_node[node] = node_neighbour;
         }
         uint num_triangles = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) { //O(log_k(n))
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
             if (v1 != v2) {
-                for (auto u: adj_node[v2]) {
-                    if (u != v1 && u != v2 && edges_table.contains(u, v1))
+                for (auto u: adj_node[v2]) { //O(neighbours)
+                    if (u != v1 && u != v2 && edges_table.contains(u, v1)) //O(log_k(n))
                         num_triangles++;
                 }
             }
@@ -96,18 +96,17 @@ public:
 
     static unsigned int count_triangles_dummy(Graph &g, bool list=false) {
         unsigned int total_triangles = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) { //O(m)
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
             if (v1 != v2) {
                 if (!list) {
-                    for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
+                    for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) { //O(sqrt(m))
                         etype v3 = *neigh_v2_it;
-                        if (g.contains(v3, v1))
+                        if (g.contains(v3, v1)) //O(log_k(n))
                             total_triangles++;
                     }
                 } else {
-
                     auto neighbours = g.list_neighbour(v2);
                     for (auto n: neighbours) {
                         if (g.contains(n, v1))
@@ -116,15 +115,17 @@ public:
                 }
             }
         }
-        return total_triangles;
+        return total_triangles; //O(m *(sqrt(m) + log_k(n)))
     }
 
+    // time - O(m)
+    // space - O(m)
     static unsigned int count_triangles(Graph &g) {
         // Create an index on edges, with the pair of nodes
         // at its ends as the key
         EdgeHashTable edges_table;
         uint index = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) {
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); ++edge_it) { //(O(m))
             edges_table.insert(edge_it.x(), edge_it.y(), index++);
         }
 
@@ -132,7 +133,7 @@ public:
         // in time proportional to the number of those nodes
         unordered_map<etype, vector<etype>> adj_node;
         map<etype, etype> degree_node;
-        for (auto node_it = g.node_begin(); node_it != g.node_end(); ++node_it) {
+        for (auto node_it = g.node_begin(); node_it != g.node_end(); ++node_it) { //O(sqrt(m))
             etype node = *node_it;
             if (g.list_neighbour(node).size() == 0) continue;
             adj_node[node] = g.list_neighbour(node);
@@ -142,7 +143,7 @@ public:
         }
 
         uint num_triangles = 0;
-        for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); ++edge_it) {
+        for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); ++edge_it) { //O(m)
             etype v1 = edge_it->first.x();
             etype v2 = edge_it->first.y();
             if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))

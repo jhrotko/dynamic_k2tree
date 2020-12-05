@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::ifstream ifs(argv[1]);
-    sdsl::k2_tree<2> ktree_test = sdsl::k2_tree<2>();
+    sdsl::k2_tree<2> ktree_test;
     ktree_test.load(ifs);
     ifs.close();
 

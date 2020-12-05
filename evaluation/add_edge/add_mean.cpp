@@ -80,10 +80,10 @@ int main(int argc, char *argv[]) {
                         ++arcs;
                     }
                 }
+                test_case.close();
                 time_t /= arcs;
                 time_t /= CLOCKS_PER_SEC;
                 final += time_t;
-                test_case.close();
             }
             break;
         }

@@ -46,19 +46,20 @@ int main(int argc, char *argv[]) {
 
                 clock_t aux = clock();
                 auto neigh = tree.neighbour_begin(x);
-                sum += clock() - aux;
+                clock_t  aux_end = clock();
+                sum += (double)(aux_end - aux) / CLOCKS_PER_SEC;
                 ++times;
                 for (; neigh != tree.neighbour_end();) {
                     clock_t aux_2 = clock();
                     ++neigh;
-                    sum += clock() - aux_2;
+                    clock_t  aux_end_2 = clock();
+                    sum += (double)(aux_end_2 - aux_2) / CLOCKS_PER_SEC;
                     times++;
                 }
             }
         }
         test_case.close();
         sum /= times;
-        sum /= CLOCKS_PER_SEC;
         final += sum;
     }
     cout << final / (double) runs << endl;
