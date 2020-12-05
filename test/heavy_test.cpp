@@ -3,9 +3,9 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <string>
 #include <vector>
-//#include "../include/dktree/DKtree_background.hpp"
+#include "../include/dktree/DKtree_background.hpp"
 #include "../include/dktree/DKtree.hpp"
-//#include "../include/dktree/DKtree_delay.hpp"
+#include "../include/dktree/DKtree_delay.hpp"
 #include "../include/dktree/DKtree_delay_.hpp"
 
 void split(const std::string &str, std::vector<std::string> &cont,
@@ -14,18 +14,18 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 10000;
+    unsigned int n_vertices = 500000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
 //    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
 //    dynamic_ktree::DKtree <2> graph(n_vertices);
+    dynamic_ktree::DKtree_background<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 28.3361
 //    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
-//    dynamic_ktree::DKtree_background<2> graph(n_vertices);
-    dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices);
-    vector<tuple<etype, etype>> edges;
+//    dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices); //per edge: 8.50478e-06 total: 26.4127
     double i = 0;
+    double sum = 0;
     if (test_case.is_open()) {
         std::string line;
         vector<std::string> substrings;
@@ -41,87 +41,33 @@ TEST(ReadTest, ReadFromDataset) {
                 ++i;
                 clock_t aux = clock();
                 graph.add_edge(x, y);
-                end_add += clock() - aux;
-//                cout << "x:" << x << "    y:" << y << endl;
-//                cout << "========================" << endl;
-                ASSERT_TRUE(graph.contains(x, y));
-                edges.emplace_back(tuple<etype, etype>(x, y));
+                end_add = clock();
+                sum += (double) (end_add-aux) / CLOCKS_PER_SEC;
             }
         }
-
-//        std::stringstream ss;
-//        graph.serialize(ss);
-        cout << "TOTAL TIME " << (double) (end_add) / CLOCKS_PER_SEC / i << endl;
-
-//        clock_t del = 0;
-        auto edge_it = graph.edge_begin();
-        int count = 0;
-        for(auto edge : edges) {
-            ++count;
-            ++edge_it;
-            if(edge_it == graph.edge_end())
-                break;
-//            etype  x = get<0>(edge);
-//            etype  y = get<1>(edge);
-//
-//            cout << "x:" << x << "    y:" << y << endl;
-//            ASSERT_TRUE(graph.contains(x,y));
-//            clock_t aux = clock();
-//            graph.del_edge(x, y);
-//            del += clock() - aux;
-//            ASSERT_FALSE(graph.contains(x,y));
-        }
-        assert(count == edges.size());
-//        cout << "TOTAL TIME " << (float) (del) / CLOCKS_PER_SEC << endl;
-//
-
+        cout << "TOTAL TIME: " << sum << endl;
     } else {
         cout << "Unable to open file";
         FAIL();
     }
 }
 
-//TEST(a, v) {
-//    std::stringstream ss;
-//    dynamic_ktree::DKtree < 2 > graph;
-//    graph.load(ss, "./", false);
-//
-//    unsigned int n_vertices = 100000;
-//    std::ostringstream path;
-//    path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
-//    ifstream test_case(path.str());
-//
-//    clock_t start2 = 0;
-//    vector<tuple<etype, etype>> edges;
-//    if (test_case.is_open()) {
-//        std::string line;
-//        vector<std::string> substrings;
-//        const std::string delims = " ";
-//
-//        while (getline(test_case, line)) {
-//            split(line, substrings, delims);
-//
-//            etype x = (etype) stoi(substrings[1]);
-//            etype y = (etype) stoi(substrings[2]);
-//            if (substrings[0] == "a") {
-//                clock_t aux2 = clock();
-//                graph.del_edge(x, y);
-//                start2 += clock() - aux2;
-//                edges.emplace_back(tuple<etype,etype>(x,y));
-//            }
-//        }
-//
-//        for(auto item: edges) {
-//            etype  x = get<0>(item);
-//            etype  y = get<1>(item);
-//            cout << "x:" << x << "  y:" << y << endl;
-//            ASSERT_FALSE(graph.contains(x,y));
-//        }
-////        cout << "TOTAL TIME old delete" << (float) (start) / CLOCKS_PER_SEC << endl;
-//        cout << "TOTAL TIME new delete" << (float) (start2) / CLOCKS_PER_SEC << endl;
-//
-//    }
-//}
+TEST(a, v) {
+    std::ifstream ifs("../evaluation/serialized/1000000/dktree_serialize/7.kt");
+    sdsl::k2_tree<2> ktree_test = sdsl::k2_tree<2>();
+    ktree_test.load(ifs);
+    ifs.close();
+
+    std::ifstream ifs2("../evaluation/serialized/1000000/dktree_serialize/7.kt");
+    sdsl::k2_tree<2> ktree_test2 = sdsl::k2_tree<2>();
+    ktree_test2.load(ifs2);
+    ifs2.close();
+
+    shared_ptr<sdsl::k2_tree<2>> ptr1 = make_shared<sdsl::k2_tree<2>>(ktree_test);
+    shared_ptr<sdsl::k2_tree<2>> ptr2 = make_shared<sdsl::k2_tree<2>>(ktree_test2);
+
+    ptr1->unionOp(ptr2);
+}
 
 TEST(edge, iterator) {
     int runs = 1;
@@ -148,6 +94,31 @@ TEST(edge, iterator) {
         final += sum / CLOCKS_PER_SEC;
     }
     cout << final / (double) runs << endl;
+}
+
+TEST(neighbour, iterator) {
+    std::ifstream ifs;
+    dynamic_ktree::DKtree<2> ktree;
+    ktree.load(ifs, "../evaluation/serialized/1000000", false);
+
+    clock_t aux_end, aux;
+    for (uint i = 1000; i < 10000; ++i) {
+        cout << "i:" << i << endl;
+//        aux = clock();
+//        for (auto neigh = ktree.neighbour_begin(i); neigh != ktree.neighbour_end(); ++neigh) {}
+//        aux_end = clock();
+//        cout << "ITERATOR -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
+
+//        aux = clock();
+//        ktree.neigh_it(i, [](etype x) {});
+//        aux_end = clock();
+//        cout << "IT -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
+
+        aux = clock();
+        ktree.list_neighbour(i);
+        aux_end = clock();
+        cout << "LIST -- TOTAL TIME:" << (double) (aux_end - aux) / CLOCKS_PER_SEC << endl;
+    }
 }
 
 int main(int argc, char **argv) {

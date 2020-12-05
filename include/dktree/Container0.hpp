@@ -38,6 +38,23 @@ namespace dynamic_ktree {
             n_elements = 0;
         }
 
+        Container0(size_t n_vertices, bool hash) : n_vertices(n_vertices) {
+            n_elements = 0;
+            max_edges = MAXSZ(n_vertices, 0);
+
+            edge_lst_size = max_edges << 1;
+
+            edge_lst.reserve(edge_lst_size << 1);
+            adj_map.reserve(edge_lst_size);
+
+            elements.resize(max_edges);
+            elements_nodes.resize(max_edges);
+            edge_free.resize(max_edges);
+            for (etype i = 0; i < max_edges; i++)
+                edge_free[i] = i;
+            n_elements = 0;
+        }
+
         void clean() {
             n_elements = 0;
             marked = 0;
@@ -128,6 +145,22 @@ namespace dynamic_ktree {
             }
         }
 
+        void neigh_it(etype x, std::function<void(etype)> func) {
+            if (adj_contains(x) && !elements.empty()) {
+                bool done = false;
+                size_t k = adj_map[x];
+                while (!done) {
+                    func(elements_nodes[k].y());
+
+                    if (elements[k].has_next()) {
+                        k = elements[k].next();
+                    } else {
+                        done = true;
+                    }
+                }
+            }
+        }
+
         etype size() const {
             return n_elements == 0 ? 0 : n_elements - marked;
         }
@@ -145,6 +178,7 @@ namespace dynamic_ktree {
                 elements.resize(new_max_edges);
                 elements_nodes.resize(new_max_edges);
                 edge_free.resize(new_max_edges);
+
                 for (etype i = n_elements; i < new_max_edges; i++) {
                     edge_free[i] = i;
                 }
