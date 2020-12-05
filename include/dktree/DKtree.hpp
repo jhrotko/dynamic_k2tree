@@ -31,23 +31,22 @@ namespace dynamic_ktree {
 
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
-            typename t_rank = typename t_bv::rank_1_type,
-            typename l_rank = typename t_bv::rank_1_type>
+            typename t_rank = typename t_bv::rank_1_type>
     class DKtree : public Graph<
             DKtreeEdgeIterator <
-            DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, edge_iterator<k2_tree<k, t_bv, t_rank, l_rank>>>,
-                   DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>,
-                   DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k2_tree<k, t_bv, t_rank, l_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank, l_rank>>, Container0,
+            DKtree<k, t_bv, t_rank>, k2_tree<k, t_bv, t_rank>, edge_iterator<k2_tree<k, t_bv, t_rank>>>,
+                   DKtreeNodeIterator<DKtree<k, t_bv, t_rank>>,
+                   DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank>, k2_tree<k, t_bv, t_rank>, neighbour_iterator<k2_tree<k, t_bv, t_rank>>, Container0,
                            Container0NeighIterator < Container0>>
 
     > {
-    using k_tree = k2_tree<k, t_bv, t_rank, l_rank>;
+    using k_tree = k2_tree<k, t_bv, t_rank>;
     using k_tree_edge_it = edge_iterator<k_tree>;
     using k_tree_neighbour_it = neighbour_iterator<k_tree>;
 
-    using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_edge_it>;
-    using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank, l_rank>>;
-    using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank, l_rank>, k_tree, k_tree_neighbour_it, Container0,
+    using dktree_edge_it = DKtreeEdgeIterator<DKtree<k, t_bv, t_rank>, k_tree, k_tree_edge_it>;
+    using dktree_node_it = DKtreeNodeIterator<DKtree<k, t_bv, t_rank>>;
+    using dktree_neighbour_it = DKtreeNeighbourIterator<DKtree<k, t_bv, t_rank>, k_tree, k_tree_neighbour_it, Container0,
             Container0NeighIterator < Container0>>;
     private:
     uint max_r = 0;
@@ -329,7 +328,7 @@ namespace dynamic_ktree {
             clean_serialize(project_dir);
     }
 
-    bool operator==(const DKtree<k, t_bv, t_rank, l_rank> &rhs) const {
+    bool operator==(const DKtree<k, t_bv, t_rank> &rhs) const {
         bool eval = true;
         eval &= max_r == rhs.max_r;
         eval &= n_vertices == rhs.n_vertices;
@@ -353,6 +352,14 @@ namespace dynamic_ktree {
 
         for (auto &entry : std::experimental::filesystem::directory_iterator(project_dir))
             std::experimental::filesystem::remove(entry.path());
+    }
+
+    void neigh_it(etype x, std::function<void(etype)> func) {
+        C0.neigh_it(x, func);
+
+        for (size_t l = 0; l <= max_r; l++)
+            if (k_collection[l] != nullptr)
+                k_collection[l]->neigh_it(x, func);
     }
 };
 }
