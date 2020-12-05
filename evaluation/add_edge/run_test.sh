@@ -8,8 +8,8 @@ RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs-data"
 
 TYPE="dmgen"
-#declare -a WEBGRAPH=("indochina-2004" "eu-2015-host")
-#declare -a WEBGRAPH_NODES=(7414866 11264052)
+#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
+#declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004" "eu-2015-host")
 declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866 11264052)
 
@@ -24,9 +24,13 @@ fi
 
 eval_memory() {
   #  $1 - number of vertices of the current test file
+  echo "normal"
   /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
+  echo "background"
   /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 2 >>"$1/$RUNS_FILE_BACKGROUND"
+  echo "delay"
   /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 3 >>"$1/$RUNS_FILE_DELAY"
+  echo "delay munro"
   /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
 }
 

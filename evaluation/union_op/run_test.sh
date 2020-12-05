@@ -50,14 +50,48 @@ prepared_data() {
   done
 }
 
-plot_data_time() {
+plot_data_time_dmgen() {
+  echo "Ploting time..."
   gnuplot -persist <<-EOF
-  set terminal pdfcairo mono font "sans, 12"
+  set terminal pdfcairo mono font "sans, 16"
   set datafile separator whitespace
   set output 'union_time_$TYPE.pdf'
   set title "Union ($TYPE)"
   set grid
-  set xlabel "n + m"
+  set xlabel "n + m (10^6)"
+  set ylabel "t (s)"
+  set xrange [:32]
+  set style data linespoints
+  plot "$UNION_DATA-$TYPE" using 4:1 with linespoints pt 8 notitle
+EOF
+}
+
+plot_data_mem_dmgen() {
+  echo "Ploting memory..."
+  gnuplot -persist <<-EOF
+  set terminal pdfcairo mono font "sans, 16"
+  set datafile separator whitespace
+  set output 'union_mem_$TYPE.pdf'
+  set title "Union ($TYPE)"
+  set grid
+  set xlabel "n"
+  set xrange [:1200000]
+  set yrange [:900]
+  set ylabel "memory (MB)"
+  set style data linespoints
+  plot "$UNION_DATA-$TYPE" using 3:2 with linespoints pt 8 notitle
+EOF
+}
+
+plot_data_time() {
+  echo "Ploting time..."
+  gnuplot -persist <<-EOF
+  set terminal pdfcairo mono font "sans, 16"
+  set datafile separator whitespace
+  set output 'union_time_$TYPE.pdf'
+  set title "Union ($TYPE)"
+  set grid
+  set xlabel "n + m (10^6)"
   set ylabel "t (s)"
   set style data linespoints
   plot "$UNION_DATA-$TYPE" using 4:1 with linespoints pt 8 notitle
@@ -65,13 +99,14 @@ EOF
 }
 
 plot_data_mem() {
+  echo "Ploting memory..."
   gnuplot -persist <<-EOF
-  set terminal pdfcairo mono font "sans, 10"
+  set terminal pdfcairo mono font "sans, 16"
   set datafile separator whitespace
   set output 'union_mem_$TYPE.pdf'
   set title "Union ($TYPE)"
   set grid
-  set xlabel "n"
+  set xlabel "n (10^6)"
   set ylabel "memory (MB)"
   set style data linespoints
   plot "$UNION_DATA-$TYPE" using 3:2 with linespoints pt 8 notitle
@@ -85,10 +120,12 @@ if [[ $2 != "-plot" ]]; then
   echo "Evaluating..."
   echo "Cleaning up..."
   rm $UNION_DATA-$TYPE
+  rm $UNION_DATA-$TYPE
   echo "Done!"
   if [[ $TYPE == "dmgen" ]]; then
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
-      rm -r $vertices
+      rm "$vertices/mem_union.txt"
+      rm "$vertices/test.kt"
     done
 
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
@@ -102,7 +139,8 @@ if [[ $2 != "-plot" ]]; then
 
   if [[ $TYPE == "webgraph" ]]; then
     for dataset in "${WEBGRAPH[@]}"; do
-      rm -r $dataset
+      rm "$dataset/mem_union.txt"
+      rm "$dataset/test.kt"
     done
 
     k=0
@@ -121,8 +159,10 @@ if [[ $2 != "-plot" ]]; then
   prepared_data
 fi
 
-echo "Ploting time..."
-plot_data_time
-
-echo "Ploting memory..."
-plot_data_mem
+#if [[ $TYPE == "dmgen" ]]; then
+#  plot_data_time_dmgen
+#  plot_data_mem_dmgen
+#else
+#  plot_data_time
+#  plot_data_mem
+#fi

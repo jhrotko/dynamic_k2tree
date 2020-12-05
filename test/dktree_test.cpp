@@ -432,6 +432,25 @@ TEST(neighbourTimes, letssee) {
     cout << "Neigh time:" << (float) (end-start) / CLOCKS_PER_SEC << endl;
 }
 
+TEST(neighbor_it, test){
+    std::vector<uint64_t> expected_neigh{8,0,1,2,3};
+    uint i = 0;
+
+    std::function<void(uint64_t)> func = [&](uint64_t x) {
+        ASSERT_EQ(x, expected_neigh[i]);
+        ++i;
+    };
+
+    d_tree tree(50);
+    tree.add_edge(0, 0);
+    tree.add_edge(0, 1);
+    tree.add_edge(0, 2);
+    tree.add_edge(0, 3);
+    tree.add_edge(0, 8);
+
+    tree.neigh_it(0, func);
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
