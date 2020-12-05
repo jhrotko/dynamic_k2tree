@@ -1,8 +1,8 @@
 neighbor_iterator:
-	g++ -o neighbor_iterator neighbor_iterator.cpp -lstdc++fs -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
+	g++ -o neighbor_iterator -O9 neighbor_iterator.cpp -lstdc++fs -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
 
 time:
-	g++ -o time time.cpp -lboost_serialization
+	g++ -o time -O3 time.cpp -lboost_serialization
 
 clean:
 	rm neighbor_iterator time
