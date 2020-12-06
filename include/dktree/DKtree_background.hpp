@@ -29,56 +29,40 @@ using namespace std;
 using namespace k2_tree_ns;
 
 
-std::condition_variable cv;
-std::mutex mtx_lck;
-std::atomic<bool> needs_work, run;
-
-template<class dktree_background, class k_tree>
-void union_collection(dktree_background &graph) {
-    while (run) {
-        {
-            std::unique_lock<std::mutex> lk(mtx_lck);
-            while (!needs_work && run) {
-                cv.wait(lk);
-            }
-        }
-        if (!run) break;
-        //Add new link...
-        shared_ptr<k_tree> tmp = make_shared<k_tree>(graph.converted, graph.n_vertices);
-        graph.converted.clear();
-
-        size_t i, max_size;
-        max_size = MAXSZ(graph.max_size_background, 0);
-        for (i = 0; i < R; ++i) {
-            if (graph.k_collection[i] != nullptr)
-                max_size += graph.k_collection[i]->total_edges();
-            if (MAXSZ(graph.max_size_background, i + 1) > max_size + 1)
-                break;
-        }
-        if (i >= R)
-            throw logic_error("Error: collection too big...");
-        graph.max_r = max(i, graph.max_r);
-
-        for (size_t j = 0; j <= i; ++j) {
-            if (graph.k_collection[j] != nullptr) {
-                tmp->unionOp(graph.k_collection[j]);
-                graph.k_collection[j].reset();
-            }
-        }
-        graph.k_collection[i] = tmp;
-        {
-            std::unique_lock<std::mutex> lk(mtx_lck);
-            needs_work = false;
-            cv.notify_all();
-        }
-//            cout << "notified in thread" << endl;
-//            cout << "run: " << run << endl;
-    }
-//        cout << "really dead" << endl;
-}
-
 namespace dynamic_ktree {
 #define R 8
+
+    template<class dktree_background, class k_tree>
+    void union_collection(dktree_background &graph) {
+        while (graph.run) {
+            if (graph.needs_work) {
+                //Add new link...
+                shared_ptr<k_tree> tmp = make_shared<k_tree>(graph.converted, graph.n_vertices);
+                graph.converted.clear();
+
+                size_t i, max_size;
+                max_size = MAXSZ(graph.max_size_background, 0);
+                for (i = 0; i < R; ++i) {
+                    if (graph.k_collection[i] != nullptr)
+                        max_size += graph.k_collection[i]->total_edges();
+                    if (MAXSZ(graph.max_size_background, i + 1) > max_size + 1)
+                        break;
+                }
+                if (i >= R)
+                    throw logic_error("Error: collection too big...");
+                graph.max_r = max(i, graph.max_r);
+
+                for (size_t j = 0; j <= i; ++j) {
+                    if (graph.k_collection[j] != nullptr) {
+                        tmp->unionOp(graph.k_collection[j]);
+                        graph.k_collection[j].reset();
+                    }
+                }
+                graph.k_collection[i] = tmp;
+                graph.needs_work = false;
+            }
+        }
+    }
 
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
@@ -107,11 +91,13 @@ namespace dynamic_ktree {
         dktree_neighbour_it it_neighbour_begin, it_neighbour_end;
 
         tuple<etype, etype> tmp_edge;
+
     public:
         uint max_r = 0;
         uint64_t n_vertices = 0;
         std::thread background_union;
         array<k_tree, R> k_collection_background;
+        std::atomic<bool> run, needs_work;
         vector<tuple<uint64_t, uint64_t>> converted;
         uint tmp_i, max_r_background, max_size_background;
 
@@ -120,30 +106,20 @@ namespace dynamic_ktree {
         DKtree_background() : background_union() {}
 
         ~DKtree_background() {
-            {
-                std::unique_lock<std::mutex> lk(mtx_lck);
-                while (needs_work) {
-                    cv.wait(lk);
-                }
-            }
-            {
-                std::unique_lock<std::mutex> lk(mtx_lck);
-                run = false;
-                cv.notify_all();
-            }
+            while (needs_work) {}
+            run = false;
         }
 
         DKtree_background(uint n_vertices) : n_vertices(n_vertices) {
             C0 = Container0(n_vertices);
+            C0.resize(C0.max_size()*2);
             max_r = 0;
             for (size_t i = 0; i < R; i++) {
                 k_collection[i] = nullptr;
             }
             it_neighbour_end = dktree_neighbour_it().end();
-
-            needs_work = false;
             run = true;
-
+            needs_work = false;
             background_union = std::thread([&]() {
                 union_collection<DKtree_background<k, t_bv, t_rank>, k_tree>(*this);
             });
@@ -173,9 +149,9 @@ namespace dynamic_ktree {
             }
             if (needs_work) {
                 if (C0.size() == C0.max_size()) {
-                    C0.resize(C0.max_size() + 10);
+                    C0.resize(C0.max_size()+10);
                 }
-                C0.insert(x, y, n_total_edges);
+                C0.insert(x,y,n_total_edges);
                 ++n_total_edges;
                 return;
             }
@@ -185,22 +161,18 @@ namespace dynamic_ktree {
                     converted.emplace_back(tuple<uint64_t, uint64_t>(converted_edge.x(), converted_edge.y()));
                 }
             }
-            converted.emplace_back(tuple<uint64_t, uint64_t>(x, y));
+            converted.emplace_back(tuple<uint64_t,uint64_t>(x,y));
+
             max_size_background = max(n_vertices, n_total_edges);
             max_r_background = max_r;
-            tmp_edge = tuple<etype, etype>(x, y);
-
+            tmp_edge = tuple<etype, etype>(x,y);
             for (size_t j = 0; j < R; ++j) {
-                if (k_collection[j] != nullptr)
+                if(k_collection[j] != nullptr)
                     k_collection_background[j] = *k_collection[j];
                 else
                     k_collection_background[j] = k_tree();
             }
-            {
-                std::unique_lock<std::mutex> lk(mtx_lck);
-                needs_work = false;
-                cv.notify_all();
-            }
+            needs_work = true;
 
             C0.clean();
             ++n_total_edges;
@@ -212,7 +184,7 @@ namespace dynamic_ktree {
             }
             // check in other containers
             if (needs_work) {
-                if (get<0>(tmp_edge) == x && get<1>(tmp_edge) == y)
+                if(get<0>(tmp_edge) == x && get<1>(tmp_edge) == y)
                     return true;
                 for (size_t i = 0; i <= max_r_background; i++)
                     if (k_collection_background[i].get_number_nodes() > 0 && k_collection_background[i].adj(x, y))
@@ -230,12 +202,7 @@ namespace dynamic_ktree {
                 n_total_edges--;
                 return;
             } else {
-                {
-                    std::unique_lock<std::mutex> lk(mtx_lck);
-                    while (needs_work) {
-                        cv.wait(lk);
-                    }
-                }
+                while (needs_work) {}
                 uint64_t n_total_marked = 0;
                 for (size_t l = 0; l < R; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
@@ -281,7 +248,7 @@ namespace dynamic_ktree {
             C0.list_neighbours(x, neighbours);
 
             if (needs_work) {
-                if (get<0>(tmp_edge) == x)
+                if(get<0>(tmp_edge) == x)
                     neighbours.push_back(get<1>(tmp_edge));
                 for (size_t l = 0; l <= max_r; l++)
                     if (k_collection_background[l] != k_tree()) {
