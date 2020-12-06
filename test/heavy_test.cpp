@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "../include/dktree/DKtree_background.hpp"
+#include "../include/dktree/DKtree_background_wait.hpp"
 #include "../include/dktree/DKtree.hpp"
 #include "../include/dktree/DKtree_delay.hpp"
 #include "../include/dktree/DKtree_delay_.hpp"
@@ -14,15 +15,16 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 TEST(ReadTest, ReadFromDataset) {
-    unsigned int n_vertices = 500000;
+    unsigned int n_vertices = 50000;
     std::ostringstream path;
 
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
 //    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
     ifstream test_case(path.str());
 //    dynamic_ktree::DKtree <2> graph(n_vertices);
-    dynamic_ktree::DKtree_background<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 28.3361
-//    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
+//    dynamic_ktree::DKtree_background<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 32.2261 -- 500k
+//    dynamic_ktree::DKtree_background_wait<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 28.3361 -- 50k
+    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
 //    dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices); //per edge: 8.50478e-06 total: 26.4127
     double i = 0;
     double sum = 0;
@@ -42,6 +44,7 @@ TEST(ReadTest, ReadFromDataset) {
                 clock_t aux = clock();
                 graph.add_edge(x, y);
                 end_add = clock();
+//                cout << "x:" << x << "    y:" << y << endl;
                 sum += (double) (end_add-aux) / CLOCKS_PER_SEC;
             }
         }

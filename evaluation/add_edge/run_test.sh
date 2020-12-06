@@ -2,6 +2,7 @@
 DATASETDIR="../../datasets/dmgen/prepared_datasets/dmgen"
 RUNS=5
 RUNS_FILE_BACKGROUND="runs_time_background.txt"
+RUNS_FILE_BACKGROUND_WAIT="runs_time_background_wait.txt"
 RUNS_FILE="runs_time.txt"
 RUNS_FILE_DELAY="runs_time_delay.txt"
 RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
@@ -24,20 +25,29 @@ fi
 
 eval_memory() {
   #  $1 - number of vertices of the current test file
-  echo "normal"
-  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
+#  echo "normal"
+#  rm "$1/$RUNS_FILE" "$1/mem_add.txt"
+#  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
   echo "background"
+  rm "$1/$RUNS_FILE_BACKGROUND" "$1/mem_add_background.txt"
   /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 2 >>"$1/$RUNS_FILE_BACKGROUND"
+  echo "background wait"
+  rm "$1/$RUNS_FILE_BACKGROUND_WAIT" "$1/mem_add_background_wait.txt"
+  /usr/bin/time -v --output="$1/mem_add_background_wait.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 5 >>"$1/$RUNS_FILE_BACKGROUND_WAIT"
   echo "delay"
+  rm "$1/$RUNS_FILE_DELAY" "$1/mem_add_delay.txt"
   /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 3 >>"$1/$RUNS_FILE_DELAY"
-  echo "delay munro"
-  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
+#  echo "delay munro"
+#  rm "$1/$RUNS_FILE_DELAY_MUNRO" "$1/mem_add_delay_munro.txt"
+#  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
 }
 
 declare -a X_time=()             #n+m
 declare -a X_mem=()              #n+m
 declare -a TIME_BACKGROUND=()    #time add_edge
 declare -a MEMORY_BACKGROUND=()  #memory add_edge
+declare -a TIME_BACKGROUND_WAIT=()    #time add_edge
+declare -a MEMORY_BACKGROUND_WAIT=()  #memory add_edge
 declare -a TIME=()               #time add_edge
 declare -a MEMORY=()             #memory add_edge
 declare -a TIME_DELAY=()         #time add_edge
@@ -58,6 +68,9 @@ prepared_data() {
 
       TIME_BACKGROUND+=("$(cat "$dataset/$RUNS_FILE_BACKGROUND")")
       MEMORY_BACKGROUND+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_background.txt")")
+
+      TIME_BACKGROUND_WAIT+=("$(cat "$dataset/$RUNS_FILE_BACKGROUND_WAIT")")
+      MEMORY_BACKGROUND_WAIT+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_background_wait.txt")")
 
       TIME_DELAY+=("$(cat "$dataset/$RUNS_FILE_DELAY")")
       MEMORY_DELAY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_delay.txt")")
@@ -80,6 +93,9 @@ prepared_data() {
       TIME_BACKGROUND+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND")")
       MEMORY_BACKGROUND+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_background.txt")")
 
+      TIME_BACKGROUND_WAIT+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND_WAIT")")
+      MEMORY_BACKGROUND_WAIT+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_background_wait.txt")")
+
       TIME_DELAY+=("$(cat "$vertices/$RUNS_FILE_DELAY")")
       MEMORY_DELAY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_delay.txt")")
 
@@ -91,7 +107,7 @@ prepared_data() {
 
   i=$((i - 1))
   for item in $(seq 0 $i); do
-    echo "${X_time[${item}]} ${TIME_BACKGROUND[${item}]} ${MEMORY_BACKGROUND[${item}]} ${TIME[${item}]} ${MEMORY[${item}]} ${TIME_DELAY[${item}]} ${MEMORY_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${X_mem[${item}]}" >>$RUNS_DATA-$TYPE
+    echo "${X_time[${item}]} ${TIME_BACKGROUND[${item}]} ${MEMORY_BACKGROUND[${item}]} ${TIME[${item}]} ${MEMORY[${item}]} ${TIME_DELAY[${item}]} ${MEMORY_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${X_mem[${item}]} ${TIME_BACKGROUND_WAIT[${item}]} ${MEMORY_BACKGROUND_WAIT[${item}]}" >>$RUNS_DATA-$TYPE
   done
   i=$((i + 1))
 }
@@ -106,8 +122,9 @@ plot_data_time() {
   set xlabel "log_k(n)log(m)"
   set ylabel "t (µs)"
   set key left
-  plot "$RUNS_DATA-$TYPE" using 1:2 with linespoints t "add edge parallel",\
-       "$RUNS_DATA-$TYPE" using 1:4 with linespoints t "add edge",\
+  plot "$RUNS_DATA-$TYPE" using 1:4 with linespoints t "add edge",\
+       "$RUNS_DATA-$TYPE" using 1:2 with linespoints t "add edge parallel",\
+       "$RUNS_DATA-$TYPE" using 1:11 with linespoints t "add edge parallel wait",\
        "$RUNS_DATA-$TYPE" using 1:6 with linespoints t "add edge delay",\
        "$RUNS_DATA-$TYPE" using 1:8 with linespoints t "add edge munro"
 EOF
@@ -124,10 +141,11 @@ plot_data_mem() {
   set xlabel "n+m (10^6)"
   set ylabel "memory (MB)"
   set key left
-  plot "$RUNS_DATA-$TYPE" using 10:3 with linespoints t "add edge parallel",\
-       "$RUNS_DATA-$TYPE" using 10:5 with linespoints t "add edge",\
-       "$RUNS_DATA-$TYPE" using 10:7 with linespoints t "add edge delay",\
-       "$RUNS_DATA-$TYPE" using 10:9 with linespoints t "add edge munro"
+  plot "$RUNS_DATA-$TYPE" using 10:5 with linespoints t "add edge",\
+        "$RUNS_DATA-$TYPE" using 10:3 with linespoints t "add edge parallel",\
+        "$RUNS_DATA-$TYPE" using 10:12 with linespoints t "add edge parallel wait",\
+        "$RUNS_DATA-$TYPE" using 10:7 with linespoints t "add edge delay",\
+        "$RUNS_DATA-$TYPE" using 10:9 with linespoints t "add edge munro"
 EOF
 }
 
@@ -137,9 +155,9 @@ if [[ $2 != "-plot" ]]; then
   make --keep-going clean all
 
   if [[ $TYPE == "dmgen" ]]; then
-    for vertices in $(ls $DATASETDIR | sort --version-sort); do
-      rm -r "$vertices"
-    done
+#    for vertices in $(ls $DATASETDIR | sort --version-sort); do
+#      rm -r "$vertices"
+#    done
 
     echo "Evaluating..."
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
@@ -151,10 +169,10 @@ if [[ $2 != "-plot" ]]; then
   fi
 
   if [[ $TYPE == "webgraph" ]]; then
-    for dataset in "${WEBGRAPH[@]}"; do
-      echo "deleting $dataset..."
-      rm -r $dataset
-    done
+#    for dataset in "${WEBGRAPH[@]}"; do
+#      echo "deleting $dataset..."
+#      rm -r $dataset
+#    done
 
     echo "Evaluating..."
     k=0
