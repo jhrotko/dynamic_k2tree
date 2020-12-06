@@ -309,7 +309,7 @@ namespace dynamic_ktree {
         ifs.close();
 
         for (size_t l = 0; l <= max_r; l++) {
-            char filename[10];
+            char filename[100];
             string aux = project_dir;
             aux.append("/dktree_serialize");
             sprintf(filename, "/%lu.kt", l + 1);

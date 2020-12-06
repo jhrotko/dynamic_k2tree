@@ -23,8 +23,8 @@ TEST(ReadTest, ReadFromDataset) {
     ifstream test_case(path.str());
 //    dynamic_ktree::DKtree <2> graph(n_vertices);
 //    dynamic_ktree::DKtree_background<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 32.2261 -- 500k
-//    dynamic_ktree::DKtree_background_wait<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 28.3361 -- 50k
-    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
+    dynamic_ktree::DKtree_background_wait<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 28.3361 -- 50k
+//    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
 //    dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices); //per edge: 8.50478e-06 total: 26.4127
     double i = 0;
     double sum = 0;
