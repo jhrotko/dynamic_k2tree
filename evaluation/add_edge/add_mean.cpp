@@ -5,6 +5,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include "../../include/dktree/DKtree.hpp"
 #include "../../include/dktree/DKtree_background.hpp"
+#include "../../include/dktree/DKtree_background_wait.hpp"
 #include "../../include/dktree/DKtree_delay.hpp"
 #include "../../include/dktree/DKtree_delay_.hpp"
 
@@ -120,6 +121,36 @@ int main(int argc, char *argv[]) {
         case 4: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices);
+                std::ifstream test_case(path.str());
+
+                double time_t = 0;
+                double arcs = 0;
+                if (test_case.is_open()) {
+                    std::string line;
+                    vector<std::string> substrings;
+                    const std::string delims = " ";
+
+                    while (getline(test_case, line)) {
+                        split(line, substrings, delims);
+
+                        uint64_t x = (uint64_t) stoi(substrings[1]);
+                        uint64_t y = (uint64_t) stoi(substrings[2]);
+                        clock_t aux = clock();
+                        graph.add_edge(x, y);
+                        time_t += clock() - aux;
+                        ++arcs;
+                    }
+                }
+                time_t /= arcs;
+                time_t /= CLOCKS_PER_SEC;
+                final += time_t;
+                test_case.close();
+            }
+            break;
+        }
+        case 5: {
+            for (int i = 0; i < runs; ++i) {
+                dynamic_ktree::DKtree_background_wait<2> graph(n_vertices);
                 std::ifstream test_case(path.str());
 
                 double time_t = 0;
