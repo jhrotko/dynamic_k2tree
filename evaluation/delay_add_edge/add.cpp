@@ -5,6 +5,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include "../../include/dktree/DKtree.hpp"
 #include "../../include/dktree/DKtree_background.hpp"
+#include "../../include/dktree/DKtree_background_wait.hpp"
 #include "../../include/dktree/DKtree_delay.hpp"
 #include "../../include/dktree/DKtree_delay_.hpp"
 
@@ -103,6 +104,21 @@ int main(int argc, char *argv[]) {
         case 4: {
             for (int i = 0; i < runs; ++i) {
                 dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices);
+                for (auto edge:edges) {
+                    uint64_t x = get<0>(edge);
+                    uint64_t y = get<1>(edge);
+
+                    clock_t aux = clock();
+                    graph.add_edge(x, y);
+                    clock_t aux_end = clock();
+                    runs_time[i].emplace_back(aux_end - aux);
+                }
+            }
+            break;
+        }
+        case 5: {
+            for (int i = 0; i < runs; ++i) {
+                dynamic_ktree::DKtree_background_wait<2> graph(n_vertices);
                 for (auto edge:edges) {
                     uint64_t x = get<0>(edge);
                     uint64_t y = get<1>(edge);
