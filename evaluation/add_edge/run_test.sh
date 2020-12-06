@@ -25,9 +25,9 @@ fi
 
 eval_memory() {
   #  $1 - number of vertices of the current test file
-#  echo "normal"
-#  rm "$1/$RUNS_FILE" "$1/mem_add.txt"
-#  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
+  echo "normal"
+  rm "$1/$RUNS_FILE" "$1/mem_add.txt"
+  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
   echo "background"
   rm "$1/$RUNS_FILE_BACKGROUND" "$1/mem_add_background.txt"
   /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 2 >>"$1/$RUNS_FILE_BACKGROUND"
@@ -37,9 +37,9 @@ eval_memory() {
   echo "delay"
   rm "$1/$RUNS_FILE_DELAY" "$1/mem_add_delay.txt"
   /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 3 >>"$1/$RUNS_FILE_DELAY"
-#  echo "delay munro"
-#  rm "$1/$RUNS_FILE_DELAY_MUNRO" "$1/mem_add_delay_munro.txt"
-#  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
+  echo "delay munro"
+  rm "$1/$RUNS_FILE_DELAY_MUNRO" "$1/mem_add_delay_munro.txt"
+  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
 }
 
 declare -a X_time=()             #n+m
