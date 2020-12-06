@@ -15,6 +15,8 @@ evaluation/union_op/in-2004/*
 evaluation/union_op/uk-2007-05@100000/*
 evaluation/union_op/uk-2014-host/*
 evaluation/union_op/eu-2015-host/*
+evaluation/union_op/indochina-2004/*
+evaluation/union_op/union_sdk
 
 evaluation/add_edge/10*
 evaluation/add_edge/50*
@@ -26,6 +28,10 @@ evaluation/add_edge/uk-2014-host/*
 evaluation/add_edge/indochina-2004/*
 evaluation/add_edge/eu-2015-host/*
 evaluation/add_edge/add_mean
+evaluation/add_edge/runs*
+evaluation/add_edge/add_mem*
+evaluation/add_edge/add_time*
+evaluation/add_edge/mem/*
 
 evaluation/delay_add_edge/*.txt-dmgen
 evaluation/delay_add_edge/*.txt-webgraph
@@ -37,11 +43,17 @@ evaluation/delay_add_edge/uk-2007-05@100000/*
 evaluation/delay_add_edge/uk-2014-host/*
 evaluation/delay_add_edge/indochina-2004/*
 evaluation/delay_add_edge/eu-2015-host/*
+evaluation/delay_add_edge/*.png
+evaluation/delay_add_edge/*.pdf
+evaluation/delay_add_edge/runs.data*
 
 evaluation/contains/10*
 evaluation/contains/50*
 evaluation/contains/80*
 evaluation/contains/contains
+evaluation/contains/contains_*
+evaluation/contains/limits*
+evaluation/contains/time-*
 evaluation/contains/create
 evaluation/contains/in-2004/*
 evaluation/contains/uk-2007-05@100000/*
@@ -59,6 +71,10 @@ evaluation/delete_edge/uk-2007-05@100000/*
 evaluation/delete_edge/uk-2014-host/*
 evaluation/delete_edge/indochina-2004/*
 evaluation/delete_edge/eu-2015-host/*
+evaluation/delete_edge/delete_mem_*
+evaluation/delete_edge/delete_time_*
+evaluation/delete_edge/limits*
+evaluation/delete_edge/time*
 
 evaluation/list_neighbor/10*
 evaluation/list_neighbor/50*
@@ -74,6 +90,11 @@ evaluation/list_neighbor/eu-2015-host/*
 evaluation/jic-results/*
 datasets/*
 
+evaluation/*/*.pdf
+evaluation/*/*.png
+evaluation/*/limit*
+evaluation/*/time.data*
+evaluation/*/time-data*
 evaluation/*/contains
 evaluation/*/list
 evaluation/*/edge_iterator
