@@ -37,13 +37,14 @@ std::atomic<bool> needs_work_w, run_w;
 template<class dktree_background, class k_tree>
 void union_collection_wait(dktree_background &graph) {
     while (run_w) {
-//        {
-//            std::unique_lock<std::mutex> lk(mtx_lck_w);
-//            while (!needs_work_w && run_w) {
-//                cv_w.wait(lk);
-//            }
-//        }
-        while (!needs_work_w) {}
+        {
+//                cout << "ok" << endl;
+            std::unique_lock<std::mutex> lk(mtx_lck_w);
+            while (!needs_work_w && run_w) {
+                cv_w.wait(lk);
+            }
+        }
+        if(!run_w) break;
         //Add new link...
         shared_ptr<k_tree> tmp = make_shared<k_tree>(graph.converted, graph.n_vertices);
         graph.converted.clear();
@@ -67,7 +68,11 @@ void union_collection_wait(dktree_background &graph) {
             }
         }
         graph.k_collection[i] = tmp;
-        needs_work_w = false;
+        {
+            std::unique_lock<std::mutex> lk(mtx_lck_w);
+            needs_work_w = false;
+            cv_w.notify_all();
+        }
 //            cout << "notified in thread" << endl;
 //            cout << "run_w: " << run_w << endl;
     }
@@ -115,8 +120,17 @@ namespace dynamic_ktree {
         DKtree_background_wait() : background_union() {}
 
         ~DKtree_background_wait() {
-            while (needs_work_w) {}
-            run_w = false;
+            {
+                std::unique_lock<std::mutex> lk(mtx_lck_w);
+                while (needs_work_w) {
+                    cv_w.wait(lk);
+                }
+            }
+            {
+                std::unique_lock<std::mutex> lk(mtx_lck_w);
+                run_w = false;
+                cv_w.notify_all();
+            }
         }
 
         DKtree_background_wait(uint n_vertices) : n_vertices(n_vertices) {
@@ -158,7 +172,15 @@ namespace dynamic_ktree {
                 return;
             }
 
-            while (needs_work_w) {}
+            {
+                std::unique_lock<std::mutex> lk(mtx_lck_w);
+                if (needs_work_w) {
+//                    cout << "needs work" << endl;
+                    while (needs_work_w) {
+                        cv_w.wait(lk);
+                    }
+                }
+            }
             for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
                 if (C0.edge_free[j] != -1) {
                     Edge converted_edge = C0.elements_nodes[C0.edge_free[j]];
@@ -177,7 +199,12 @@ namespace dynamic_ktree {
                     k_collection_background[j] = k_tree();
             }
 
-            needs_work_w = true;
+            {
+                std::unique_lock<std::mutex> lk(mtx_lck_w);
+                needs_work_w = true;
+//                cout << "notifying" << endl;
+                cv_w.notify_all();
+            }
 
             C0.clean();
             ++n_total_edges;
