@@ -17,6 +17,7 @@ evaluation/union_op/uk-2014-host/*
 evaluation/union_op/eu-2015-host/*
 evaluation/union_op/indochina-2004/*
 evaluation/union_op/union_sdk
+evaluation/union_op/create_sdk
 
 evaluation/add_edge/10*
 evaluation/add_edge/50*
@@ -124,3 +125,5 @@ evaluation/pageRank/1*/*
 evaluation/pageRank/5*/*
 evaluation/pageRank/pagerank
 evaluation/pageRank/time
+
+results/*
