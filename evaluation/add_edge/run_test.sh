@@ -23,59 +23,109 @@ elif [[ $1 == "-webgraph" ]]; then
   DATASETDIR="../../datasets/webgraph"
 fi
 
+eval_time() {
+  echo "Evaluating time for $1..."
+
+  echo "normal"
+  rm "$1/$RUNS_FILE"
+  ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
+  echo "delay"
+  rm "$1/$RUNS_FILE_DELAY"
+  ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 3 >>"$1/$RUNS_FILE_DELAY"
+  echo "delay munro"
+  rm "$1/$RUNS_FILE_DELAY_MUNRO"
+  ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
+  echo "background"
+  rm "$1/$RUNS_FILE_BACKGROUND"
+  ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 2 >>"$1/$RUNS_FILE_BACKGROUND"
+  sleep 5
+  echo "background wait"
+  rm "$1/$RUNS_FILE_BACKGROUND_WAIT"
+  ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 5 >>"$1/$RUNS_FILE_BACKGROUND_WAIT"
+  sleep 5
+}
 eval_memory() {
+  echo "Evaluating memory for $1..."
+
   #  $1 - number of vertices of the current test file
   echo "normal"
-  rm "$1/$RUNS_FILE" "$1/mem_add.txt"
-  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 1 >>"$1/$RUNS_FILE"
+  rm "$1/mem_add.txt"
+  /usr/bin/time -v --output="$1/mem_add.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 1
   echo "background"
-  rm "$1/$RUNS_FILE_BACKGROUND" "$1/mem_add_background.txt"
-  /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 2 >>"$1/$RUNS_FILE_BACKGROUND"
-  echo "background wait"
-  rm "$1/$RUNS_FILE_BACKGROUND_WAIT" "$1/mem_add_background_wait.txt"
-  /usr/bin/time -v --output="$1/mem_add_background_wait.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 5 >>"$1/$RUNS_FILE_BACKGROUND_WAIT"
+  rm "$1/mem_add_background.txt"
+  /usr/bin/time -v --output="$1/mem_add_background.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 2
   echo "delay"
-  rm "$1/$RUNS_FILE_DELAY" "$1/mem_add_delay.txt"
-  /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 3 >>"$1/$RUNS_FILE_DELAY"
+  rm "$1/mem_add_delay.txt"
+  /usr/bin/time -v --output="$1/mem_add_delay.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 3
   echo "delay munro"
-  rm "$1/$RUNS_FILE_DELAY_MUNRO" "$1/mem_add_delay_munro.txt"
-  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 $RUNS 4 >>"$1/$RUNS_FILE_DELAY_MUNRO"
+  rm "$1/mem_add_delay_munro.txt"
+  /usr/bin/time -v --output="$1/mem_add_delay_munro.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 4
+  echo "background wait"
+  rm "$1/mem_add_background_wait.txt"
+  /usr/bin/time -v --output="$1/mem_add_background_wait.txt" ./add_mean "$DATASETDIR/$1/$1.tsv" $2 1 5
 }
 
-declare -a X_time=()             #n+m
-declare -a X_mem=()              #n+m
-declare -a TIME_BACKGROUND=()    #time add_edge
-declare -a MEMORY_BACKGROUND=()  #memory add_edge
-declare -a TIME_BACKGROUND_WAIT=()    #time add_edge
-declare -a MEMORY_BACKGROUND_WAIT=()  #memory add_edge
-declare -a TIME=()               #time add_edge
-declare -a MEMORY=()             #memory add_edge
-declare -a TIME_DELAY=()         #time add_edge
-declare -a MEMORY_DELAY=()       #memory add_edge
-declare -a TIME_DELAY_MUNRO=()   #time add_edge
-declare -a MEMORY_DELAY_MUNRO=() #memory add_edge
+declare -a X_time=()               #n+m
+declare -a TIME_BACKGROUND=()      #time add_edge
+declare -a TIME_BACKGROUND_WAIT=() #time add_edge
+declare -a TIME=()                 #time add_edge
+declare -a TIME_DELAY=()           #time add_edge
+declare -a TIME_DELAY_MUNRO=()     #time add_edge
 i=0
-prepared_data() {
+prepared_data_time() {
+  rm "$RUNS_DATA-time-$TYPE"
   if [[ $TYPE == "webgraph" ]]; then
     for dataset in "${WEBGRAPH[@]}"; do
       edges=$(wc -l "$DATASETDIR/$dataset/$dataset.tsv" | awk '{ print $1 }')
+      echo "${WEBGRAPH_NODES[${i}]} $edges" >>"properties-$TYPE.txt"
 
       X_time+=("$(echo "l(${WEBGRAPH_NODES[${i}]})/l(2)*l($edges)" | bc -l)")
-      X_mem+=("$(echo "${WEBGRAPH_NODES[${i}]} + $edges" | bc)")
-
       TIME+=("$(cat "$dataset/$RUNS_FILE")")
-      MEMORY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add.txt")")
-
       TIME_BACKGROUND+=("$(cat "$dataset/$RUNS_FILE_BACKGROUND")")
-      MEMORY_BACKGROUND+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_background.txt")")
-
       TIME_BACKGROUND_WAIT+=("$(cat "$dataset/$RUNS_FILE_BACKGROUND_WAIT")")
-      MEMORY_BACKGROUND_WAIT+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_background_wait.txt")")
-
       TIME_DELAY+=("$(cat "$dataset/$RUNS_FILE_DELAY")")
-      MEMORY_DELAY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_delay.txt")")
-
       TIME_DELAY_MUNRO+=("$(cat "$dataset/$RUNS_FILE_DELAY_MUNRO")")
+      i=$((i + 1))
+    done
+
+  elif [[ $TYPE == "dmgen" ]]; then
+    for vertices in $(ls $DATASETDIR | sort --version-sort); do
+      edges=$(wc -l "$DATASETDIR/$vertices/$vertices.tsv" | awk '{ print $1 }')
+      X_time+=("$(echo "l($vertices)/l(2)*l($edges)" | bc -l)")
+      echo "$vertices $edges" >>"properties-$TYPE.txt"
+      TIME+=("$(cat "$vertices/$RUNS_FILE")")
+      TIME_BACKGROUND+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND")")
+      TIME_BACKGROUND_WAIT+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND_WAIT")")
+      TIME_DELAY+=("$(cat "$vertices/$RUNS_FILE_DELAY")")
+      TIME_DELAY_MUNRO+=("$(cat "$vertices/$RUNS_FILE_DELAY_MUNRO")")
+      i=$((i + 1))
+    done
+  fi
+
+  i=$((i - 1))
+  for item in $(seq 0 $i); do
+    echo "${X_time[${item}]} ${TIME[${item}]} ${TIME_BACKGROUND[${item}]} ${TIME_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${TIME_BACKGROUND_WAIT[${item}]}" >>"$RUNS_DATA-time-$TYPE"
+  done
+  i=$((i + 1))
+}
+declare -a X_mem=()                  #n+m
+declare -a MEMORY_BACKGROUND=()      #memory add_edge
+declare -a MEMORY_BACKGROUND_WAIT=() #memory add_edge
+declare -a MEMORY=()                 #memory add_edge
+declare -a MEMORY_DELAY=()           #memory add_edge
+declare -a MEMORY_DELAY_MUNRO=()     #memory add_edge
+
+i=0
+prepared_data_mem() {
+  rm "$RUNS_DATA-memory-$TYPE"
+  if [[ $TYPE == "webgraph" ]]; then
+    for dataset in "${WEBGRAPH[@]}"; do
+      edges=$(wc -l "$DATASETDIR/$dataset/$dataset.tsv" | awk '{ print $1 }')
+      X_mem+=("$(echo "${WEBGRAPH_NODES[${i}]} + $edges" | bc)")
+      MEMORY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add.txt")")
+      MEMORY_BACKGROUND+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_background.txt")")
+      MEMORY_BACKGROUND_WAIT+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_background_wait.txt")")
+      MEMORY_DELAY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_delay.txt")")
       MEMORY_DELAY_MUNRO+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$dataset/mem_add_delay_munro.txt")")
       i=$((i + 1))
     done
@@ -83,23 +133,11 @@ prepared_data() {
   elif [[ $TYPE == "dmgen" ]]; then
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
       edges=$(wc -l "$DATASETDIR/$vertices/$vertices.tsv" | awk '{ print $1 }')
-
-      X_time+=("$(echo "l($vertices)/l(2)*l($edges)" | bc -l)")
       X_mem+=("$(echo "$vertices + $edges" | bc)")
-
-      TIME+=("$(cat "$vertices/$RUNS_FILE")")
       MEMORY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add.txt")")
-
-      TIME_BACKGROUND+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND")")
       MEMORY_BACKGROUND+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_background.txt")")
-
-      TIME_BACKGROUND_WAIT+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND_WAIT")")
       MEMORY_BACKGROUND_WAIT+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_background_wait.txt")")
-
-      TIME_DELAY+=("$(cat "$vertices/$RUNS_FILE_DELAY")")
       MEMORY_DELAY+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_delay.txt")")
-
-      TIME_DELAY_MUNRO+=("$(cat "$vertices/$RUNS_FILE_DELAY_MUNRO")")
       MEMORY_DELAY_MUNRO+=("$(grep -oP 'Maximum resident set size \(kbytes\): \K[0-9]+' "$vertices/mem_add_delay_munro.txt")")
       i=$((i + 1))
     done
@@ -107,12 +145,13 @@ prepared_data() {
 
   i=$((i - 1))
   for item in $(seq 0 $i); do
-    echo "${X_time[${item}]} ${TIME_BACKGROUND[${item}]} ${MEMORY_BACKGROUND[${item}]} ${TIME[${item}]} ${MEMORY[${item}]} ${TIME_DELAY[${item}]} ${MEMORY_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${X_mem[${item}]} ${TIME_BACKGROUND_WAIT[${item}]} ${MEMORY_BACKGROUND_WAIT[${item}]}" >>$RUNS_DATA-$TYPE
+    echo "${X_mem[${item}]} ${MEMORY_BACKGROUND[${item}]} ${MEMORY[${item}]} ${MEMORY_DELAY[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${MEMORY_BACKGROUND_WAIT[${item}]}" >>"$RUNS_DATA-memory-$TYPE"
   done
   i=$((i + 1))
 }
 
 plot_data_time() {
+  echo "Ploting time..."
   gnuplot -persist <<-EOF
   set terminal pngcairo
   set datafile separator whitespace
@@ -122,15 +161,17 @@ plot_data_time() {
   set xlabel "log_k(n)log(m)"
   set ylabel "t (µs)"
   set key left
-  plot "$RUNS_DATA-$TYPE" using 1:4 with linespoints t "add edge",\
-       "$RUNS_DATA-$TYPE" using 1:2 with linespoints t "add edge parallel",\
-       "$RUNS_DATA-$TYPE" using 1:11 with linespoints t "add edge parallel wait",\
-       "$RUNS_DATA-$TYPE" using 1:6 with linespoints t "add edge delay",\
-       "$RUNS_DATA-$TYPE" using 1:8 with linespoints t "add edge munro"
+  plot "$RUNS_DATA-time-$TYPE" using 1:2 with linespoints t "add edge",\
+       "$RUNS_DATA-time-$TYPE" using 1:3 with linespoints t "add edge parallel",\
+       "$RUNS_DATA-time-$TYPE" using 1:6 with linespoints t "add edge parallel wait",\
+       "$RUNS_DATA-time-$TYPE" using 1:4 with linespoints t "add edge delay",\
+       "$RUNS_DATA-time-$TYPE" using 1:5 with linespoints t "add edge munro"
 EOF
 }
 
+#    echo "${X_mem[${item}]} ${MEMORY_BACKGROUND[${item}]} ${MEMORY[${item}]} ${MEMORY_DELAY[${item}]} ${MEMORY_DELAY_MUNRO[${item}]} ${MEMORY_BACKGROUND_WAIT[${item}]}" >>"$RUNS_DATA-memory-$TYPE"
 plot_data_mem() {
+  echo "Ploting memory..."
   gnuplot -persist <<-EOF
     set terminal pngcairo
   set datafile separator whitespace
@@ -141,55 +182,52 @@ plot_data_mem() {
   set xlabel "n+m (10^6)"
   set ylabel "memory (MB)"
   set key left
-  plot "$RUNS_DATA-$TYPE" using 10:5 with linespoints t "add edge",\
-        "$RUNS_DATA-$TYPE" using 10:3 with linespoints t "add edge parallel",\
-        "$RUNS_DATA-$TYPE" using 10:12 with linespoints t "add edge parallel wait",\
-        "$RUNS_DATA-$TYPE" using 10:7 with linespoints t "add edge delay",\
-        "$RUNS_DATA-$TYPE" using 10:9 with linespoints t "add edge munro"
+  plot "$RUNS_DATA-memory-$TYPE" using 1:3 with linespoints t "add edge",\
+        "$RUNS_DATA-memory-$TYPE" using 1:2 with linespoints t "add edge parallel",\
+        "$RUNS_DATA-memory-$TYPE" using 1:6 with linespoints t "add edge parallel wait",\
+        "$RUNS_DATA-memory-$TYPE" using 1:4 with linespoints t "add edge delay",\
+        "$RUNS_DATA-memory-$TYPE" using 1:5 with linespoints t "add edge munro"
 EOF
 }
 
 if [[ $2 != "-plot" ]]; then
   echo "Compiling and cleaning..."
-  rm $RUNS_DATA-$TYPE
+  #  rm $RUNS_DATA-$TYPE
   make --keep-going clean all
 
   if [[ $TYPE == "dmgen" ]]; then
-#    for vertices in $(ls $DATASETDIR | sort --version-sort); do
-#      rm -r "$vertices"
-#    done
-
-    echo "Evaluating..."
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
       mkdir -p $vertices
+      eval_time $vertices $vertices
+    done
+    prepared_data_time
+    plot_data_time
 
-      echo "running for $vertices"
+    for vertices in $(ls $DATASETDIR | sort --version-sort); do
       eval_memory $vertices $vertices
     done
+    prepared_data_mem
+    plot_data_mem
   fi
 
   if [[ $TYPE == "webgraph" ]]; then
-#    for dataset in "${WEBGRAPH[@]}"; do
-#      echo "deleting $dataset..."
-#      rm -r $dataset
-#    done
-
-    echo "Evaluating..."
     k=0
     for dataset in "${WEBGRAPH[@]}"; do
       mkdir -p "$dataset"
+      eval_time "$dataset" "${WEBGRAPH_NODES[${k}]}"
+      k=$((k + 1))
+    done
+    prepared_data_time
+    plot_data_time
 
-      echo "running for $dataset ${WEBGRAPH_NODES[${k}]}"
+    k=0
+    for dataset in "${WEBGRAPH[@]}"; do
       eval_memory "$dataset" "${WEBGRAPH_NODES[${k}]}"
       k=$((k + 1))
     done
+    prepared_data_mem
+    plot_data_mem
   fi
-  echo "Preparing data..."
-  prepared_data
+
+  gnuplot add_edge.gnuplot
 fi
-
-echo "Ploting time..."
-plot_data_time
-
-echo "Ploting memory..."
-plot_data_mem

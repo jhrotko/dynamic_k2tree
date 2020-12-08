@@ -126,4 +126,6 @@ evaluation/pageRank/5*/*
 evaluation/pageRank/pagerank
 evaluation/pageRank/time
 
+evaluation/add_edge/properties*
+
 results/*
