@@ -68,7 +68,7 @@ void union_collection_wait(dktree_background &graph) {
         }
         graph.k_collection[i] = tmp;
         {
-            std::unique_lock<std::mutex> lk(mtx_lck_w);
+            std::lock_guard<std::mutex> lk(mtx_lck_w);
             needs_work_w = false;
             cv_w.notify_all();
         }
@@ -125,7 +125,7 @@ namespace dynamic_ktree {
                 }
             }
             {
-                std::unique_lock<std::mutex> lk(mtx_lck_w);
+                std::lock_guard<std::mutex> lk(mtx_lck_w);
                 run_w = false;
                 cv_w.notify_all();
             }
@@ -196,7 +196,7 @@ namespace dynamic_ktree {
             }
 
             {
-                std::unique_lock<std::mutex> lk(mtx_lck_w);
+                std::lock_guard<std::mutex> lk(mtx_lck_w);
                 needs_work_w = true;
 //                cout << "notifying" << endl;
                 cv_w.notify_all();
