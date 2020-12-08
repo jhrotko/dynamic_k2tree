@@ -38,7 +38,6 @@ template<class dktree_background, class k_tree>
 void union_collection_wait(dktree_background &graph) {
     while (run_w) {
         {
-//                cout << "ok" << endl;
             std::unique_lock<std::mutex> lk(mtx_lck_w);
             while (!needs_work_w && run_w) {
                 cv_w.wait(lk);
@@ -76,7 +75,6 @@ void union_collection_wait(dktree_background &graph) {
 //            cout << "notified in thread" << endl;
 //            cout << "run_w: " << run_w << endl;
     }
-//        cout << "really dead" << endl;
 }
 
 namespace dynamic_ktree {
@@ -174,11 +172,9 @@ namespace dynamic_ktree {
 
             {
                 std::unique_lock<std::mutex> lk(mtx_lck_w);
-                if (needs_work_w) {
 //                    cout << "needs work" << endl;
-                    while (needs_work_w) {
-                        cv_w.wait(lk);
-                    }
+                while (needs_work_w) {
+                    cv_w.wait(lk);
                 }
             }
             for (uint64_t j = 0; j < C0.size_non_marked(); j++) {
@@ -234,7 +230,12 @@ namespace dynamic_ktree {
                 n_total_edges--;
                 return;
             } else {
-                while (needs_work_w) {}
+                {
+                    std::unique_lock<std::mutex> lk(mtx_lck_w);
+                    while (needs_work_w) {
+                        cv_w.wait(lk);
+                    }
+                }
                 uint64_t n_total_marked = 0;
                 for (size_t l = 0; l < R; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {

@@ -9,10 +9,11 @@ set xlabel "log_k(n)log(m)"
 set ylabel "t (µs)"
 #set yrange [:30]
 set key left
-plot "runs-data-dmgen" using 1:($2*1000000) with linespoints t "add edge parallel",\
-   "runs-data-dmgen" using 1:($4*1000000) with linespoints t "add edge",\
-   "runs-data-dmgen" using 1:($6*1000000) with linespoints t "add edge delay",\
-   "runs-data-dmgen" using 1:($8*1000000) with linespoints t "add edge munro"
+plot "runs-data-time-dmgen" using 1:($3*1000000) with linespoints t "add edge parallel",\
+   "runs-data-time-dmgen" using 1:($6*1000000) with linespoints t "add edge wait",\
+   "runs-data-time-dmgen" using 1:($2*1000000) with linespoints t "add edge",\
+   "runs-data-time-dmgen" using 1:($4*1000000) with linespoints t "add edge delay",\
+   "runs-data-time-dmgen" using 1:($5*1000000) with linespoints t "add edge munro"
 
 set terminal pdfcairo
 set datafile separator whitespace
@@ -22,10 +23,11 @@ set grid
 set xlabel "log_k(n)log(m)"
 set ylabel "t (µs)"
 set key left
-plot "runs-data-webgraph" using 1:($2*1000000) with linespoints t "add edge parallel",\
-   "runs-data-webgraph" using 1:($4*1000000) with linespoints t "add edge",\
-   "runs-data-webgraph" using 1:($6*1000000) with linespoints t "add edge delay",\
-   "runs-data-webgraph" using 1:($8*1000000) with linespoints t "add edge munro"
+plot "runs-data-time-webgraph" using 1:($3*1000000) with linespoints t "add edge parallel",\
+   "runs-data-time-dmgen" using 1:($6*1000000) with linespoints t "add edge wait",\
+   "runs-data-time-webgraph" using 1:($2*1000000) with linespoints t "add edge",\
+   "runs-data-time-webgraph" using 1:($4*1000000) with linespoints t "add edge delay",\
+   "runs-data-time-webgraph" using 1:($5*1000000) with linespoints t "add edge munro"
 
 
 set terminal pdfcairo
@@ -37,10 +39,10 @@ set rmargin at screen 0.90
 set xlabel "n+m (10^6)"
 set ylabel "memory (MB)"
 set key left
-plot "runs-data-dmgen" using ($10/1000000):($3/1000) with linespoints t "add edge parallel",\
-   "runs-data-dmgen" using ($10/1000000):($5/1000) with linespoints t "add edge",\
-   "runs-data-dmgen" using ($10/1000000):($7/1000) with linespoints t "add edge delay",\
-   "runs-data-dmgen" using ($10/1000000):($9/1000) with linespoints t "add edge munro"
+plot "runs-data-memory-dmgen" using ($10/1000000):($3/1000) with linespoints t "add edge parallel",\
+   "runs-data-memory-dmgen" using ($10/1000000):($5/1000) with linespoints t "add edge",\
+   "runs-data-memory-dmgen" using ($10/1000000):($7/1000) with linespoints t "add edge delay",\
+   "runs-data-memory-dmgen" using ($10/1000000):($9/1000) with linespoints t "add edge munro"
 
 set terminal pdfcairo
 set datafile separator whitespace
@@ -51,7 +53,7 @@ set rmargin at screen 0.90
 set xlabel "n+m (10^6)"
 set ylabel "memory (MB)"
 set key left
-plot "runs-data-webgraph" using ($10/1000000):($3/1000) with linespoints t "add edge parallel",\
-   "runs-data-webgraph" using ($10/1000000):($5/1000) with linespoints t "add edge",\
-   "runs-data-webgraph" using ($10/1000000):($7/1000) with linespoints t "add edge delay",\
-   "runs-data-webgraph" using ($10/1000000):($9/1000) with linespoints t "add edge munro"
+plot "runs-data-memory-webgraph" using ($10/1000000):($3/1000) with linespoints t "add edge parallel",\
+   "runs-data-memory-webgraph" using ($10/1000000):($5/1000) with linespoints t "add edge",\
+   "runs-data-memory-webgraph" using ($10/1000000):($7/1000) with linespoints t "add edge delay",\
+   "runs-data-memory-webgraph" using ($10/1000000):($9/1000) with linespoints t "add edge munro"
