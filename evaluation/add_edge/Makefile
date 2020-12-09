@@ -1,5 +1,5 @@
 add_mean:
-	g++ -o add_mean -O3 add_mean.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization
+	g++ -o add_mean -O3 add_mean.cpp -L/usr/local/include/sdsl -lsdsl -pthread -lboost_serialization -lboost_thread -lboost_system
 clean:
 	rm add_mean
 all:
