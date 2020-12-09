@@ -5,8 +5,8 @@ RUNS_DATA="data"
 RUNS=5
 RUNS_FILE="time.txt"
 
-declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004" "eu-2015-host")
-declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866 11264052)
+declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004")
+declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866)
 
 if [[ $1 != "-dmgen" && $1 != "-webgraph" && $1 != "" ]]; then
   echo "Usage: ./run_test.sh [-dmgen/webgraph]"
@@ -124,13 +124,13 @@ if [[ $2 != "-plot" ]]; then
   if [[ $TYPE == "dmgen" ]]; then
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
       mkdir -p $vertices
-      eval_time $vertices $vertices
+      eval_time $vertices
     done
     prepared_data_time
     plot_data_time
 
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
-      eval_memory $vertices $vertices
+      eval_memory $vertices
     done
     prepared_data_memory
     plot_data_mem
@@ -140,14 +140,14 @@ if [[ $2 != "-plot" ]]; then
     k=0
     for dataset in "${WEBGRAPH[@]}"; do
       mkdir -p "$dataset"
-      eval_time "$dataset" "${WEBGRAPH_NODES[${k}]}"
+      eval_time "$dataset"
       k=$((k + 1))
     done
     prepared_data_time
     plot_data_time
     k=0
     for dataset in "${WEBGRAPH[@]}"; do
-      eval_memory "$dataset" "${WEBGRAPH_NODES[${k}]}"
+      eval_memory "$dataset"
       k=$((k + 1))
     done
 
