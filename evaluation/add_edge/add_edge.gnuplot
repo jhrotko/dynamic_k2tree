@@ -5,7 +5,7 @@ set datafile separator whitespace
 set output 'add_time_dmgen.pdf'
 set title "Add Edge (dmgen)"
 set grid
-set xlabel "log_k(n)log(m)"
+set xlabel "log_k(n) log^ε(n)"
 set ylabel "t (µs)"
 #set yrange [:30]
 set key left
@@ -20,7 +20,7 @@ set datafile separator whitespace
 set output 'add_time_webgraph.pdf'
 set title "Add Edge (webgraph)"
 set grid
-set xlabel "log_k(n)log(m)"
+set xlabel "log_k(n) log^ε(n)"
 set ylabel "t (µs)"
 set key left
 plot "runs-data-time-webgraph" using 1:($3*1000000) with linespoints t "add edge parallel",\
