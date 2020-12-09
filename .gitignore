@@ -128,4 +128,7 @@ evaluation/pageRank/time
 
 evaluation/add_edge/properties*
 
+evaluation/neighbor_iterator/*/time.txt
+evaluation/neighbor_iterator/data-*
+
 results/*
