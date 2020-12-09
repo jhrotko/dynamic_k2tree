@@ -278,9 +278,9 @@ TEST(dktreeIterate, neightbour_iterator) {
     tree.add_edge(2, 0);
 
     auto neighbour_it = tree.neighbour_begin(1);
-    ASSERT_EQ(*neighbour_it, 1);
-    neighbour_it++;
     ASSERT_EQ(*neighbour_it, 2);
+    neighbour_it++;
+    ASSERT_EQ(*neighbour_it, 1);
     neighbour_it++;
     ASSERT_EQ(*neighbour_it, *tree.neighbour_end());
     neighbour_it++;
