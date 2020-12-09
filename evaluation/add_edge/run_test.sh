@@ -79,7 +79,7 @@ prepared_data_time() {
       edges=$(wc -l "$DATASETDIR/$dataset/$dataset.tsv" | awk '{ print $1 }')
       echo "${WEBGRAPH_NODES[${i}]} $edges" >>"properties-$TYPE.txt"
 
-      X_time+=("$(echo "l(${WEBGRAPH_NODES[${i}]})/l(2)*l($edges)" | bc -l)")
+      X_time+=("$(python -c "import math; print(math.log(${WEBGRAPH_NODES[${i}]})/math.log(2)*math.log(${WEBGRAPH_NODES[${i}]})**0.25)")")
       TIME+=("$(cat "$dataset/$RUNS_FILE")")
       TIME_BACKGROUND+=("$(cat "$dataset/$RUNS_FILE_BACKGROUND")")
       TIME_BACKGROUND_WAIT+=("$(cat "$dataset/$RUNS_FILE_BACKGROUND_WAIT")")
@@ -91,7 +91,9 @@ prepared_data_time() {
   elif [[ $TYPE == "dmgen" ]]; then
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
       edges=$(wc -l "$DATASETDIR/$vertices/$vertices.tsv" | awk '{ print $1 }')
-      X_time+=("$(echo "l($vertices)/l(2)*l($edges)" | bc -l)")
+
+      X_time+=("$(python -c "import math; print(math.logl($vertices)/math.log(2)*math.log($vertices)**0.25)")")
+
       echo "$vertices $edges" >>"properties-$TYPE.txt"
       TIME+=("$(cat "$vertices/$RUNS_FILE")")
       TIME_BACKGROUND+=("$(cat "$vertices/$RUNS_FILE_BACKGROUND")")
@@ -158,7 +160,7 @@ plot_data_time() {
   set output 'add_time_$TYPE.png'
   set title "Add Edge ($TYPE)"
   set grid
-  set xlabel "log_k(n)log(m)"
+  set xlabel "log_k(n)log(n)"
   set ylabel "t (µs)"
   set key left
   plot "$RUNS_DATA-time-$TYPE" using 1:2 with linespoints t "add edge",\
@@ -189,6 +191,7 @@ plot_data_mem() {
         "$RUNS_DATA-memory-$TYPE" using 1:5 with linespoints t "add edge munro"
 EOF
 }
+
 
 if [[ $2 != "-plot" ]]; then
   echo "Compiling and cleaning..."

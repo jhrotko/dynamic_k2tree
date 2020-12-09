@@ -44,23 +44,17 @@ int main(int argc, char *argv[]) {
 
                 etype x = (etype) stoi(substrings[1]);
                 ++times;
-
                 clock_t aux = clock();
-                auto neigh = tree.neighbour_begin(x);
-                clock_t  aux_end = clock();
-                sum += (double)(aux_end - aux) / CLOCKS_PER_SEC;
-                for (; neigh != tree.neighbour_end();) {
-                    clock_t aux_2 = clock();
-                    ++neigh;
-                    clock_t  aux_end_2 = clock();
-                    sum += (double)(aux_end_2 - aux_2) / CLOCKS_PER_SEC;
-                }
+                for (auto neigh = tree.neighbour_begin(x); neigh != tree.neighbour_end(); ++neigh) {}
+                clock_t aux_end = clock();
+                sum += (double) (aux_end - aux) / CLOCKS_PER_SEC;
             }
         }
         test_case.close();
         sum /= times;
         final += sum;
     }
+
     cout << final / (double) runs << endl;
     return 0;
 }
