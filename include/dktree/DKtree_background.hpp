@@ -1,12 +1,11 @@
-#ifndef __D_K_TREE_BACKGROUND__
-#define __D_K_TREE_BACKGROUND__
+#ifndef __D_K_TRSIZEEE_BACKGRSIZEOUND__
+#define __D_K_TRSIZEEE_BACKGRSIZEOUND__
 
 #include <array>
 #include <tuple>
 #include <memory>
 #include <iostream>
 #include <thread>
-#include "utils.hpp"
 
 #include <sdsl/k2_tree.hpp>
 #include "Container0.hpp"
@@ -16,22 +15,21 @@
 #include "DKtreeNeighbourIterator.hpp"
 #include "../graph/Graph.hpp"
 
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
 #include <sys/stat.h>
 #include <experimental/filesystem>
 #include <cstdio>
 #include <mutex>
 #include <condition_variable>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
+#include "utils.hpp"
 using namespace sdsl;
 using namespace std;
 using namespace k2_tree_ns;
 
 
 namespace dynamic_ktree {
-#define R 8
-
     template<class dktree_background, class k_tree>
     void union_collection(dktree_background &graph) {
         while (graph.run) {
@@ -42,13 +40,13 @@ namespace dynamic_ktree {
 
                 size_t i, max_size;
                 max_size = MAXSZ(graph.max_size_background, 0);
-                for (i = 0; i < R; ++i) {
+                for (i = 0; i < RS; ++i) {
                     if (graph.k_collection[i] != nullptr)
                         max_size += graph.k_collection[i]->total_edges();
                     if (MAXSZ(graph.max_size_background, i + 1) > max_size + 1)
                         break;
                 }
-                if (i >= R)
+                if (i >= RS)
                     throw logic_error("Error: collection too big...");
                 graph.max_r = max(i, graph.max_r);
 
@@ -96,12 +94,12 @@ namespace dynamic_ktree {
         uint max_r = 0;
         uint64_t n_vertices = 0;
         std::thread background_union;
-        array<k_tree, R> k_collection_background;
+        array<k_tree, RS> k_collection_background;
         std::atomic<bool> run, needs_work;
         vector<tuple<uint64_t, uint64_t>> converted;
         uint tmp_i, max_r_background, max_size_background;
 
-        array<shared_ptr<k_tree>, R> k_collection;
+        array<shared_ptr<k_tree>, RS> k_collection;
 
         DKtree_background() : background_union() {}
 
@@ -114,7 +112,7 @@ namespace dynamic_ktree {
             C0 = Container0(n_vertices);
             C0.resize(C0.max_size()*2);
             max_r = 0;
-            for (size_t i = 0; i < R; i++) {
+            for (size_t i = 0; i < RS; i++) {
                 k_collection[i] = nullptr;
             }
             it_neighbour_end = dktree_neighbour_it().end();
@@ -166,7 +164,7 @@ namespace dynamic_ktree {
             max_size_background = max(n_vertices, n_total_edges);
             max_r_background = max_r;
             tmp_edge = tuple<etype, etype>(x,y);
-            for (size_t j = 0; j < R; ++j) {
+            for (size_t j = 0; j < RS; ++j) {
                 if(k_collection[j] != nullptr)
                     k_collection_background[j] = *k_collection[j];
                 else
@@ -204,7 +202,7 @@ namespace dynamic_ktree {
             } else {
                 while (needs_work) {}
                 uint64_t n_total_marked = 0;
-                for (size_t l = 0; l < R; l++) {
+                for (size_t l = 0; l < RS; l++) {
                     if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                         n_total_edges--;
 
@@ -218,10 +216,10 @@ namespace dynamic_ktree {
                         break;
                     }
                 }
-                /* Rebuild data structure... */
+                /* RSIZEebuild data structure... */
                 if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                     const size_t old_max_r = max_r;
-                    array<shared_ptr<k_tree>, R> old_collection;
+                    array<shared_ptr<k_tree>, RS> old_collection;
                     max_r = 0;
                     for (size_t i = 0; i <= old_max_r; i++) {
                         if (k_collection[i] != nullptr) {
@@ -270,7 +268,7 @@ namespace dynamic_ktree {
             return C0;
         }
 
-        array<shared_ptr<k_tree>, R> k_collections() const {
+        array<shared_ptr<k_tree>, RS> k_collections() const {
             return k_collection;
         }
 

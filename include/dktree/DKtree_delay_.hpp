@@ -1,5 +1,5 @@
-#ifndef __D_K_TREE_DELAY_MUNRO__
-#define __D_K_TREE_DELAY_MUNRO__
+#ifndef __D_K_TRSIZEEE_DELAY_MUNRSIZEO__
+#define __D_K_TRSIZEEE_DELAY_MUNRSIZEO__
 
 #include <array>
 #include <memory>
@@ -28,7 +28,6 @@ using namespace k2_tree_ns;
 
 
 namespace dynamic_ktree {
-#define R 8
 
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
@@ -63,14 +62,14 @@ namespace dynamic_ktree {
         k2_tree_union_support<k_tree, t_bv, t_rank> union_support;
 
     public:
-        array<shared_ptr<k_tree>, R> k_collection;
+        array<shared_ptr<k_tree>, RS> k_collection;
 
         DKtree_delay_munro() {}
 
         DKtree_delay_munro(uint n_vertices) : n_vertices(n_vertices) {
             C0 = Container0(n_vertices);
             max_r = 0;
-            for (size_t i = 0; i < R; i++) {
+            for (size_t i = 0; i < RS; i++) {
                 k_collection[i] = nullptr;
             }
             it_neighbour_end = dktree_neighbour_it().end();
@@ -107,14 +106,14 @@ namespace dynamic_ktree {
             assert(union_support.has_finish());
             tmp_edge = tuple<etype, etype>(x, y);
             size_t i = 0;
-            for (; i < R; i++) {
+            for (; i < RS; i++) {
                 if (k_collection[i] != nullptr)
                     max_size += k_collection[i]->total_edges();
                 if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
                     break;
             }
 
-            if (i >= R)
+            if (i >= RS)
                 throw logic_error("Error: collection too big...");
 //                max_r = max(i, max_r); in the end of the union change me
 
@@ -131,7 +130,7 @@ namespace dynamic_ktree {
             converted.emplace_back(tuple<uint64_t, uint64_t>(x, y));
             C0.clean();
 
-            for (size_t j = 0; j < R; ++j) {
+            for (size_t j = 0; j < RS; ++j) {
                 if (k_collection[j] != nullptr)
                     k_collection_copy[j] = *k_collection[j];
                 else
@@ -150,13 +149,13 @@ namespace dynamic_ktree {
 
             if (union_support.has_finish()) {
                 // check in other containers
-                for (size_t i = 0; i < R; i++)
+                for (size_t i = 0; i < RS; i++)
                     if (k_collection[i] != nullptr && k_collection[i]->adj(x, y))
                         return true;
             } else {
                 if (get<0>(tmp_edge) == x && get<1>(tmp_edge) == y)
                     return true;
-                for (size_t i = 0; i < R; i++)
+                for (size_t i = 0; i < RS; i++)
                     if (k_collection_copy[i].get_number_nodes() > 0 && k_collection_copy[i].adj(x, y))
                         return true;
             }
@@ -172,13 +171,13 @@ namespace dynamic_ktree {
             if (union_support.has_finish()) {
                 if (get<0>(tmp_edge) == x)
                     neighbours.push_back(get<1>(tmp_edge));
-                for (size_t l = 0; l < R; l++)
+                for (size_t l = 0; l < RS; l++)
                     if (k_collection[l] != nullptr) {
                         vector<idx_type> lst = k_collection[l]->neigh(x);
                         neighbours.insert(neighbours.end(), lst.begin(), lst.end()); //append
                     }
             } else {
-                for (size_t l = 0; l < R; l++)
+                for (size_t l = 0; l < RS; l++)
                     if (k_collection_copy[l] != k_tree()) {
                         vector<idx_type> lst = k_collection_copy[l].neigh(x);
                         neighbours.insert(neighbours.end(), lst.begin(), lst.end());
@@ -192,7 +191,7 @@ namespace dynamic_ktree {
             return C0;
         }
 
-        array<shared_ptr<k_tree>, R> k_collections() const {
+        array<shared_ptr<k_tree>, RS> k_collections() const {
             return k_collection;
         }
 
