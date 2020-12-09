@@ -6,6 +6,7 @@
 #define EPS 0.25
 #define TAU(m) log2(log2(m))
 #define MAXSZ(m, i) floor(((m) << 1) / pow(log2(m), 2 - (i)*EPS))
+#define RS 8
 
 typedef unsigned int uint;
 

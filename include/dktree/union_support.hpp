@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_K2TREE_UNION_SUPPORT_HPP
-#define DYNAMIC_K2TREE_UNION_SUPPORT_HPP
+#ifndef DYNAMIC_K2TRSIZEEE_UNION_SUPPORSIZET_HPP
+#define DYNAMIC_K2TRSIZEEE_UNION_SUPPORSIZET_HPP
 
 #include <array>
 #include <queue>
@@ -20,8 +20,8 @@ namespace dynamic_ktree {
         uint pA, pB, idx_l, idx_t;
 
         std::shared_ptr<k_tree> tmp;
-        std::array<std::shared_ptr<k_tree>, R> *k_collection;
-        uint k_collection_i = R;
+        std::array<std::shared_ptr<k_tree>, RS> *k_collection;
+        uint k_collection_i = RS;
         uint max_height, iteration_size, times = 0;
 
         bool finish;
@@ -63,7 +63,7 @@ namespace dynamic_ktree {
 
         k2_tree_union_support(std::vector<tuple<uint64_t, uint64_t>> &edges,
                               uint n_vertices,
-                              std::array<std::shared_ptr<k_tree>, R> *k_collection,
+                              std::array<std::shared_ptr<k_tree>, RS> *k_collection,
                               uint i) : max_i(i) {
             this->k_collection = k_collection;
             this->tmp = make_shared<k_tree>(edges, n_vertices);
@@ -93,7 +93,7 @@ namespace dynamic_ktree {
                 }
             }
 //            cout << k_collection_i << endl;
-            if (k_collection_i == R) { // all nullptr, nothing to do
+            if (k_collection_i == RS) { // all nullptr, nothing to do
 //                cout << "no unions needed" << endl;
                 (*(this->k_collection))[max_i] = this->tmp;
                 finish = true;
@@ -231,4 +231,4 @@ namespace dynamic_ktree {
         }
     };
 }
-#endif //DYNAMIC_K2TREE_UNION_SUPPORT_HPP
+#endif //DYNAMIC_K2TRSIZEEE_UNION_SUPPORSIZET_HPP

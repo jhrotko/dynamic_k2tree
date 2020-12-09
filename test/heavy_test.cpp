@@ -3,8 +3,8 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <string>
 #include <vector>
-#include "../include/dktree/DKtree_background.hpp"
 #include "../include/dktree/DKtree_background_wait.hpp"
+#include "../include/dktree/DKtree_background.hpp"
 #include "../include/dktree/DKtree.hpp"
 #include "../include/dktree/DKtree_delay.hpp"
 #include "../include/dktree/DKtree_delay_.hpp"
@@ -21,12 +21,12 @@ TEST(ReadTest, ReadFromDataset) {
     path << "datasets/" << n_vertices << "/" << n_vertices << ".tsv";
 //    path << "datasets/uk-2007-05@100000/uk-2007-05@100000.tsv";
 //    dynamic_ktree::DKtree <2> graph(n_vertices); //TOTAL TIME: 44 -- 100k
-    dynamic_ktree::DKtree_background<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 16 -- 100k
-//    dynamic_ktree::DKtree_background_wait<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 36 -- 100k
+//    dynamic_ktree::DKtree_background<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 16 -- 100k
+    dynamic_ktree::DKtree_background_wait<2> graph(n_vertices); //per edge: 9.36066e-06 total: TOTAL TIME: 36 -- 100k
 //    dynamic_ktree::DKtree_delay<2> graph(n_vertices);
 //    dynamic_ktree::DKtree_delay_munro<2> graph(n_vertices); //per edge: 8.50478e-06 total: 26.4127
     double sum = 0;
-    uint runs = 3;
+    uint runs = 1;
     for (uint k = 0; k < runs; ++k) {
         double i = 0;
         ifstream test_case(path.str());
@@ -71,7 +71,10 @@ TEST(a, v) {
     shared_ptr<sdsl::k2_tree<2>> ptr1 = make_shared<sdsl::k2_tree<2>>(ktree_test);
     shared_ptr<sdsl::k2_tree<2>> ptr2 = make_shared<sdsl::k2_tree<2>>(ktree_test2);
 
+    clock_t t = clock();
     ptr1->unionOp(ptr2);
+    clock_t end = clock();
+    cout << "TOTAL TIME: " << (double) (end - t) / CLOCKS_PER_SEC << endl;
 }
 
 TEST(edge, iterator) {
@@ -99,6 +102,16 @@ TEST(edge, iterator) {
         final += sum / CLOCKS_PER_SEC;
     }
     cout << final / (double) runs << endl;
+}
+
+TEST(perfromance, iterator) {
+    std::ifstream ifs;
+    dynamic_ktree::DKtree<2> ktree;
+    ktree.load(ifs, "../evaluation/serialized/50000", false);
+    for (uint i = 0; i < 10000; ++i) {
+        for (auto neigh = ktree.neighbour_begin(i); neigh != ktree.neighbour_end(); ++neigh) {}
+//        ktree.list_neighbour(i);
+    }
 }
 
 TEST(neighbour, iterator) {

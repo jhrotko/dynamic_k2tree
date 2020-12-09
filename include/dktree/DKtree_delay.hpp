@@ -1,5 +1,5 @@
-#ifndef __D_K_TREE_DELAY__
-#define __D_K_TREE_DELAY__
+#ifndef __D_K_TRSIZEEE_DELAY__
+#define __D_K_TRSIZEEE_DELAY__
 
 #include <array>
 #include <memory>
@@ -27,7 +27,6 @@ using namespace k2_tree_ns;
 
 
 namespace dynamic_ktree {
-#define R 8
 
     template<uint8_t k = 2,
             typename t_bv = bit_vector,
@@ -61,7 +60,7 @@ namespace dynamic_ktree {
 
 
     public:
-    array<shared_ptr<k_tree>, R> k_collection;
+    array<shared_ptr<k_tree>, RS> k_collection;
 
     DKtree_delay() {}
 
@@ -70,7 +69,7 @@ namespace dynamic_ktree {
     n_vertices(n_vertices) {
             C0 = Container0(n_vertices);
             max_r = 0;
-            for (size_t i = 0; i < R; i++) {
+            for (size_t i = 0; i < RS; i++) {
                 k_collection[i] = nullptr;
             }
             it_neighbour_end = dktree_neighbour_it().end();
@@ -89,7 +88,7 @@ namespace dynamic_ktree {
     }
 
     uint union_i = 0;
-    uint union_prev = R;
+    uint union_prev = RS;
     uint union_final = 1;
     shared_ptr<k_tree> tmp;
 //    array<k_tree, 8> k_collection_copy;
@@ -97,7 +96,7 @@ namespace dynamic_ktree {
     void union_delay() {
         while (union_i <= union_final) {
             if (k_collection[union_i] != nullptr) {
-                if (union_prev < R) {
+                if (union_prev < RS) {
                     k_collection[union_i]->unionOp(k_collection[union_prev]);
                     k_collection[union_prev].reset();
                 } else {
@@ -109,7 +108,7 @@ namespace dynamic_ktree {
                 return;
             } else ++union_i;
         }
-        if(union_prev < R) {
+        if(union_prev < RS) {
             k_collection[union_final] = k_collection[union_prev];
             k_collection[union_prev].reset();
         } else {
@@ -140,14 +139,14 @@ namespace dynamic_ktree {
         if (work_done()) {
 //            tmp_edge = tuple<etype, etype>(x,y);
             size_t i = 0;
-            for (; i < R; i++) {
+            for (; i < RS; i++) {
                 if (k_collection[i] != nullptr)
                     max_size += k_collection[i]->total_edges();
                 if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
                     break;
             }
 
-            if (i >= R)
+            if (i >= RS)
                 throw logic_error("Error: collection too big...");
             max_r = max(i, max_r);
 
@@ -164,11 +163,11 @@ namespace dynamic_ktree {
             C0.clean();
 
             union_i = 0;
-            union_prev = R;
+            union_prev = RS;
             union_final = i;
             union_delay();
 
-//            for (size_t j = 0; j < R; ++j) {
+//            for (size_t j = 0; j < RS; ++j) {
 //                if(k_collection[j] != nullptr)
 //                    k_collection_copy[j] = *k_collection[j];
 //                else
@@ -188,13 +187,13 @@ namespace dynamic_ktree {
 
 //        if (work_done()) {
         // check in other containers
-        for (size_t i = 0; i < R; i++)
+        for (size_t i = 0; i < RS; i++)
             if (k_collection[i] != nullptr && k_collection[i]->adj(x, y))
                 return true;
 //        } else {
 //            if(get<0>(tmp_edge) == x && get<1>(tmp_edge) == y)
 //                return true;
-//            for (size_t i = 0; i < R; i++)
+//            for (size_t i = 0; i < RS; i++)
 //                if (k_collection_copy[i].get_number_nodes() > 0 && k_collection_copy[i].adj(x, y))
 //                    return true;
 //        }
@@ -207,7 +206,7 @@ namespace dynamic_ktree {
             return;
         } else {
             uint64_t n_total_marked = 0;
-            for (size_t l = 0; l < R; l++) {
+            for (size_t l = 0; l < RS; l++) {
                 if (k_collection[l] != nullptr && k_collection[l]->erase(x, y)) {
                     n_total_edges--;
 
@@ -221,11 +220,11 @@ namespace dynamic_ktree {
                     break;
                 }
             }
-            /* Rebuild data structure... */
+            /* RSIZEebuild data structure... */
             if (n_total_marked > n_total_edges / TAU(n_total_edges)) {
                 size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
                 size_t i = 0;
-                for (; i < R; ++i) {
+                for (; i < RS; ++i) {
                     if (k_collection[i] != nullptr)
                         max_size += k_collection[i]->total_edges();
                     if (MAXSZ(max(n_vertices, n_total_edges), i + 1) > max_size + 1)
@@ -287,7 +286,7 @@ namespace dynamic_ktree {
         return C0;
     }
 
-    array<shared_ptr<k_tree>, R> k_collections() const {
+    array<shared_ptr<k_tree>, RS> k_collections() const {
         return k_collection;
     }
 
