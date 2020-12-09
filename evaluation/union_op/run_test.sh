@@ -5,10 +5,6 @@ UNION_DATA="time-data"
 
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004")
 declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866)
-#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
-#declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
-#declare -a WEBGRAPH=("eu-2015-host")
-#declare -a WEBGRAPH_NODES=(11264052)
 
 if [[ $1 != "-dmgen" && $1 != "-webgraph" && $1 != "" ]]; then
   echo "Usage: ./run_test.sh [-dmgen/webgraph]"
@@ -158,11 +154,3 @@ if [[ $2 != "-plot" ]]; then
   echo "Preparing data..."
   prepared_data
 fi
-
-#if [[ $TYPE == "dmgen" ]]; then
-#  plot_data_time_dmgen
-#  plot_data_mem_dmgen
-#else
-#  plot_data_time
-#  plot_data_mem
-#fi
