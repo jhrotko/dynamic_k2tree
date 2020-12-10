@@ -9,8 +9,6 @@ RUNS_FILE_DELAY_MUNRO="runs_time_delay_munro.txt"
 RUNS_DATA="runs-data"
 
 TYPE="dmgen"
-#declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host")
-#declare -a WEBGRAPH_NODES=(100000 1382908 4769354)
 declare -a WEBGRAPH=("uk-2007-05@100000" "in-2004" "uk-2014-host" "indochina-2004" "eu-2015-host")
 declare -a WEBGRAPH_NODES=(100000 1382908 4769354 7414866 11264052)
 
@@ -74,6 +72,8 @@ declare -a TIME_DELAY_MUNRO=()     #time add_edge
 i=0
 prepared_data_time() {
   rm "$RUNS_DATA-time-$TYPE"
+  rm "properties-$TYPE.txt"
+
   if [[ $TYPE == "webgraph" ]]; then
     for dataset in "${WEBGRAPH[@]}"; do
       edges=$(wc -l "$DATASETDIR/$dataset/$dataset.tsv" | awk '{ print $1 }')
@@ -92,7 +92,7 @@ prepared_data_time() {
     for vertices in $(ls $DATASETDIR | sort --version-sort); do
       edges=$(wc -l "$DATASETDIR/$vertices/$vertices.tsv" | awk '{ print $1 }')
 
-      X_time+=("$(python -c "import math; print(math.logl($vertices)/math.log(2)*math.log($vertices)**0.25)")")
+      X_time+=("$(python -c "import math; print(math.log($vertices)/math.log(2)*math.log($vertices)**0.25)")")
 
       echo "$vertices $edges" >>"properties-$TYPE.txt"
       TIME+=("$(cat "$vertices/$RUNS_FILE")")
@@ -106,6 +106,7 @@ prepared_data_time() {
 
   i=$((i - 1))
   for item in $(seq 0 $i); do
+    echo "${X_time[${item}]} ${TIME[${item}]} ${TIME_BACKGROUND[${item}]} ${TIME_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${TIME_BACKGROUND_WAIT[${item}]}"
     echo "${X_time[${item}]} ${TIME[${item}]} ${TIME_BACKGROUND[${item}]} ${TIME_DELAY[${item}]} ${TIME_DELAY_MUNRO[${item}]} ${TIME_BACKGROUND_WAIT[${item}]}" >>"$RUNS_DATA-time-$TYPE"
   done
   i=$((i + 1))
@@ -160,7 +161,7 @@ plot_data_time() {
   set output 'add_time_$TYPE.png'
   set title "Add Edge ($TYPE)"
   set grid
-  set xlabel "log_k(n)log(n)"
+  set xlabel "log_k(n) log^ε(n)"
   set ylabel "t (µs)"
   set key left
   plot "$RUNS_DATA-time-$TYPE" using 1:2 with linespoints t "add edge",\
