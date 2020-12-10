@@ -1,6 +1,8 @@
-OBJS := ../../../../../sdk2tree/implementations/sdk2tree/basic.o ../../../../../sdk2tree/implementations/sdk2tree/bitrankw32int.o ../../../../../sdk2tree/implementations/sdk2tree/misBits.o ../../../../../sdk2tree/implementations/sdk2tree/kTree.o ../../../../../sdk2tree/implementations/sdk2tree/Entry.o ../../../../../sdk2tree/implementations/sdk2tree/NodeQueue.o ../../../../../sdk2tree/implementations/sdk2tree/Queue.o ../../../../../sdk2tree/implementations/sdk2tree/kt_setOperations.o
-INCLUDES := ../../../../../sdk2tree/implementations/sdk2tree/basic.h ../../../../../sdk2tree/implementations/sdk2tree/bitrankw32int.h ../../../../../sdk2tree/implementations/sdk2tree/misBits.h ../../../../../sdk2tree/implementations/sdk2tree/kTree.h ../../../../../sdk2tree/implementations/sdk2tree/Entry.h ../../../../../sdk2tree/implementations/sdk2tree/NodeQueue.h ../../../../../sdk2tree/implementations/sdk2tree/Queue.h ../../../../../sdk2tree/implementations/sdk2tree/kt_setOperations.h
-INCLUDES_C := ../../../../../sdk2tree/implementations/sdk2tree/basic.c ../../../../../sdk2tree/implementations/sdk2tree/bitrankw32int.c ../../../../../sdk2tree/implementations/sdk2tree/misBits.c ../../../../../sdk2tree/implementations/sdk2tree/kTree.c ../../../../../sdk2tree/implementations/sdk2tree/Entry.c ../../../../../sdk2tree/implementations/sdk2tree/NodeQueue.c ../../../../../sdk2tree/implementations/sdk2tree/Queue.c ../../../../../sdk2tree/implementations/sdk2tree/kt_setOperations.c
+PATH_SDK:=../../../../../sdk2tree/implementations/sdk2tree/
+OBJS:=$(PATH_SDK)basic.o $(PATH_SDK)bitrankw32int.o $(PATH_SDK)misBits.o $(PATH_SDK)kTree.o $(PATH_SDK)Entry.o $(PATH_SDK)NodeQueue.o $(PATH_SDK)Queue.o $(PATH_SDK)kt_setOperations.o
+INCLUDES:=$(PATH_SDK)basic.h $(PATH_SDK)bitrankw32int.h $(PATH_SDK)misBits.h $(PATH_SDK)kTree.h $(PATH_SDK)Entry.h $(PATH_SDK)NodeQueue.h $(PATH_SDK)Queue.h $(PATH_SDK)kt_setOperations.h
+INCLUDES_C:=$(PATH_SDK)basic.c $(PATH_SDK)bitrankw32int.c $(PATH_SDK)misBits.c $(PATH_SDK)kTree.c $(PATH_SDK)Entry.c $(PATH_SDK)NodeQueue.c $(PATH_SDK)Queue.c $(PATH_SDK)kt_setOperations.c
+
 create:
 	g++ -o create -O3 create_k2tree.cpp -L/usr/local/include/sdsl -lsdsl -lboost_serialization
 union:
@@ -25,11 +27,11 @@ evaluate_webgraph:
 	gnuplot union_webgraph.gnuplot
 evaluate: evaluate_dmgen evaluate_webgraph
 
-create_sdk:
-	g++ -o create_sdk -O3 create_k2tree_sdk.cpp ../../../../../sdk2tree/implementations/sdk2tree/kTree.h ../../../../../sdk2tree/implementations/sdk2tree/kTree.c ../../../../../sdk2tree/implementations/sdk2tree/basic.h ../../../../../sdk2tree/implementations/sdk2tree/basic.c ../../../../../sdk2tree/implementations/sdk2tree/bitrankw32int.h ../../../../../sdk2tree/implementations/sdk2tree/bitrankw32int.c
 union_sdk:
 	gcc -o union_sdk union_sdk.c $(OBJS) -lm -O3
 union_sdk.c:
 	gcc -c $(INCLUDES_C) -o project -O3
 clean_sdk:
 	rm create_sdk union_sdk
+create_sdk:
+	g++ -o create_sdk -O3 create_k2tree_sdk.cpp $(PATH_SDK)kTree.h $(PATH_SDK)kTree.c $(PATH_SDK)basic.h $(PATH_SDK)basic.c $(PATH_SDK)bitrankw32int.h $(PATH_SDK)bitrankw32int.c
