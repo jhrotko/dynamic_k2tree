@@ -20,8 +20,8 @@ eval_time() {
   echo "Evaluating time for $1..."
   rm "$1/$RUNS_FILE"
   rm "$1/$RUNS_FILE-list"
-  ./neighbor_iterator "$DATASETDIR/$1/$1-lists.tsv" $RUNS "../serialized/$1" 1>>"$1/$RUNS_FILE"
-  ./neighbor_iterator "$DATASETDIR/$1/$1-lists.tsv" $RUNS "../serialized/$1" 2>>"$1/$RUNS_FILE-list"
+  ./neighbor_iterator "$DATASETDIR/$1/$1-lists.tsv" $RUNS "../serialized/$1" 1 >>"$1/$RUNS_FILE"
+  ./neighbor_iterator "$DATASETDIR/$1/$1-lists.tsv" $RUNS "../serialized/$1" 2 >>"$1/$RUNS_FILE-list"
 }
 
 eval_memory() {
@@ -126,7 +126,6 @@ plot_data_mem() {
   set ylabel "memory (MB)"
   plot "$RUNS_DATA-memory-$TYPE" using 1:2 with linespoints pt 8 t "iterator",\
        "$RUNS_DATA-memory-$TYPE" using 1:3 with linespoints pt 8 t "list"
-
 EOF
 }
 
