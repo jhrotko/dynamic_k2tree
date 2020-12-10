@@ -24,8 +24,9 @@ int main(int argc, char *argv[]) {
             arcs++;
         }
     }
-
-    double aux = log(n_vertices) / log(2);
+//    O(m\log (n^2/m)) ou O(m)
+    double aux = arcs * log(n_vertices*n_vertices/arcs);
+//    double aux = arcs;
     std::cout << aux << " " << (n_vertices + arcs) << std::endl;
     return 0;
 }
