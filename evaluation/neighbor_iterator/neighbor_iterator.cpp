@@ -14,8 +14,8 @@ void split(const std::string &str, std::vector<std::string> &cont,
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 4) {
-        fprintf(stderr, "Usage: %s <path file> <number of runs> <save folder name>\n",
+    if (argc != 5) {
+        fprintf(stderr, "Usage: %s <path file> <number of runs> <save folder name> <version>\n",
                 argv[0]);
         return EXIT_FAILURE;
     }
@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     std::ostringstream path;
     path << argv[1];
 
+    uint version = atoi(argv[4]);
     for (int i = 0; i < runs; i++) {
         std::ifstream test_case(path.str());
         double sum = 0;
@@ -44,10 +45,17 @@ int main(int argc, char *argv[]) {
 
                 etype x = (etype) stoi(substrings[1]);
                 ++times;
-                clock_t aux = clock();
-                for (auto neigh = tree.neighbour_begin(x); neigh != tree.neighbour_end(); ++neigh) {}
-                clock_t aux_end = clock();
-                sum += (double) (aux_end - aux) / CLOCKS_PER_SEC;
+                if (version == 1) {
+                    clock_t aux = clock();
+                    for (auto neigh = tree.neighbour_begin(x); neigh != tree.neighbour_end(); ++neigh) {}
+                    clock_t aux_end = clock();
+                    sum += (double) (aux_end - aux) / CLOCKS_PER_SEC;
+                } else {
+                    clock_t aux = clock();
+                    tree.list_neighbour(x);
+                    clock_t aux_end = clock();
+                    sum += (double) (aux_end - aux) / CLOCKS_PER_SEC;
+                }
             }
         }
         test_case.close();
