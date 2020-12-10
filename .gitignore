@@ -129,7 +129,17 @@ evaluation/pageRank/time
 evaluation/add_edge/properties*
 evaluation/add_edge/data_sdk-dmgen
 
-evaluation/neighbor_iterator/*/time.txt
+evaluation/neighbor_iterator/1*
+evaluation/neighbor_iterator/5*
+evaluation/neighbor_iterator/in*
+evaluation/neighbor_iterator/uk*
+evaluation/neighbor_iterator/eu*
 evaluation/neighbor_iterator/data-*
+evaluation/edge_iterator/1*
+evaluation/edge_iterator/5*
+evaluation/edge_iterator/uk*
+evaluation/edge_iterator/in*
+evaluation/edge_iterator/eu*
+evaluation/edge_iterator/data-*
 
 results/*
