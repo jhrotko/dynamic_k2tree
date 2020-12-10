@@ -23,22 +23,21 @@ int main(int argc, char *argv[]) {
     dynamic_ktree::DKtree<2> tree;
     std::ifstream ifs;
     tree.load(ifs, folder, false);
+    double arcs = 0;
+    for (auto edge = tree.edge_begin(); edge != edge.end(); ++edge) {
+        arcs++;
+    }
 
     for(int i=0; i < runs; i++) {
-        double arcs = 0;
-        double sum = 0;
-        double total = 0;
-        for (auto edge = tree.edge_begin(); edge != edge.end(); ) {
-            clock_t  aux = clock();
-            ++edge;
-            clock_t add = clock() - aux;
-            sum += add;
-            total += add;
-            arcs++;
-        }
-        sum /= arcs;
-        final += sum;
+        double time_it = 0;
+        clock_t  aux = clock();
+        for (auto edge = tree.edge_begin(); edge != edge.end(); ++edge) {}
+        clock_t add = clock() - aux;
+        time_it = (double) (add-aux)/CLOCKS_PER_SEC;
+
+        time_it /= arcs;
+        final += time_it;
     }
-    cout << final / runs / CLOCKS_PER_SEC << endl;
+    cout << final / runs << endl;
     return 0;
 }
