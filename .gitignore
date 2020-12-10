@@ -127,6 +127,7 @@ evaluation/pageRank/pagerank
 evaluation/pageRank/time
 
 evaluation/add_edge/properties*
+evaluation/add_edge/data_sdk-dmgen
 
 evaluation/neighbor_iterator/*/time.txt
 evaluation/neighbor_iterator/data-*
