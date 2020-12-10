@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
         double time_it = 0;
         clock_t  aux = clock();
         for (auto edge = tree.edge_begin(); edge != edge.end(); ++edge) {}
-        clock_t add = clock() - aux;
+        clock_t add = clock();
         time_it = (double) (add-aux)/CLOCKS_PER_SEC;
 
         time_it /= arcs;

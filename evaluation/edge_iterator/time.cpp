@@ -26,6 +26,6 @@ int main(int argc, char *argv[]) {
     }
 
     double aux = log(n_vertices) / log(2);
-    std::cout << aux *log(arcs) << " " << (n_vertices + arcs) << std::endl;
+    std::cout << aux << " " << (n_vertices + arcs) << std::endl;
     return 0;
 }
