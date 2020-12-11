@@ -38,7 +38,7 @@ prepared_data_time() {
     for dataset in "${WEBGRAPH[@]}"; do
       TIME+=("$(cat "$dataset/$RUNS_FILE")")
 
-      bo=$(./time "$DATASETDIR/$dataset/$dataset.tsv" "${WEBGRAPH[${i}]}")
+      bo=$(./time "$DATASETDIR/$dataset/$dataset.tsv" "${WEBGRAPH_NODES[${i}]}")
       complexity=($(echo "$bo" | tr ' ' '\n'))
       TIME_COMPLEXITY+=("${complexity[0]}")
       MEMORY_COMPLEXITY+=("${complexity[1]}")
@@ -114,7 +114,6 @@ plot_data_mem() {
   plot "$DATA-$TYPE" using 3:4 with linespoints pt 8 notitle
 EOF
 }
-
 if [[ $2 != "-plot" ]]; then
   echo "Compiling..."
   make --keep-going clean all
@@ -152,4 +151,11 @@ if [[ $2 != "-plot" ]]; then
     prepared_data_memory
     plot_data_mem
   fi
+  exit
 fi
+
+prepared_data_time
+plot_data_time
+
+prepared_data_memory
+plot_data_mem
