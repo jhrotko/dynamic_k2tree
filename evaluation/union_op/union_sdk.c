@@ -13,6 +13,11 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < runs; i++) {
         clock_t start = clock();
         MREP* result = k2tree_union(repA, repB);
+        result->div_level_table = repB->div_level_table;
+        destroyBitRankW32Int(repA->btl);
+        free(repA);
+        destroyBitRankW32Int(repB->btl);
+        free(repB);
         clock_t end = clock();
 
         sum += (double) (end - start) / CLOCKS_PER_SEC;
