@@ -55,10 +55,10 @@ namespace {
         vector<etype> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
 
         ASSERT_EQ(path[0], 1);
-        ASSERT_EQ(path[1], 2);
-        ASSERT_EQ(path[2], 3);
-        ASSERT_EQ(path[3], 4);
-        ASSERT_EQ(path[4], 5);
+        ASSERT_EQ(path[1], 3);
+        ASSERT_EQ(path[2], 2);
+        ASSERT_EQ(path[3], 5);
+        ASSERT_EQ(path[4], 4);
         ASSERT_EQ(path[5], 6);
     }
 

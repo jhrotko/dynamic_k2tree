@@ -62,6 +62,11 @@ namespace dynamic_ktree {
 
     DKtree() {}
 
+    //! Build an empty dynamic tree.
+    /*! This method takes the maximum number of vertices (V) in the graph,
+         * that is the number of vertices in the graph [0, V[.
+         *  \param n_vertices THe maximum number of vertices in the graph.
+         */
     DKtree(uint
     n_vertices) :
     n_vertices(n_vertices) {
@@ -73,18 +78,26 @@ namespace dynamic_ktree {
             it_neighbour_end = dktree_neighbour_it().end();
     }
 
+    //! Return the number of edges in the graph.
     virtual uint64_t get_number_edges() const {
         return n_total_edges;
     }
 
+    //! Return the number of vertices in the graph.
     virtual uint64_t get_number_nodes() const {
         return n_vertices;
     }
 
+    //! Return the number of k2tree collections.
     int get_max_r() const {
         return max_r;
     }
 
+    //! Adds an edge to the graph.
+    /*!
+         *  \param x from node.
+         *  \param y to node.
+         */
     virtual void add_edge(etype x, etype y) {
         if (contains(x, y))
             return;
@@ -130,6 +143,11 @@ namespace dynamic_ktree {
         n_total_edges++;
     }
 
+    //! Checks if an edge exists in the graph.
+    /*!
+         *  \param x from node.
+         *  \param y to node.
+         */
     virtual bool contains(etype x, etype y) {
         if (C0.contains(x, y))
             return true;
@@ -141,6 +159,11 @@ namespace dynamic_ktree {
         return false;
     }
 
+    //! Deletes an edge from the graph.
+    /*!
+         *  \param x from node.
+         *  \param y to node.
+         */
     virtual void del_edge(etype x, etype y) {
         if (C0.erase(x, y)) {
             n_total_edges--;
@@ -206,6 +229,10 @@ namespace dynamic_ktree {
         }
     }
 
+    //! Lists the neighborhood of a node.
+    /*!
+         *  \param x desired node to be listed the neighbors.
+         */
     virtual vector<etype> list_neighbour(etype x) {
         vector<etype> neighbours;
         C0.list_neighbours(x, neighbours);
@@ -218,40 +245,50 @@ namespace dynamic_ktree {
         return neighbours;
     }
 
-
+    //! Returns the uncompressed container
     Container0 first_container() const {
         return C0;
     }
 
+    //! Returns the k2tree collections.
     array<shared_ptr<k_tree>, RS> k_collections() const {
         return k_collection;
     }
 
+    //! Returns the first edge iterator.
     virtual dktree_edge_it &edge_begin() {
         it_edge_begin = dktree_edge_it(this);
         it_end = it_edge_begin.end();
         return it_edge_begin;
     }
 
+    //! Returns the past-end edge iterator.
     virtual dktree_edge_it &edge_end() {
         return it_end;
     }
 
+    //! Returns the first node iterator.
     virtual dktree_node_it &node_begin() {
         it_node_begin = dktree_node_it(this);
         it_node_end = it_node_begin.end();
         return it_node_begin;
     }
 
+    //! Returns the past-end node iterator.
     virtual dktree_node_it &node_end() {
         return it_node_end;
     }
 
+    //! Returns the first nieghbor iterator for a node.
+    /*!
+         *  \param x desired node to retrieve the iterator.
+         */
     virtual dktree_neighbour_it &neighbour_begin(etype node) {
         it_neighbour_begin = dktree_neighbour_it(this, &C0, node);
         return it_neighbour_begin;
     }
 
+    //! Returns the past-end neighbor iterator.
     virtual dktree_neighbour_it &neighbour_end() {
         return it_neighbour_end;
     }
@@ -264,12 +301,18 @@ namespace dynamic_ktree {
         return k_collection[i] == nullptr;
     }
 
+    //! Returns the first neighbor iterator from a k2tree in the collection.
+    /*!
+         *  \param i desired k2tree.
+         *  \param node desired node.
+         */
     k_tree_neighbour_it &get_neighbour_begin(size_t i, etype node) const {
         return k_collection[i]->neighbour_begin(node);
     }
 
 
     friend class boost::serialization::access;
+
 
     template<class Archive>
     void serialize(Archive &ar, const unsigned int) {
@@ -279,6 +322,11 @@ namespace dynamic_ktree {
         ar & C0;
     }
 
+    //! Serializes the graph.
+    /*! It will create some auxiliary files to store the k2-tree in the graph which by default are saved in the current directory.
+         *  \param out ostream where to serialize the graph
+         *  \param project_dir name of the destiny folder. Default value is "."
+         */
     void serialize(std::ostream &out, string project_dir = ".") {
         project_dir.append("/dktree_serialize");
         int status = mkdir(project_dir.c_str(), 0777);
@@ -300,6 +348,12 @@ namespace dynamic_ktree {
         ss.close();
     }
 
+    //! Loads the graph.
+    /*! By default it will load the k2-trees from the current directory. You can set the clean flag to true in order to delete the k2-tree serialized files.
+         *  \param in istream where to load the graph
+         *  \param project_dir name of the source folder. Default value is "."
+         *  \param clear if true, cleans the serialize folder.
+         */
     void load(std::istream &in, string project_dir = ".", bool clear = false) {
         string project_dir_copy = project_dir;
         std::ifstream ifs(project_dir_copy.append("/dktree_serialize/0.kt"));
@@ -327,6 +381,7 @@ namespace dynamic_ktree {
             clean_serialize(project_dir);
     }
 
+    //! Equality operator
     bool operator==(const DKtree<k, t_bv, t_rank> &rhs) const {
         bool eval = true;
         eval &= max_r == rhs.max_r;
@@ -345,14 +400,12 @@ namespace dynamic_ktree {
 
         return eval;
     }
-
-    void clean_serialize(string project_dir = ".") {
-        project_dir.append("/dktree_serialize");
-
-        for (auto &entry : std::experimental::filesystem::directory_iterator(project_dir))
-            std::experimental::filesystem::remove(entry.path());
-    }
-
+    //! Applies a function to all neighbors of a node.
+    /*!
+     *
+     * @param x node to apply the function to its neighbors.
+     * @param func receives the node (uint) and returns void.
+     */
     void neigh_it(etype x, std::function<void(etype)> func) {
         C0.neigh_it(x, func);
 
@@ -360,6 +413,16 @@ namespace dynamic_ktree {
             if (k_collection[l] != nullptr)
                 k_collection[l]->neigh_it(x, func);
     }
+
+private:
+    void clean_serialize(string project_dir = ".") {
+        project_dir.append("/dktree_serialize");
+
+        for (auto &entry : std::experimental::filesystem::directory_iterator(project_dir))
+            std::experimental::filesystem::remove(entry.path());
+    }
+
+
 };
 }
 
