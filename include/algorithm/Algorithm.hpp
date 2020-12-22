@@ -10,21 +10,27 @@
 
 using namespace std;
 
-/*
- * Static class that implements the algorithms for classes that implement the Graph interface.
- */
 template<class Graph>
 class Algorithm {
     using uint = unsigned int;
+
+private:
+    Graph g;
+
 public:
+    Algorithm(Graph &g): g(g) {}
+
+    void set_graph(Graph &graph) {
+        this->g = graph;
+    }
+
     //! Breadth First Searh
     /*!
      * Starts the search at root node
-     * @param g graph to perform the search
      * @param root node where to start the search
      * @return a vector with the path
      */
-    static vector<etype> bfs(Graph &g, etype root) {
+    vector<etype> bfs(etype root) {
         vector<etype> path;
         map<etype, bool> visited;
         deque<etype> queue;
@@ -36,8 +42,6 @@ public:
             queue.pop_front();
             path.push_back(current_node);
 
-//            vector<etype> neighbours = g.list_neighbour(current_node);
-//            for (int neigh: neighbours) {
             for (auto neigh_it = g.neighbour_begin(current_node); neigh_it != g.neighbour_end(); ++neigh_it) {
                 etype neigh = *neigh_it;
                 if (!visited[neigh]) {
@@ -48,14 +52,14 @@ public:
         }
         return path;
     }
+
     //! Depth First Searh
     /*!
      * Starts the search at root node
-     * @param g graph to perform the search
      * @param root node where to start the search
      * @return a vector with the path
      */
-    static vector<etype> dfs(Graph &g, uint root) {
+    vector<etype> dfs(uint root) {
         vector<etype> path;
         map<uint, bool> visited;
         deque<uint> stack;
@@ -67,9 +71,8 @@ public:
             stack.pop_front();
             path.push_back(current_node);
 
-            vector<etype> neighbours = g.list_neighbour(current_node);
-            for (int i = neighbours.size() - 1; i >= 0; i--) {
-                int neigh = neighbours[i];
+            for (auto neigh_it = g.neighbour_begin(current_node); neigh_it != g.neighbour_end(); ++neigh_it) {
+                int neigh = *neigh_it;
                 if (!visited[neigh]) {
                     stack.push_front(neigh);
                     visited[neigh] = true;
@@ -83,10 +86,9 @@ public:
     /*!
      * This implementation uses a hash table to count the triangles.
      *  Takes O(|E|sqrt(|E|)) time and O(|V|+|E|) space.
-     * @param g graph to perform the counting
      * @return the numbers of triangles in graph g
      */
-    static int count_triangles_dummy_hash(Graph &g) {
+    int count_triangles_dummy_hash() {
         // Create an index on edges, with the pair of nodes
         // at its ends as the key
         EdgeHashTable edges_table;
@@ -121,41 +123,32 @@ public:
     /*!
      * This implementation iterates over the edges and neighbors to count the triangles.
      *  Takes O(|E|sqrt(|E|)log_k(|V|)log(|E|)) time and O(1) space.
-     * @param g graph to perform the counting
      * @return the numbers of triangles in graph g
      */
-    static unsigned int count_triangles_dummy(Graph &g, bool list=false) {
+    unsigned int count_triangles_dummy() {
         unsigned int total_triangles = 0;
-        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) { //O(m)
+        for (auto edge_it = g.edge_begin(); edge_it != g.edge_end(); edge_it++) {
             etype v1 = edge_it.x();
             etype v2 = edge_it.y();
             if (v1 != v2) {
-                if (!list) {
-                    for (auto neigh_v2_it = g.neighbour_begin(v2); neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) { //O(sqrt(m))
-                        etype v3 = *neigh_v2_it;
-                        if (g.contains(v3, v1)) //O(log_k(n))
-                            total_triangles++;
-                    }
-                } else {
-                    auto neighbours = g.list_neighbour(v2);
-                    for (auto n: neighbours) {
-                        if (g.contains(n, v1))
-                            total_triangles++;
-                    }
+                for (auto neigh_v2_it = g.neighbour_begin(v2);
+                     neigh_v2_it != g.neighbour_end(); ++neigh_v2_it) {
+                    etype v3 = *neigh_v2_it;
+                    if (g.contains(v3, v1))
+                        total_triangles++;
                 }
             }
         }
-        return total_triangles; //O(m *(sqrt(m) + log_k(n)))
+        return total_triangles;
     }
 
     //! Counts the triangles haveing into consideration the heavy hitters.
     /*!
      * This implementation uses a hash table to count the triangles.
      *  Takes O(|E|sqrt(|E|)) time and O(|V|+|E|) space.
-     * @param g graph to perform the counting
      * @return the numbers of triangles in graph g
      */
-    static unsigned int count_triangles(Graph &g) {
+    unsigned int count_triangles() {
         // Create an index on edges, with the pair of nodes
         // at its ends as the key
         EdgeHashTable edges_table;
@@ -181,10 +174,10 @@ public:
         for (auto edge_it = edges_table.cbegin(); edge_it != edges_table.cend(); ++edge_it) {
             etype v1 = edge_it->first.x();
             etype v2 = edge_it->first.y();
-            if (is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2]))
+            if (is_heavy_hitter(degree_node[v1]) && is_heavy_hitter(degree_node[v2]))
                 continue;
 
-            else if (!is_heavy_hitter(g, degree_node[v1]) && is_heavy_hitter(g, degree_node[v2])
+            else if (!is_heavy_hitter(degree_node[v1]) && is_heavy_hitter(degree_node[v2])
                      && minor_degree(v1, degree_node[v1], v2, degree_node[v2])) {
                 for (auto u = adj_node[v1].cbegin(); u != adj_node[v1].cend(); ++u) {
                     if (edges_table.contains(*u, v2) && minor_degree(v1, degree_node[v1], *u, degree_node[*u]))
@@ -198,21 +191,19 @@ public:
 
     //! Calculates the clustering Coefficient of a graph.
     /*!
-     * @param g graph to perform the counting
      * @return the clustering coefficient for graph g
      */
-    static float clustering_coefficient(Graph &g) {
+    float clustering_coefficient() {
         float total_edges = g.get_number_edges();
-        return count_triangles(g) / (total_edges * (total_edges - 1));
+        return count_triangles() / (total_edges * (total_edges - 1));
     }
 
     //! Calculates the pageRank for a graph.
     /*!
-     * @param g graph to perform the pagerank
      * @return the ranks for each node of g
      */
-    static unordered_map<uint, double>
-    pageRank(Graph &g, double convergence = 1.0e-6f, uint max_iterations = 100, double alpha = 0.85f) {
+    unordered_map<uint, double>
+    pageRank(double convergence = 1.0e-6f, uint max_iterations = 100, double alpha = 0.85f) {
         double N = (double) g.get_number_nodes();
         double total_nodes = 0.0f;
 
@@ -279,11 +270,11 @@ public:
 
 private:
 
-    static bool is_heavy_hitter(Graph &g, uint node_degree) {
+    bool is_heavy_hitter(uint node_degree) {
         return node_degree >= sqrt(g.get_number_edges());
     }
 
-    static bool minor_degree(etype v1, uint degree_v1, etype v2, uint degree_v2) {
+    bool minor_degree(etype v1, uint degree_v1, etype v2, uint degree_v2) {
         if (degree_v1 < degree_v2) return true;
         return degree_v1 == degree_v2 && v1 < v2;
     }

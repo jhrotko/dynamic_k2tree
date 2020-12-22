@@ -17,33 +17,37 @@ namespace {
     template<class G>
     class Algorithm_Test : public ::testing::Test {
     protected:
-        G *graph_;
+        G *graph;
+        Algorithm<G> *algo;
 
         Algorithm_Test() {}
 
         virtual ~Algorithm_Test() {}
 
         virtual void SetUp() {
-            graph_ = new G(7); //undirect graph
-            graph_->add_edge(1, 2);
-            graph_->add_edge(1, 3);
-            graph_->add_edge(2, 5);
-            graph_->add_edge(2, 4);
-            graph_->add_edge(3, 5);
-            graph_->add_edge(3, 1);
-            graph_->add_edge(4, 5);
-            graph_->add_edge(4, 6);
-            graph_->add_edge(5, 6);
-            graph_->add_edge(6, 4);
-            graph_->add_edge(6, 5);
-            graph_->add_edge(5, 4);
-            graph_->add_edge(5, 3);
-            graph_->add_edge(5, 2);
-            graph_->add_edge(2, 1);
+            graph = new G(7); //undirect graph
+            graph->add_edge(1, 2);
+            graph->add_edge(1, 3);
+            graph->add_edge(2, 5);
+            graph->add_edge(2, 4);
+            graph->add_edge(3, 5);
+            graph->add_edge(3, 1);
+            graph->add_edge(4, 5);
+            graph->add_edge(4, 6);
+            graph->add_edge(5, 6);
+            graph->add_edge(6, 4);
+            graph->add_edge(6, 5);
+            graph->add_edge(5, 4);
+            graph->add_edge(5, 3);
+            graph->add_edge(5, 2);
+            graph->add_edge(2, 1);
+
+            algo = new Algorithm<G>(*graph);
         }
 
         virtual void TearDown() {
-            delete graph_;
+            delete graph;
+            delete algo;
         }
     };
 
@@ -52,7 +56,7 @@ namespace {
     TYPED_TEST_CASE(Algorithm_Test, graph_implementations);
 
     TYPED_TEST(Algorithm_Test, BFS) {
-        vector<etype> path = Algorithm<TypeParam>::bfs(*(this->graph_), 1);
+        vector<etype> path = this->algo->bfs(1);
 
         ASSERT_EQ(path[0], 1);
         ASSERT_EQ(path[1], 3);
@@ -63,7 +67,7 @@ namespace {
     }
 
     TYPED_TEST(Algorithm_Test, DFS) {
-        vector<etype> path = Algorithm<TypeParam>::dfs(*(this->graph_), 1);
+        vector<etype> path = this->algo->dfs(1);
 
         ASSERT_EQ(path[0], 1);
         ASSERT_EQ(path[1], 2);
@@ -83,7 +87,8 @@ namespace {
         simple_graph.add_edge(3, 2);
         simple_graph.add_edge(1, 3);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy(simple_graph);
+        this->algo->set_graph(simple_graph);
+        int num_triangles = this->algo->count_triangles_dummy();
 
         ASSERT_EQ(num_triangles, 6);
     }
@@ -112,7 +117,8 @@ namespace {
         star_graph.add_edge(6, 1);
         star_graph.add_edge(6, 5);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy(star_graph);
+        this->algo->set_graph(star_graph);
+        int num_triangles = this->algo->count_triangles_dummy();
 
         ASSERT_EQ(num_triangles, 18);
     }
@@ -126,7 +132,8 @@ namespace {
         simple_graph.add_edge(3, 2);
         simple_graph.add_edge(1, 3);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy_hash(simple_graph);
+        this->algo->set_graph(simple_graph);
+        int num_triangles = this->algo->count_triangles_dummy_hash();
 
         ASSERT_EQ(num_triangles, 6);
     }
@@ -155,7 +162,8 @@ namespace {
         star_graph.add_edge(6, 1);
         star_graph.add_edge(6, 5);
 
-        int num_triangles = Algorithm<TypeParam>::count_triangles_dummy_hash(star_graph);
+        this->algo->set_graph(star_graph);
+        int num_triangles = this->algo->count_triangles_dummy_hash();
 
         ASSERT_EQ(num_triangles, 18);
     }
@@ -184,11 +192,12 @@ namespace {
         star_graph.add_edge(6, 1);
         star_graph.add_edge(6, 5);
 
-        unsigned int num_triangles = Algorithm<TypeParam>::count_triangles(star_graph);
+        this->algo->set_graph(star_graph);
+        unsigned int num_triangles = this->algo->count_triangles();
 
         ASSERT_EQ(num_triangles, 3);
 
-        float coefficient = Algorithm<TypeParam>::clustering_coefficient(star_graph);
+        float coefficient = this->algo->clustering_coefficient();
         ASSERT_TRUE(coefficient == 0.0125f);
     }
 
@@ -197,7 +206,8 @@ namespace {
         simple_graph.add_edge(0,1);
         simple_graph.add_edge(1,0);
 
-        unordered_map<uint, double> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        this->algo->set_graph(simple_graph);
+        unordered_map<uint, double> pr_simple = this->algo->pageRank();
         unordered_map<uint, double> expected;
         expected[0] = .5f;
         expected[1] = .5f;
@@ -211,7 +221,8 @@ namespace {
         simple_graph.add_edge(2,1);
         simple_graph.add_edge(4,0);
 
-        unordered_map<uint, double> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        this->algo->set_graph(simple_graph);
+        unordered_map<uint, double> pr_simple = this->algo->pageRank();
         unordered_map<uint, double> expected;
         expected[0] = 0.4625;
         expected[1] = 0.4625;
@@ -234,8 +245,8 @@ namespace {
         simple_graph.add_edge(4,1);
         simple_graph.add_edge(5,2);
 
-
-        unordered_map<uint, double> pr_simple = Algorithm<TypeParam>::pageRank(simple_graph);
+        this->algo->set_graph(simple_graph);
+        unordered_map<uint, double> pr_simple = this->algo->pageRank();
         unordered_map<uint, double> expected;
         expected[0] = 0.0291262;
         expected[1] = 0.142472;
