@@ -54,6 +54,8 @@ We also present some examples of how to work with our data structure in our test
 
 ## Installation
 1. First you will need to install gtest and cmake
+1. You also need to install boost: \
+```sudo apt-get install libboost-all-dev```
 1. Install the sdsl-lite fork (https://github.com/joo95h/sdsl-lite): \
  ```cd sdsl-lite```\
  ```sudo ./install.sh /usr/local/```
