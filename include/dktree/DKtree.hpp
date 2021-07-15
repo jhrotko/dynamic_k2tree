@@ -99,7 +99,7 @@ namespace dynamic_ktree {
          *  \param y to node.
          */
     virtual void add_edge(etype x, etype y) {
-        if (contains(x, y))
+        if (contains_forced(x, y))
             return;
 
         size_t max_size = MAXSZ(max(n_vertices, n_total_edges), 0);
@@ -155,6 +155,22 @@ namespace dynamic_ktree {
         // check in other containers
         for (size_t i = 0; i < RS; i++)
             if (k_collection[i] != nullptr && k_collection[i]->adj(x, y))
+                return true;
+        return false;
+    }
+
+    //! Checks if an edge exists in the graph, and add it if possible.
+    /*!
+         *  \param x from node.
+         *  \param y to node.
+         */
+    virtual bool contains_forced(etype x, etype y) {
+        if (C0.contains(x, y))
+            return true;
+
+        // check in other containers
+        for (size_t i = 0; i < RS; i++)
+            if (k_collection[i] != nullptr && k_collection[i]->adj_forced(x, y))
                 return true;
         return false;
     }
